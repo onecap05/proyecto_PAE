@@ -8,35 +8,80 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import com.eurobank.models.Cliente;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.beans.property.SimpleStringProperty;
+import java.time.LocalDate;
+import java.util.Optional;
 
 public class ClientesView {
+    private static ObservableList<Cliente> clientes = FXCollections.observableArrayList();
+
     public static void mostrar() {
         Stage stage = new Stage();
         stage.setTitle("Gestión de Clientes");
 
-        TableView<Cliente> tabla = new TableView<>();
+        // Filtrar solo clientes activos
+        FilteredList<Cliente> clientesFiltrados = new FilteredList<>(clientes, c -> c.isEstadoActivo());
 
-        TableColumn<Cliente, String> colId = new TableColumn<>("ID");
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        // Crear tabla
+        TableView<Cliente> tabla = new TableView<>();
+        tabla.setItems(clientesFiltrados);
+
+        // Columnas
+        TableColumn<Cliente, String> colIdFiscal = new TableColumn<>("RFC/CURP");
+        colIdFiscal.setCellValueFactory(new PropertyValueFactory<>("idFiscal"));
 
         TableColumn<Cliente, String> colNombre = new TableColumn<>("Nombre");
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
 
-        TableColumn<Cliente, String> colRfc = new TableColumn<>("RFC");
-        colRfc.setCellValueFactory(new PropertyValueFactory<>("rfc"));
+        TableColumn<Cliente, String> colNacionalidad = new TableColumn<>("Nacionalidad");
+        colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
 
-        tabla.getColumns().addAll(colId, colNombre, colRfc);
+        TableColumn<Cliente, LocalDate> colFechaNac = new TableColumn<>("Fecha Nacimiento");
+        colFechaNac.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
 
-        // Datos de ejemplo
-        tabla.setItems(FXCollections.observableArrayList(
-                new Cliente("C001", "Juan Pérez", "PERJ920101"),
-                new Cliente("C002", "María García", "GARM850202")
-        ));
+        TableColumn<Cliente, String> colContacto = new TableColumn<>("Contacto");
+        colContacto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(
+                        "Tel: " + cellData.getValue().getTelefono() + "\n" +
+                                "Email: " + cellData.getValue().getEmail()
+                )
+        );
+
+        TableColumn<Cliente, String> colDireccion = new TableColumn<>("Dirección");
+        colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+
+        tabla.getColumns().addAll(colIdFiscal, colNombre, colNacionalidad, colFechaNac, colContacto, colDireccion);
 
         // Botones CRUD
-        Button btnAgregar = new Button("Agregar");
+        Button btnAgregar = new Button("Agregar Cliente");
         Button btnEditar = new Button("Editar");
         Button btnEliminar = new Button("Eliminar");
+
+        btnAgregar.setOnAction(e -> ClienteDialog.mostrarDialogoAgregar(clientes));
+        btnEditar.setOnAction(e -> {
+            Cliente seleccionado = tabla.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                ClienteDialog.mostrarDialogoEditar(seleccionado);
+            }
+        });
+        // Confirmación y desactivación
+        btnEliminar.setOnAction(e -> {
+            Cliente seleccionado = tabla.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmacion.setTitle("Confirmar eliminación");
+                confirmacion.setHeaderText("¿Está seguro de desactivar este cliente?");
+                confirmacion.setContentText("El cliente ya no será visible pero sus cuentas permanecerán.");
+
+                Optional<ButtonType> resultado = confirmacion.showAndWait();
+                if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                    seleccionado.desactivar();
+                    tabla.refresh();
+                }
+            }
+        });
 
         HBox botones = new HBox(10, btnAgregar, btnEditar, btnEliminar);
 
@@ -44,7 +89,7 @@ public class ClientesView {
         root.setCenter(tabla);
         root.setBottom(botones);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 900, 500);
         stage.setScene(scene);
         stage.show();
     }

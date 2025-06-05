@@ -26,4 +26,5 @@ public enum RolEmpleado {
     public String toString() {
         return nombre;
     }
+
 }

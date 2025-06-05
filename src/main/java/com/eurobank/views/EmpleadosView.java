@@ -4,8 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import com.eurobank.models.Empleado;
 import com.eurobank.models.RolEmpleado;
@@ -17,41 +17,46 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
+import java.util.Optional;
+
 public class EmpleadosView {
     private static ObservableList<Empleado> empleados = FXCollections.observableArrayList();
-    private static FilteredList<Empleado> empleadosFiltrados;
+    // Solo empleados activos
+    private static FilteredList<Empleado> empleadosFiltrados = new FilteredList<>(empleados, emp -> emp.isEstadoActivo());
 
     static {
-        // Datos de ejemplo
-        empleados.add(new Empleado("E001", "Admin Principal", RolEmpleado.ADMINISTRADOR, "admin", "admin123"));
-
-        Empleado gerente = new Empleado("E002", "María García", RolEmpleado.GERENTE, "mgarciag", "mgarciag123");
-        gerente.setNivelAcceso("regional");
-        gerente.setAnosExperiencia(5);
-        empleados.add(gerente);
-
-        Empleado ejecutivo = new Empleado("E003", "Carlos López", RolEmpleado.EJECUTIVO_CUENTA, "clopez", "clopez123");
-        ejecutivo.setEspecializacion("PYMES");
-        ejecutivo.setClientesAsignados(15);
-        empleados.add(ejecutivo);
-
-        Empleado cajero = new Empleado("E004", "Ana Martínez", RolEmpleado.CAJERO, "amartinez", "amartinez123");
-        cajero.setHorarioTrabajo("08:00-16:00");
-        cajero.setNumeroVentanilla(3);
-        empleados.add(cajero);
-
-        empleadosFiltrados = new FilteredList<>(empleados);
+        cargarDatosEjemplo();
     }
 
     public static void mostrar() {
         Stage stage = new Stage();
         stage.setTitle("Gestión de Empleados");
 
-        // Tabla principal
+        TableView<Empleado> tableView = crearTablaEmpleados();
+
+        ComboBox<RolEmpleado> cbFiltroRol = crearComboFiltro();
+
+        HBox controlesInferiores = crearControlesCRUD(tableView);
+
+        VBox controlesSuperiores = new VBox(10,
+                new Label("Filtrar empleados por rol:"),
+                cbFiltroRol);
+        controlesSuperiores.setPadding(new Insets(10));
+
+        BorderPane root = new BorderPane();
+        root.setTop(controlesSuperiores);
+        root.setCenter(tableView);
+        root.setBottom(controlesInferiores);
+
+        Scene scene = new Scene(root, 800, 500);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private static TableView<Empleado> crearTablaEmpleados() {
         TableView<Empleado> tableView = new TableView<>();
         tableView.setItems(empleadosFiltrados);
 
-        // Columnas básicas
         TableColumn<Empleado, String> colId = new TableColumn<>("ID");
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
@@ -80,45 +85,39 @@ public class EmpleadosView {
         });
 
         tableView.getColumns().addAll(colId, colNombre, colUsuario, colRol, colDetalleRol);
+        return tableView;
+    }
 
-        // Controles de filtrado
+    private static ComboBox<RolEmpleado> crearComboFiltro() {
         ComboBox<RolEmpleado> cbFiltroRol = new ComboBox<>();
         cbFiltroRol.getItems().addAll(RolEmpleado.values());
-        cbFiltroRol.getItems().add(0, null); // Opción para mostrar todos
-        cbFiltroRol.setPromptText("Filtrar por rol");
+        cbFiltroRol.getItems().add(0, null);
+        cbFiltroRol.setPromptText("Seleccione un rol");
 
         cbFiltroRol.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 RolEmpleado rolSeleccionado = cbFiltroRol.getValue();
                 empleadosFiltrados.setPredicate(empleado -> {
+                    boolean activo = empleado.isEstadoActivo();
+                    if (!activo) return false;
                     if (rolSeleccionado == null) return true;
                     return empleado.getRol() == rolSeleccionado;
                 });
             }
         });
+        return cbFiltroRol;
+    }
 
-        // Botones CRUD
+    private static HBox crearControlesCRUD(TableView<Empleado> tableView) {
         Button btnAgregar = new Button("Agregar");
         Button btnEditar = new Button("Editar");
         Button btnEliminar = new Button("Eliminar");
 
-        // Contenedor de controles
-        HBox controlesSuperiores = new HBox(10, new Label("Filtrar por rol:"), cbFiltroRol);
-        HBox controlesInferiores = new HBox(10, btnAgregar, btnEditar, btnEliminar);
-        controlesSuperiores.setPadding(new Insets(10));
-        controlesInferiores.setPadding(new Insets(10));
-
-        BorderPane root = new BorderPane();
-        root.setTop(controlesSuperiores);
-        root.setCenter(tableView);
-        root.setBottom(controlesInferiores);
-
-        // Manejadores de eventos
         btnAgregar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DialogoEmpleado.mostrarDialogoAgregar(empleados);
+                EmpleadoDialog.mostrarDialogoAgregar(empleados);
             }
         });
 
@@ -127,7 +126,7 @@ public class EmpleadosView {
             public void handle(ActionEvent event) {
                 Empleado seleccionado = tableView.getSelectionModel().getSelectedItem();
                 if (seleccionado != null) {
-                    DialogoEmpleado.mostrarDialogoEditar(seleccionado);
+                    EmpleadoDialog.mostrarDialogoEditar(seleccionado);
                 }
             }
         });
@@ -137,56 +136,41 @@ public class EmpleadosView {
             public void handle(ActionEvent event) {
                 Empleado seleccionado = tableView.getSelectionModel().getSelectedItem();
                 if (seleccionado != null) {
-                    empleados.remove(seleccionado);
+                    Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmacion.setTitle("Confirmar eliminación");
+                    confirmacion.setHeaderText("¿Está seguro de desactivar este empleado?");
+                    confirmacion.setContentText("Esta acción no se puede deshacer.");
+
+                    Optional<ButtonType> resultado = confirmacion.showAndWait();
+                    if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                        seleccionado.desactivar();
+                        tableView.refresh();
+                    }
                 }
             }
         });
 
-        Scene scene = new Scene(root, 800, 500);
-        stage.setScene(scene);
-        stage.show();
+        HBox controles = new HBox(10, btnAgregar, btnEditar, btnEliminar);
+        controles.setPadding(new Insets(10));
+        return controles;
     }
 
-    public static class DialogoEmpleado {
-        public static void mostrarDialogoAgregar(ObservableList<Empleado> listaEmpleados) {
-            Stage stage = new Stage();
-            stage.setTitle("Agregar Empleado");
+    private static void cargarDatosEjemplo() {
+        empleados.add(new Empleado("E001", "Admin Principal", RolEmpleado.ADMINISTRADOR, "admin", "admin123"));
 
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(20));
+        Empleado gerente = new Empleado("E002", "María García", RolEmpleado.GERENTE, "mgarciag", "mgarciag123");
+        gerente.setNivelAcceso("regional");
+        gerente.setAnosExperiencia(5);
+        empleados.add(gerente);
 
-            // Controles del formulario
-            TextField tfId = new TextField();
-            TextField tfNombre = new TextField();
-            ComboBox<RolEmpleado> cbRol = new ComboBox<>();
-            cbRol.getItems().addAll(RolEmpleado.values());
+        Empleado ejecutivo = new Empleado("E003", "Carlos López", RolEmpleado.EJECUTIVO_CUENTA, "clopez", "clopez123");
+        ejecutivo.setEspecializacion("PYMES");
+        ejecutivo.setClientesAsignados(15);
+        empleados.add(ejecutivo);
 
-            TextField tfUsuario = new TextField();
-            PasswordField pfPassword = new PasswordField();
-
-            // Campos específicos por rol
-            TextField tfHorario = new TextField();
-            TextField tfVentanilla = new TextField();
-            TextField tfClientes = new TextField();
-            TextField tfEspecializacion = new TextField();
-            TextField tfNivelAcceso = new TextField();
-            TextField tfAnosExp = new TextField();
-
-            // Organización en grid
-            grid.add(new Label("ID:"), 0, 0);
-            grid.add(tfId, 1, 0);
-            grid.add(new Label("Nombre:"), 0, 1);
-            grid.add(tfNombre, 1, 1);
-            grid.add(new Label("Rol:"), 0, 2);
-            grid.add(cbRol, 1, 2);
-            grid.add(new Label("Usuario:"), 0, 3);
-            grid.add(tfUsuario, 1, 3);
-            grid.add(new Label("Contraseña:"), 0, 4);
-            grid.add(pfPassword, 1, 4);
-
-            // Mostrar campos según rol seleccionado
-            cbRol.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event
+        Empleado cajero = new Empleado("E004", "Ana Martínez", RolEmpleado.CAJERO, "amartinez", "amartinez123");
+        cajero.setHorarioTrabajo("08:00-16:00");
+        cajero.setNumeroVentanilla(3);
+        empleados.add(cajero);
+    }
+}

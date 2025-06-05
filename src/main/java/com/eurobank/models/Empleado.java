@@ -6,6 +6,7 @@ public class Empleado {
     private RolEmpleado rol;
     private String usuario;
     private String password;
+    private boolean estadoActivo;
 
     // Campos específicos por rol
     private String horarioTrabajo; // Para cajeros
@@ -21,6 +22,7 @@ public class Empleado {
         this.rol = rol;
         this.usuario = usuario;
         this.password = password;
+        this.estadoActivo = true; // Por defecto está activo
     }
 
     // Getters y setters básicos
@@ -80,5 +82,17 @@ public class Empleado {
         if(this.rol == RolEmpleado.GERENTE) {
             this.anosExperiencia = anosExperiencia;
         }
+    }
+
+    public boolean isEstadoActivo() {
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(boolean estadoActivo) {
+        this.estadoActivo = estadoActivo;
+    }
+
+    public void desactivar() {
+        this.estadoActivo = false;
     }
 }

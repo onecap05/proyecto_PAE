@@ -4,18 +4,16 @@ public class Cuenta {
     private String numero;
     private String tipo; // corriente, ahorros, empresarial
     private double saldo;
+    private double limiteCredito;
+    private Cliente cliente;
+    private boolean estadoActivo; // Nuevo campo
 
-    // Constructor, getters y setters
-    public Cuenta() {
-        this.numero = "";
-        this.tipo = "";
-        this.saldo = 0.0;
-    }
-
-    public Cuenta(String numero, String tipo, double saldo) {
+    public Cuenta(String numero, String tipo, double saldo, Cliente cliente) {
         this.numero = numero;
         this.tipo = tipo;
         this.saldo = saldo;
+        this.cliente = cliente;
+        this.estadoActivo = true;
     }
 
     public String getNumero() {
@@ -40,5 +38,17 @@ public class Cuenta {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+    }
+
+    public boolean isEstadoActivo() {
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(boolean estadoActivo) {
+        this.estadoActivo = estadoActivo;
+    }
+
+    public void desactivar() {
+        this.estadoActivo = false;
     }
 }

@@ -5,18 +5,37 @@ public class Sucursal {
     private String nombre;
     private String direccion;
     private String telefono;
-    private String email;
-    private String gerente;
+    private String correo; // Nuevo campo
+    private String idGerente; // Cambiado de 'gerente' a 'idGerente'
     private String contacto;
-    private boolean estadoActivo; // Nuevo campo
+    private boolean estadoActivo;
 
-    public Sucursal(String id, String nombre, String direccion, String telefono, String gerente) {
+    public Sucursal(String id, String nombre, String direccion, String telefono,
+                    String correo, String idGerente) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.gerente = gerente;
+        this.correo = correo;
+        this.idGerente = idGerente;
         this.estadoActivo = true;
+    }
+
+    // Getters y setters
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getIdGerente() {
+        return idGerente;
+    }
+
+    public void setIdGerente(String idGerente) {
+        this.idGerente = idGerente;
     }
 
     // Getters
@@ -34,10 +53,6 @@ public class Sucursal {
 
     public String getTelefono() {
         return telefono;
-    }
-
-    public String getGerente() {
-        return gerente;
     }
 
     public boolean isEstadoActivo() {

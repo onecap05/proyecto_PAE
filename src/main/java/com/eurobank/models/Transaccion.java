@@ -1,36 +1,26 @@
 package com.eurobank.models;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Transaccion {
     private String id;
     private double monto;
     private LocalDateTime fecha;
-    private String tipo; // depósito, retiro, transferencia
-    private String cuentaOrigen;
-    private String cuentaDestino;
-    private String sucursal;
-    private boolean estadoActivo; // Nuevo campo
+    private String idSucursal;
 
-    public Transaccion(String id, double monto, LocalDateTime fecha, String tipo,
-                       String cuentaOrigen, String cuentaDestino, String sucursal) {
+    public Transaccion(String id, double monto, LocalDateTime fecha, String idSucursal) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
-        this.tipo = tipo;
-        this.cuentaOrigen = cuentaOrigen;
-        this.cuentaDestino = cuentaDestino;
-        this.sucursal = sucursal;
-        this.estadoActivo = true;
+        this.idSucursal = idSucursal;
     }
 
-    // Getters
-    public String getFechaFormateada() {
-        return fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    // Método que puede ser sobrescrito por clases hijas
+    public String getTipo() {
+        return "GENERICA";
     }
 
-    // Resto de getters...
+    // Getters y setters
     public String getId() {
         return id;
     }
@@ -39,32 +29,27 @@ public class Transaccion {
         return monto;
     }
 
-    public String getTipo() {
-        return tipo;
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    public String getCuentaOrigen() {
-        return cuentaOrigen;
+    public String getIdSucursal() {
+        return idSucursal;
     }
 
-    public String getCuentaDestino() {
-        return cuentaDestino;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getSucursal() {
-        return sucursal;
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
 
-    public boolean isEstadoActivo() {
-        return estadoActivo;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
-    public void setEstadoActivo(boolean estadoActivo) {
-        this.estadoActivo = estadoActivo;
-    }
-
-    // Las transacciones normalmente no se "eliminan" pero podrían marcarse como canceladas
-    public void cancelar() {
-        this.estadoActivo = false;
+    public void setIdSucursal(String idSucursal) {
+        this.idSucursal = idSucursal;
     }
 }

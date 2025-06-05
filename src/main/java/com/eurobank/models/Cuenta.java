@@ -1,34 +1,35 @@
 package com.eurobank.models;
 
 public class Cuenta {
-    private String numero;
-    private String tipo; // corriente, ahorros, empresarial
+    private String numeroCuenta; // Cambiado de 'numero' a 'numeroCuenta'
+    private TipoCuenta tipo; // Ahora usa el ENUM
     private double saldo;
     private double limiteCredito;
     private Cliente cliente;
-    private boolean estadoActivo; // Nuevo campo
+    private boolean estadoActivo;
 
-    public Cuenta(String numero, String tipo, double saldo, Cliente cliente) {
-        this.numero = numero;
+    public Cuenta(String numeroCuenta, TipoCuenta tipo, double saldo, Cliente cliente) {
+        this.numeroCuenta = numeroCuenta;
         this.tipo = tipo;
         this.saldo = saldo;
         this.cliente = cliente;
         this.estadoActivo = true;
     }
 
-    public String getNumero() {
-        return numero;
+    // Getters y setters
+    public String getNumeroCuenta() {
+        return numeroCuenta;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setNumeroCuenta(String numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
     }
 
-    public String getTipo() {
+    public TipoCuenta getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoCuenta tipo) {
         this.tipo = tipo;
     }
 

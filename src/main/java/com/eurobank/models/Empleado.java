@@ -1,31 +1,73 @@
 package com.eurobank.models;
 
+import java.time.LocalDate;
+
 public class Empleado {
     private String id;
     private String nombre;
+    private String direccion; // Nuevo campo
+    private LocalDate fechaNacimiento; // Nuevo campo
+    private String genero; // Nuevo campo (podría ser ENUM)
+    private double salario; // Nuevo campo
     private RolEmpleado rol;
     private String usuario;
     private String password;
     private boolean estadoActivo;
 
-    // Campos específicos por rol
+    public Empleado(String id, String nombre, String direccion, LocalDate fechaNacimiento,
+                    String genero, double salario, RolEmpleado rol, String usuario, String password) {
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.fechaNacimiento = fechaNacimiento;
+        this.genero = genero;
+        this.salario = salario;
+        this.rol = rol;
+        this.usuario = usuario;
+        this.password = password;
+        this.estadoActivo = true;
+    }
+
     private String horarioTrabajo; // Para cajeros
     private Integer numeroVentanilla; // Para cajeros
     private Integer clientesAsignados; // Para ejecutivos
     private String especializacion; // Para ejecutivos (PYMES, corporativo)
     private String nivelAcceso; // Para gerentes (sucursal, regional, nacional)
     private Integer anosExperiencia; // Para gerentes
+    // Getters y setters básicos
 
-    public Empleado(String id, String nombre, RolEmpleado rol, String usuario, String password) {
-        this.id = id;
-        this.nombre = nombre;
-        this.rol = rol;
-        this.usuario = usuario;
-        this.password = password;
-        this.estadoActivo = true; // Por defecto está activo
+    public String getDireccion() {
+        return direccion;
     }
 
-    // Getters y setters básicos
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

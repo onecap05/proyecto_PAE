@@ -5,6 +5,7 @@
   "telefono" : "+34 912345678",
   "correo" : "madrid@eurobank.com",
   "idGerente" : "G001",
+  "contacto" : null,
   "estadoActivo" : true
 }, {
   "id" : "S002",
@@ -13,5 +14,24 @@
   "telefono" : "+34 933334445",
   "correo" : "barcelona@eurobank.com",
   "idGerente" : "G002",
+  "contacto" : null,
   "estadoActivo" : true
+}, {
+  "id" : "S003",
+  "nombre" : "Sucursal Centro",
+  "direccion" : "Av. Principal 123",
+  "telefono" : "5559876543",
+  "correo" : null,
+  "idGerente" : null,
+  "contacto" : null,
+  "estadoActivo" : false
+}, {
+  "id" : "S004",
+  "nombre" : "Sucursal Centro",
+  "direccion" : "Av. Principal 123",
+  "telefono" : "5559876543",
+  "correo" : null,
+  "idGerente" : null,
+  "contacto" : null,
+  "estadoActivo" : false
 } ]

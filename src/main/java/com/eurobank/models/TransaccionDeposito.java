@@ -15,6 +15,7 @@ public class TransaccionDeposito extends Transaccion {
         super();
     }
 
+
     @Override
     public String getTipo() {
         return "DEPOSITO";

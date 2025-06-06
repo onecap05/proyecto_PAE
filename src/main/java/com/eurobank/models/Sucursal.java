@@ -42,6 +42,32 @@ public class Sucursal {
         this.idGerente = idGerente;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+
+
     // Getters
     public String getId() {
         return id;

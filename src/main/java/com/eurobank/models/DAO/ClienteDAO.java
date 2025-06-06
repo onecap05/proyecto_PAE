@@ -19,22 +19,20 @@ public class ClienteDAO {
 
     public ClienteDAO() {
         this.objectMapper = new ObjectMapper();
-        // Configuración para soportar LocalDate y formato legible
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
-    // Guardar lista de clientes en JSON
     public void guardarClientes(List<Cliente> clientes) throws IOException {
         objectMapper.writeValue(new File(ARCHIVO_JSON), clientes);
     }
 
-    // Cargar lista de clientes desde JSON
+
     public List<Cliente> cargarClientes() throws IOException {
         File archivo = new File(ARCHIVO_JSON);
         if (!archivo.exists()) {
-            return new ArrayList<>(); // Si no existe, retorna lista vacía
+            return new ArrayList<>();
         }
         Cliente[] clientesArray = objectMapper.readValue(archivo, Cliente[].class);
         return new ArrayList<>(Arrays.asList(clientesArray));
@@ -45,6 +43,18 @@ public class ClienteDAO {
                 .filter(c -> c.getIdFiscal().equals(idFiscal))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public boolean eliminarCliente(String idFiscal) throws ClienteNoEncontradoException, IOException {
+        List<Cliente> clientes = cargarClientes();
+        for (Cliente cliente : clientes) {
+            if (cliente.getIdFiscal().equals(idFiscal)) {
+                cliente.setEstadoActivo(false);
+                guardarClientes(clientes);
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean actualizarCliente (String idFiscal, Cliente clienteActualizado) throws ClienteNoEncontradoException, IOException {
@@ -58,6 +68,25 @@ public class ClienteDAO {
             }
         }
         return actualizacionRealizada;
+    }
+
+    public List<Cliente> filtrarClientesActivos() throws IOException {
+        return cargarClientes().stream()
+                .filter(c -> c.isEstadoActivo() == true)
+                .toList();
+    }
+
+    public boolean crearCliente(Cliente nuevoCliente) throws IOException {
+
+        List<Cliente> clientes = cargarClientes();
+
+        boolean clienteAgregado = clientes.add(nuevoCliente);
+
+        if (clienteAgregado) {
+            guardarClientes(clientes);
+        }
+        return clienteAgregado;
+
     }
 
 

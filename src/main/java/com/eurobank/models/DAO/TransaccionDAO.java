@@ -20,12 +20,10 @@ public class TransaccionDAO {
 
     public TransaccionDAO() {
         this.objectMapper = new ObjectMapper();
-        // Configuración para Jackson
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        // Configurar manejo de herencia
         objectMapper.registerSubtypes(
                 TransaccionDeposito.class,
                 TransaccionRetiro.class,
@@ -33,14 +31,13 @@ public class TransaccionDAO {
         );
     }
 
-    // Guardar todas las transacciones
+
     public void guardarTransacciones(List<Transaccion> transacciones) throws IOException {
-        validarTransacciones(transacciones); // Validaciones adicionales
         new File("data").mkdirs();
         objectMapper.writeValue(new File(ARCHIVO_JSON), transacciones);
     }
 
-    // Cargar todas las transacciones (reconstruye los tipos correctos)
+
     public List<Transaccion> cargarTransacciones() throws IOException {
         File archivo = new File(ARCHIVO_JSON);
         if (!archivo.exists()) {
@@ -49,12 +46,33 @@ public class TransaccionDAO {
         return new ArrayList<>(Arrays.asList(objectMapper.readValue(archivo, Transaccion[].class)));
     }
 
-    // Métodos de filtrado
+
+    private String generarNuevoId() throws IOException {
+        List<Transaccion> transacciones = cargarTransacciones();
+        int maxId = transacciones.stream()
+                .map(t -> t.getId().replace("T-", ""))
+                .mapToInt(Integer::parseInt)
+                .max()
+                .orElse(0);
+        return "T-" + (maxId + 1);
+    }
+
+
+    public Transaccion crearNuevaTransaccion(Transaccion nuevaTransaccion) throws IOException {
+        List<Transaccion> transacciones = cargarTransacciones();
+        nuevaTransaccion.setId(generarNuevoId());
+        transacciones.add(nuevaTransaccion);
+        guardarTransacciones(transacciones);
+        return nuevaTransaccion;
+    }
+
+
     public List<Transaccion> filtrarPorSucursal(String idSucursal) throws IOException {
         return cargarTransacciones().stream()
                 .filter(t -> t.getIdSucursal().equals(idSucursal))
                 .toList();
     }
+
 
     public List<Transaccion> filtrarPorTipo(String tipo) throws IOException {
         return cargarTransacciones().stream()
@@ -62,13 +80,5 @@ public class TransaccionDAO {
                 .toList();
     }
 
-    // Validaciones comunes
-    private void validarTransacciones(List<Transaccion> transacciones) {
-        for (Transaccion t : transacciones) {
-            if (t.getMonto() <= 0) {
-                throw new IllegalArgumentException("El monto debe ser positivo");
-            }
-            // Puedes agregar más validaciones aquí
-        }
-    }
+
 }

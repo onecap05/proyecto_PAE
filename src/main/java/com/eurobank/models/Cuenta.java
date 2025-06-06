@@ -8,11 +8,20 @@ public class Cuenta {
     private String idCliente;
     private boolean estadoActivo;
 
-    public Cuenta(java.lang.String numeroCuenta, TipoCuenta tipo, double saldo, String cliente) {
+    public Cuenta(String numeroCuenta, TipoCuenta tipo, double saldo, String cliente) {
         this.numeroCuenta = numeroCuenta;
         this.tipo = tipo;
         this.saldo = saldo;
         this.idCliente = cliente;
+        this.estadoActivo = true;
+    }
+
+    public Cuenta(String numeroCuenta, TipoCuenta tipo, double saldo, double limiteCredito, String idCliente) {
+        this.numeroCuenta = numeroCuenta;
+        this.tipo = tipo;
+        this.saldo = saldo;
+        this.limiteCredito = limiteCredito;
+        this.idCliente = idCliente;
         this.estadoActivo = true;
     }
 

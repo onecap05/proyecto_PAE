@@ -13,4 +13,19 @@
   "numeroCuentaOrigen" : "CUENTA-123",
   "numeroCuentaDestino" : "CUENTA-456",
   "tipo" : "TRANSFERENCIA"
+}, {
+  "id" : "T-3",
+  "monto" : 1000.0,
+  "fecha" : null,
+  "idSucursal" : "S-001",
+  "numeroCuenta" : "CUENTA-123",
+  "tipo" : "DEPOSITO"
+}, {
+  "id" : "T-4",
+  "monto" : 500.0,
+  "fecha" : null,
+  "idSucursal" : "S-001",
+  "numeroCuentaOrigen" : "CUENTA-123",
+  "numeroCuentaDestino" : "CUENTA-456",
+  "tipo" : "TRANSFERENCIA"
 } ]

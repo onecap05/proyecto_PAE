@@ -18,21 +18,18 @@ public class EmpleadoDAO {
 
     public EmpleadoDAO() {
         this.objectMapper = new ObjectMapper();
-        // Configuración para soportar LocalDate y formato legible
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     }
 
-    // Guardar empleados en JSON
     public void guardarEmpleados(List<Empleado> empleados) throws IOException {
-        validarEmpleados(empleados); // Validar campos por rol
-        new File("data").mkdirs(); // Crear directorio si no existe
+        validarEmpleados(empleados);
+        new File("data").mkdirs();
         objectMapper.writeValue(new File(ARCHIVO_JSON), empleados);
     }
 
-    // Cargar empleados desde JSON
     public List<Empleado> cargarEmpleados() throws IOException {
         File archivo = new File(ARCHIVO_JSON);
         if (!archivo.exists()) {
@@ -41,7 +38,6 @@ public class EmpleadoDAO {
         return new ArrayList<>(Arrays.asList(objectMapper.readValue(archivo, Empleado[].class)));
     }
 
-    // Validar campos según el rol
     private void validarEmpleados(List<Empleado> empleados) {
         for (Empleado emp : empleados) {
             switch (emp.getRol()) {
@@ -67,7 +63,6 @@ public class EmpleadoDAO {
         }
     }
 
-    // Buscar empleado por ID
     public Empleado buscarEmpleadoPorId(String id) throws IOException {
         return cargarEmpleados().stream()
                 .filter(e -> e.getId().equals(id))
@@ -75,10 +70,65 @@ public class EmpleadoDAO {
                 .orElse(null);
     }
 
-    // Filtrar empleados por rol
     public List<Empleado> filtrarEmpleadosPorRol(RolEmpleado rol) throws IOException {
         return cargarEmpleados().stream()
-                .filter(e -> e.getRol() == rol)
+                .filter(e -> e.getRol() == rol && e.isEstadoActivo())
                 .toList();
+    }
+
+    public boolean eliminarEmpleado(String id) throws IOException {
+        boolean empleadoEliminado = false;
+        List<Empleado> empleados = cargarEmpleados();
+        for (Empleado empleado : empleados) {
+            if (empleado.getId().equals(id)) {
+                empleado.setEstadoActivo(false);
+                guardarEmpleados(empleados);
+                empleadoEliminado = true;
+            }
+        }
+        return empleadoEliminado;
+    }
+
+    public boolean actualizarEmpleado(String id, Empleado empleadoActualizado) throws IOException {
+        boolean actualizacionRealizada = false;
+        List<Empleado> empleados = cargarEmpleados();
+        for (int i = 0; i < empleados.size(); i++) {
+            if (empleados.get(i).getId().equals(id)) {
+                empleados.set(i, empleadoActualizado);
+                guardarEmpleados(empleados);
+                actualizacionRealizada = true;
+            }
+        }
+        return actualizacionRealizada;
+    }
+
+    public List<Empleado> listarEmpleadosActivos() throws IOException {
+        return cargarEmpleados().stream()
+                .filter(empleado -> empleado.isEstadoActivo())
+                .toList();
+    }
+
+    public List<Empleado> listarEmpleadosPorSucursal(String idSucursal) throws IOException {
+        return cargarEmpleados().stream()
+                .filter(e -> e.getIdSucursal().equals(idSucursal) && e.isEstadoActivo())
+                .toList();
+    }
+
+    private String generarNuevoId() throws IOException {
+        List<Empleado> empleados = cargarEmpleados();
+        int maxId = empleados.stream()
+                .map(e -> e.getId().replace("E-", ""))
+                .mapToInt(Integer::parseInt)
+                .max()
+                .orElse(0);
+        return "E-" + (maxId + 1);
+    }
+
+    public Empleado crearNuevoEmpleado(Empleado nuevoEmpleado) throws IOException {
+        List<Empleado> empleados = cargarEmpleados();
+        nuevoEmpleado.setId(generarNuevoId());
+        empleados.add(nuevoEmpleado);
+        guardarEmpleados(empleados);
+        return nuevoEmpleado;
     }
 }

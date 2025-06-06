@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(java.lang.String[] args) {
+    public static void main(String[] args) {
 
         Transaccion deposito = TransaccionFactory.crearTransaccion(
                 "DEPOSITO", "T-001", 5000.0, LocalDateTime.now(), "S-001", "CUENTA-123"

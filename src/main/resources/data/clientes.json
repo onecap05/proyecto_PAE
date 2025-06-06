@@ -10,12 +10,32 @@
   "estadoActivo" : true
 }, {
   "idFiscal" : "RFC456",
-  "nombre" : "Carlos",
-  "apellidos" : "Martínez",
-  "nacionalidad" : "Española",
-  "fechaNacimiento" : "1990-08-15",
-  "direccion" : "Avenida Real 456",
-  "telefono" : "+34 912345678",
-  "email" : "carlos@example.com",
+  "nombre" : "Nuevo Nombre",
+  "apellidos" : "Nuevo Apellido",
+  "nacionalidad" : "mexico",
+  "fechaNacimiento" : "1985-05-10",
+  "direccion" : "direccion falsa nueva",
+  "telefono" : "2293551529",
+  "email" : "email",
+  "estadoActivo" : false
+}, {
+  "idFiscal" : "RFC789",
+  "nombre" : "Juan",
+  "apellidos" : "Perez",
+  "nacionalidad" : "mexico",
+  "fechaNacimiento" : "1990-03-15",
+  "direccion" : "direccion nueva",
+  "telefono" : "1234567890",
+  "email" : "juan.perez@email.com",
+  "estadoActivo" : true
+}, {
+  "idFiscal" : "RFC788",
+  "nombre" : "Angel",
+  "apellidos" : "Perez",
+  "nacionalidad" : "mexico",
+  "fechaNacimiento" : "1990-03-15",
+  "direccion" : "direccion nueva",
+  "telefono" : "1234567890",
+  "email" : "angel.perez@email.com",
   "estadoActivo" : true
 } ]

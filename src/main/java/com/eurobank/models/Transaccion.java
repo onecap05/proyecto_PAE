@@ -38,6 +38,10 @@ public class Transaccion {
         return "GENERICA";
     }
 
+    public void setTipo(String tipo) {
+
+    }
+
     // Getters y setters
     public String getId() {
         return id;

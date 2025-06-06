@@ -165,4 +165,16 @@ class CuentaDAOTest {
         boolean eliminado = cuentaDAO.eliminarCuenta("CUENTA-NO-EXISTE");
         assertFalse(eliminado);
     }
+
+    @Test
+    void guardarCuentasLanzaIOException() throws IOException {
+        CuentaDAO dao = new CuentaDAO() {
+            @Override
+            public void guardarCuentas(List<Cuenta> cuentas) throws IOException {
+                throw new IOException("Simulación de error de escritura");
+            }
+        };
+        List<Cuenta> lista = List.of(new Cuenta("CUENTA-1", TipoCuenta.AHORROS, 100.0, 0.0, "RFC_TEST"));
+        assertThrows(IOException.class, () -> dao.guardarCuentas(lista));
+    }
 }

@@ -181,4 +181,16 @@ class SucursalDAOTest {
         Sucursal consultada = sucursalDAO.buscarSucursalPorId(creada.getId());
         assertEquals("Luis Ramírez", consultada.getContacto());
     }
+
+    @Test
+    void guardarSucursalesLanzaIOException() {
+        SucursalDAO dao = new SucursalDAO() {
+            @Override
+            public void guardarSucursales(List<Sucursal> sucursales) throws IOException {
+                throw new IOException("Simulación de error de escritura");
+            }
+        };
+        List<Sucursal> lista = List.of(new Sucursal("S001", "Sucursal X", "CDMX", "5550000000", "x@mail.com", "G001"));
+        assertThrows(IOException.class, () -> dao.guardarSucursales(lista));
+    }
 }

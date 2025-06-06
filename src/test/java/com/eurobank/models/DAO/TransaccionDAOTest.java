@@ -210,4 +210,16 @@ class TransaccionDAOTest {
         assertEquals("DEST-123", t.getNumeroCuentaDestino());
         assertEquals(cuentaPrueba.getNumeroCuenta(), t.getNumeroCuentaOrigen());
     }
+
+    @Test
+    void guardarTransaccionesLanzaIOException() {
+        TransaccionDAO dao = new TransaccionDAO() {
+            @Override
+            public void guardarTransacciones(List<Transaccion> transacciones) throws IOException {
+                throw new IOException("Simulación de error de escritura");
+            }
+        };
+        List<Transaccion> lista = List.of(new TransaccionDeposito(null, 100.0, LocalDateTime.now(), "SUC-1", "CUENTA-1"));
+        assertThrows(IOException.class, () -> dao.guardarTransacciones(lista));
+    }
 }

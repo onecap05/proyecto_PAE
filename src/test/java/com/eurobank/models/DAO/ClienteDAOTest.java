@@ -65,7 +65,6 @@ class ClienteDAOTest {
 
     @Test
     void cargarClientesArchivoVacio() throws IOException {
-        // Elimina el archivo y prueba cargar
         File archivo = new File(ARCHIVO_REAL);
         if (archivo.exists()) archivo.delete();
         List<Cliente> clientes = clienteDAO.cargarClientes();

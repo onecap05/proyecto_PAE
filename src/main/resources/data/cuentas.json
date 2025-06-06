@@ -40,4 +40,11 @@
   "limiteCredito" : 0.0,
   "idCliente" : "CLIENTE-123",
   "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-7",
+  "tipo" : "AHORROS",
+  "saldo" : 1000.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "123",
+  "estadoActivo" : false
 } ]

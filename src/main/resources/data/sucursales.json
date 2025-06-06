@@ -43,4 +43,13 @@
   "idGerente" : "1",
   "contacto" : null,
   "estadoActivo" : false
+}, {
+  "id" : "S006",
+  "nombre" : "67",
+  "direccion" : "98765",
+  "telefono" : "134",
+  "correo" : "espana@gmail.com",
+  "idGerente" : "123456",
+  "contacto" : null,
+  "estadoActivo" : false
 } ]

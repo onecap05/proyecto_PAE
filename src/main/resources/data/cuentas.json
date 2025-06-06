@@ -54,4 +54,32 @@
   "limiteCredito" : 0.0,
   "idCliente" : "RFC456",
   "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-9",
+  "tipo" : "CORRIENTE",
+  "saldo" : 0.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "RFC123",
+  "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-10",
+  "tipo" : "CORRIENTE",
+  "saldo" : 0.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "ÑLPOUIYTURET",
+  "estadoActivo" : false
+}, {
+  "numeroCuenta" : "CUENTA-11",
+  "tipo" : "EMPRESARIAL",
+  "saldo" : 0.0,
+  "limiteCredito" : 8876.0,
+  "idCliente" : "RFC788",
+  "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-12",
+  "tipo" : "CORRIENTE",
+  "saldo" : 0.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "RFC123",
+  "estadoActivo" : true
 } ]

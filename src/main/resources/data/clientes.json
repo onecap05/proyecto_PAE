@@ -38,4 +38,14 @@
   "telefono" : "1234567890",
   "email" : "angel.perez@email.com",
   "estadoActivo" : true
+}, {
+  "idFiscal" : "iuytdtf",
+  "nombre" : "Irene ",
+  "apellidos" : "Paz",
+  "nacionalidad" : "Mexico",
+  "fechaNacimiento" : "2007-06-06",
+  "direccion" : "98765",
+  "telefono" : "2293551529",
+  "email" : "irene@gmail.com",
+  "estadoActivo" : false
 } ]

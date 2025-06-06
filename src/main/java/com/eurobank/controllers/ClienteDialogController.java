@@ -1,6 +1,7 @@
 package com.eurobank.controllers;
 
 import com.eurobank.models.Cliente;
+import com.eurobank.utils.Validaciones;
 import com.eurobank.utils.VentanasEmergentes;
 import com.eurobank.views.ClienteDialog;
 import javafx.stage.Stage;
@@ -39,6 +40,8 @@ public class ClienteDialogController {
     }
 
     private boolean validarCampos() {
+
+
         if (view.getIdFiscal().isEmpty()) {
             VentanasEmergentes.mostrarAlerta("Error", "ID Fiscal requerido",
                     "Debe ingresar un ID fiscal (DNI, NIE, CIF, etc.)");
@@ -51,7 +54,6 @@ public class ClienteDialogController {
             return false;
         }
 
-        // Validar edad mínima (18 años)
         Period edad = Period.between(view.getFechaNacimiento(), LocalDate.now());
         if (edad.getYears() < 18) {
             VentanasEmergentes.mostrarAlerta("Error", "Edad insuficiente",
@@ -64,6 +66,25 @@ public class ClienteDialogController {
                     "Debe ingresar un email válido");
             return false;
         }
+
+        if (!Validaciones.validarNumeroTelefono(view.getTelefono())) {
+            VentanasEmergentes.mostrarAlerta("Error", "Teléfono inválido",
+                    "Debe ingresar un número de teléfono válido");
+            return false;
+        }
+
+        if (!Validaciones.validarNombre(view.getNombre()) || !Validaciones.validarNombre(view.getApellidos())) {
+            VentanasEmergentes.mostrarAlerta("Error", "Nombre inválido",
+                    "Los nombres y apellidos solo pueden contener letras y espacios");
+            return false;
+        }
+
+        if (!Validaciones.validarNombre(view.getNacionalidad())) {
+            VentanasEmergentes.mostrarAlerta("Error", "Nacionalidad inválida",
+                    "La nacionalidad solo puede contener letras y espacios");
+            return false;
+        }
+
 
         return true;
     }

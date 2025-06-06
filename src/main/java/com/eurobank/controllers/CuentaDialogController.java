@@ -1,12 +1,15 @@
 package com.eurobank.controllers;
 
+import com.eurobank.models.Cliente;
 import com.eurobank.models.Cuenta;
+import com.eurobank.models.DAO.ClienteDAO;
 import com.eurobank.models.TipoCuenta;
 import com.eurobank.utils.VentanasEmergentes;
 import com.eurobank.views.CuentaDialog;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.function.Consumer;
 
 public class CuentaDialogController {
@@ -36,6 +39,8 @@ public class CuentaDialogController {
     }
 
     private boolean validarCampos() {
+
+
         if (view.getTipo() == null) {
             VentanasEmergentes.mostrarAlerta("Error", "Tipo requerido",
                     "Debe seleccionar un tipo de cuenta");
@@ -48,7 +53,12 @@ public class CuentaDialogController {
             return false;
         }
 
-        // Validación especial para cuentas empresariales
+        if (validarCliente(view.getIdCliente())) {
+            VentanasEmergentes.mostrarAlerta("Error", "Cliente no encontrado",
+                    "El cliente con ID " + view.getIdCliente() + " no existe");
+            return false;
+        }
+
         if (view.getTipo() == TipoCuenta.EMPRESARIAL && view.getLimiteCredito() <= 0) {
             VentanasEmergentes.mostrarAlerta("Error", "Límite requerido",
                     "Las cuentas empresariales deben tener un límite de crédito mayor a cero");
@@ -57,4 +67,24 @@ public class CuentaDialogController {
 
         return true;
     }
+
+    public boolean validarCliente (String idCliente) {
+
+        boolean esValido = false;
+
+        ClienteDAO clienteDAO = new ClienteDAO();
+        try {
+            Cliente cliente = clienteDAO.buscarClientePorIdFiscal(idCliente);
+            if (cliente == null) {
+                esValido = true;
+            }
+        } catch (IOException e) {
+            VentanasEmergentes.mostrarAlerta("Error", "Error al buscar cliente",
+                    "No se pudo verificar el cliente: " + e.getMessage());
+        }
+
+        return esValido;
+    }
+
+
 }

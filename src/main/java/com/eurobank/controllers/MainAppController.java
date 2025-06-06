@@ -46,8 +46,10 @@ public class MainAppController {
             new SucursalesController(sucursalesView, sucursalesStage);
 
         });
+
         view.getBtnEmpleados().setOnAction(e -> {
-            // Abrir módulo de empleados
+            EmpleadosController empleadosController = new EmpleadosController();
+            empleadosController.mostrarVentana();
         });
 
         view.getBtnClientes().setOnAction(e -> {

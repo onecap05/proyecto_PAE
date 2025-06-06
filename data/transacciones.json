@@ -1,0 +1,16 @@
+[ {
+  "id" : "T-001",
+  "monto" : 5000.0,
+  "fecha" : "2025-06-05T18:58:49.3309119",
+  "idSucursal" : "S-001",
+  "numeroCuenta" : "CUENTA-123",
+  "tipo" : "DEPOSITO"
+}, {
+  "id" : "T-002",
+  "monto" : 3000.0,
+  "fecha" : "2025-06-05T18:58:49.3323854",
+  "idSucursal" : "S-001",
+  "numeroCuentaOrigen" : "CUENTA-123",
+  "numeroCuentaDestino" : "CUENTA-456",
+  "tipo" : "TRANSFERENCIA"
+} ]

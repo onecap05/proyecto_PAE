@@ -1,0 +1,17 @@
+[ {
+  "id" : "S001",
+  "nombre" : "EuroBank Madrid",
+  "direccion" : "Calle Alcalá 100",
+  "telefono" : "+34 912345678",
+  "correo" : "madrid@eurobank.com",
+  "idGerente" : "G001",
+  "estadoActivo" : true
+}, {
+  "id" : "S002",
+  "nombre" : "EuroBank Barcelona",
+  "direccion" : "Avenida Diagonal 200",
+  "telefono" : "+34 933334445",
+  "correo" : "barcelona@eurobank.com",
+  "idGerente" : "G002",
+  "estadoActivo" : true
+} ]

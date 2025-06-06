@@ -1,9 +1,9 @@
 package com.eurobank.models;
 
 public enum TipoCuenta {
-    CORRIENTE("Corriente", 0.1), // Tasa de interés ejemplo
-    AHORROS("Ahorros", 0.05),
-    EMPRESARIAL("Empresarial", 0.15);
+    CORRIENTE("CORRIENTE", 0.1), // Tasa de interés ejemplo
+    AHORROS("AHORROS", 0.05),
+    EMPRESARIAL("EMPRESARIAL", 0.15);
 
     private final String nombre;
     private final double tasaInteres;

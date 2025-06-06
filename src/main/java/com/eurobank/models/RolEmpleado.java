@@ -1,10 +1,10 @@
 package com.eurobank.models;
 
 public enum RolEmpleado {
-    ADMINISTRADOR("Administrador", "Acceso completo al sistema"),
-    GERENTE("Gerente", "Acceso a gestión de sucursal"),
-    EJECUTIVO_CUENTA("Ejecutivo de Cuentas", "Gestión de clientes y cuentas"),
-    CAJERO("Cajero", "Realización de transacciones");
+    ADMINISTRADOR("ADMINISTRADOR", "Acceso completo al sistema"),
+    GERENTE("GERENTE", "Acceso a gestión de sucursal"),
+    EJECUTIVO_CUENTA("EJECUTIVO_CUENTA", "Gestión de clientes y cuentas"),
+    CAJERO("CAJERO", "Realización de transacciones");
 
     private final String nombre;
     private final String descripcion;

@@ -1,19 +1,23 @@
 package com.eurobank.models;
 
 public class Cuenta {
-    private String numeroCuenta; // Cambiado de 'numero' a 'numeroCuenta'
+    private java.lang.String numeroCuenta; // Cambiado de 'numero' a 'numeroCuenta'
     private TipoCuenta tipo; // Ahora usa el ENUM
     private double saldo;
     private double limiteCredito;
-    private Cliente cliente;
+    private String idCliente;
     private boolean estadoActivo;
 
-    public Cuenta(String numeroCuenta, TipoCuenta tipo, double saldo, Cliente cliente) {
+    public Cuenta(java.lang.String numeroCuenta, TipoCuenta tipo, double saldo, String cliente) {
         this.numeroCuenta = numeroCuenta;
         this.tipo = tipo;
         this.saldo = saldo;
-        this.cliente = cliente;
+        this.idCliente = cliente;
         this.estadoActivo = true;
+    }
+
+    public Cuenta() {
+
     }
 
     // Getters y setters
@@ -21,7 +25,7 @@ public class Cuenta {
         return numeroCuenta;
     }
 
-    public void setNumeroCuenta(String numeroCuenta) {
+    public void setNumeroCuenta(java.lang.String numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
     }
 
@@ -51,5 +55,36 @@ public class Cuenta {
 
     public void desactivar() {
         this.estadoActivo = false;
+    }
+
+    public double getLimiteCredito() {
+        return limiteCredito;
+    }
+
+    public void setLimiteCredito(Double limiteCredito) {
+        if (tipo != TipoCuenta.EMPRESARIAL && limiteCredito != 0.0) {
+            throw new UnsupportedOperationException("Solo las cuentas empresariales tienen límite de crédito.");
+        }
+        this.limiteCredito = limiteCredito;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    @Override
+    public String toString() {
+        return "Cuenta{" +
+                "numeroCuenta='" + numeroCuenta + '\'' +
+                ", tipo=" + tipo +
+                ", saldo=" + saldo +
+                ", limiteCredito=" + limiteCredito +
+                ", idCliente='" + idCliente + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                '}';
     }
 }

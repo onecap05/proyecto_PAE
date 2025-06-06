@@ -3,6 +3,7 @@ package com.eurobank.models;
 import java.time.LocalDate;
 
 public class Empleado {
+
     private String id;
     private String nombre;
     private String direccion; // Nuevo campo
@@ -13,6 +14,7 @@ public class Empleado {
     private String usuario;
     private String password;
     private boolean estadoActivo;
+
 
     public Empleado(String id, String nombre, String direccion, LocalDate fechaNacimiento,
                     String genero, double salario, RolEmpleado rol, String usuario, String password) {
@@ -28,12 +30,17 @@ public class Empleado {
         this.estadoActivo = true;
     }
 
+    public Empleado() {
+
+    }
+
     private String horarioTrabajo; // Para cajeros
     private Integer numeroVentanilla; // Para cajeros
     private Integer clientesAsignados; // Para ejecutivos
     private String especializacion; // Para ejecutivos (PYMES, corporativo)
     private String nivelAcceso; // Para gerentes (sucursal, regional, nacional)
     private Integer anosExperiencia; // Para gerentes
+    private String idSucursal; // Para gerentes, cajeros y ejecutivo cuenta
     // Getters y setters básicos
 
     public String getDireccion() {
@@ -126,6 +133,13 @@ public class Empleado {
         }
     }
 
+    public String getIdSucursal() { return idSucursal; }
+    public void setIdSucursal(String idSucursal) {
+        if(this.rol == RolEmpleado.GERENTE || this.rol == RolEmpleado.CAJERO || this.rol == RolEmpleado.EJECUTIVO_CUENTA) {
+            this.idSucursal = idSucursal;
+        }
+    }
+
     public boolean isEstadoActivo() {
         return estadoActivo;
     }
@@ -136,5 +150,21 @@ public class Empleado {
 
     public void desactivar() {
         this.estadoActivo = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", genero='" + genero + '\'' +
+                ", salario=" + salario +
+                ", rol=" + rol +
+                ", usuario='" + usuario + '\'' +
+                ", password='" + password + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                '}';
     }
 }

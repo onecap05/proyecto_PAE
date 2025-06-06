@@ -21,6 +21,10 @@ public class Sucursal {
         this.estadoActivo = true;
     }
 
+    public Sucursal() {
+
+    }
+
     // Getters y setters
     public String getCorreo() {
         return correo;
@@ -65,5 +69,18 @@ public class Sucursal {
 
     public void desactivar() {
         this.estadoActivo = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Sucursal{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", correo='" + correo + '\'' +
+                ", idGerente='" + idGerente + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                '}';
     }
 }

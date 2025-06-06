@@ -26,6 +26,10 @@ public class Cliente {
         this.estadoActivo = true; // Valor por defecto
     }
 
+    public Cliente () {
+
+    }
+
     // Getters y setters
     public String getIdFiscal() { return idFiscal; }
     public void setIdFiscal(String idFiscal) { this.idFiscal = idFiscal; }
@@ -51,10 +55,6 @@ public class Cliente {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    // Método para mostrar nombre completo
-    public String getNombreCompleto() {
-        return nombre + " " + apellidos;
-    }
 
     // En Cliente.java
     public boolean isEstadoActivo() {
@@ -67,5 +67,20 @@ public class Cliente {
 
     public void desactivar() {
         this.estadoActivo = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "idFiscal='" + idFiscal + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", nacionalidad='" + nacionalidad + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", direccion='" + direccion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                '}';
     }
 }

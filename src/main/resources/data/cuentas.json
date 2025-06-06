@@ -1,0 +1,15 @@
+[ {
+  "numeroCuenta" : "CUENTA-001",
+  "tipo" : "EMPRESARIAL",
+  "saldo" : 5000.0,
+  "limiteCredito" : 10000.0,
+  "idCliente" : "CLIENTE-123",
+  "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-002",
+  "tipo" : "AHORROS",
+  "saldo" : 3000.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "CLIENTE-123",
+  "estadoActivo" : true
+} ]

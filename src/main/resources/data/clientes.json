@@ -1,0 +1,21 @@
+[ {
+  "idFiscal" : "RFC123",
+  "nombre" : "Ana",
+  "apellidos" : "López",
+  "nacionalidad" : "Mexicana",
+  "fechaNacimiento" : "1985-05-10",
+  "direccion" : "Calle Falsa 123",
+  "telefono" : "+52 5512345678",
+  "email" : "ana@example.com",
+  "estadoActivo" : true
+}, {
+  "idFiscal" : "RFC456",
+  "nombre" : "Carlos",
+  "apellidos" : "Martínez",
+  "nacionalidad" : "Española",
+  "fechaNacimiento" : "1990-08-15",
+  "direccion" : "Avenida Real 456",
+  "telefono" : "+34 912345678",
+  "email" : "carlos@example.com",
+  "estadoActivo" : true
+} ]

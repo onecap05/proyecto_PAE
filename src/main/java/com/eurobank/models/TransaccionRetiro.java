@@ -11,6 +11,10 @@ public class TransaccionRetiro extends Transaccion {
         this.numeroCuenta = numeroCuenta;
     }
 
+    public TransaccionRetiro() {
+        super();
+    }
+
     @Override
     public String getTipo() {
         return "RETIRO";

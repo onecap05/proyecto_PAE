@@ -14,6 +14,10 @@ public class TransaccionTransferencia extends Transaccion {
         this.numeroCuentaDestino = numeroCuentaDestino;
     }
 
+    public TransaccionTransferencia() {
+        super();
+    }
+
     @Override
     public String getTipo() {
         return "TRANSFERENCIA";

@@ -1,6 +1,20 @@
 package com.eurobank.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.time.LocalDateTime;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "tipo"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TransaccionDeposito.class, name = "DEPOSITO"),
+        @JsonSubTypes.Type(value = TransaccionRetiro.class, name = "RETIRO"),
+        @JsonSubTypes.Type(value = TransaccionTransferencia.class, name = "TRANSFERENCIA")
+})
 
 public class Transaccion {
     private String id;
@@ -13,6 +27,10 @@ public class Transaccion {
         this.monto = monto;
         this.fecha = fecha;
         this.idSucursal = idSucursal;
+    }
+
+    public Transaccion() {
+
     }
 
     // Método que puede ser sobrescrito por clases hijas
@@ -51,5 +69,15 @@ public class Transaccion {
 
     public void setIdSucursal(String idSucursal) {
         this.idSucursal = idSucursal;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaccion{" +
+                "id='" + id + '\'' +
+                ", monto=" + monto +
+                ", fecha=" + fecha +
+                ", idSucursal='" + idSucursal + '\'' +
+                '}';
     }
 }

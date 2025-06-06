@@ -129,10 +129,12 @@ public class EmpleadoDialog {
             }
 
             if (!controller.validarEmpleadosPorRol(tempEmpleado, event)) {
+                event.consume();
                 return;
             }
 
             if(!controller.validarSucursal(tfSucursal)) {
+                event.consume();
                 return;
             }
 

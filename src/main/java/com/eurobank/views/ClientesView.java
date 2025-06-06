@@ -29,7 +29,6 @@ public class ClientesView {
     public void mostrar(Stage primaryStage) {
         primaryStage.setTitle("Gestión de Clientes - EuroBank");
 
-        // Configurar barra de búsqueda
         HBox barraBusqueda = new HBox(10,
                 new Label("Buscar:"),
                 txtBusqueda,
@@ -37,7 +36,6 @@ public class ClientesView {
         );
         barraBusqueda.setPadding(new Insets(10));
 
-        // Configurar botonera
         HBox botoneraSuperior = new HBox(10, btnAgregar, btnEditar, btnEliminar);
         HBox botoneraInferior = new HBox(10, btnConsultarSaldos);
         botoneraSuperior.setPadding(new Insets(10));
@@ -88,7 +86,6 @@ public class ClientesView {
         tablaClientes.setItems(clientesData);
     }
 
-    // Getters
     public TableView<Cliente> getTablaClientes() { return tablaClientes; }
     public TextField getTxtBusqueda() { return txtBusqueda; }
     public Button getBtnBuscar() { return btnBuscar; }

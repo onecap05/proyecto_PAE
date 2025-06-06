@@ -1,7 +1,7 @@
 [ {
   "numeroCuenta" : "CUENTA-001",
   "tipo" : "CORRIENTE",
-  "saldo" : 10000.0,
+  "saldo" : 10500.0,
   "limiteCredito" : 0.0,
   "idCliente" : "CLIENTE-123",
   "estadoActivo" : false
@@ -50,7 +50,7 @@
 }, {
   "numeroCuenta" : "CUENTA-8",
   "tipo" : "AHORROS",
-  "saldo" : 10000.0,
+  "saldo" : 9500.0,
   "limiteCredito" : 0.0,
   "idCliente" : "RFC456",
   "estadoActivo" : true

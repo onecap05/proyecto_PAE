@@ -32,7 +32,6 @@ public class CuentasView {
     public void mostrar(Stage primaryStage) {
         primaryStage.setTitle("Gestión de Cuentas Bancarias - EuroBank");
 
-        // Configurar barra de búsqueda
         HBox barraBusqueda = new HBox(10,
                 new Label("Buscar:"),
                 txtBusqueda,
@@ -42,7 +41,6 @@ public class CuentasView {
         );
         barraBusqueda.setPadding(new Insets(10));
 
-        // Configurar botonera
         HBox botonera = new HBox(10, btnAgregar, btnEditar, btnEliminar, btnTransferir);
         botonera.setPadding(new Insets(10));
 
@@ -88,7 +86,6 @@ public class CuentasView {
         cbTipoCuenta.getSelectionModel().selectFirst();
     }
 
-    // Getters
     public TableView<Cuenta> getTablaCuentas() { return tablaCuentas; }
     public TextField getTxtBusqueda() { return txtBusqueda; }
     public ComboBox<TipoCuenta> getCbTipoCuenta() { return cbTipoCuenta; }

@@ -32,7 +32,6 @@ public class ClienteDialog {
         grid.setVgap(10);
         grid.setPadding(new Insets(20));
 
-        // Configurar controles
         txtIdFiscal = new TextField();
         txtNombre = new TextField();
         txtApellidos = new TextField();
@@ -42,7 +41,6 @@ public class ClienteDialog {
         txtTelefono = new TextField();
         txtEmail = new TextField();
 
-        // Si estamos editando, cargar los datos
         if (cliente != null) {
             txtIdFiscal.setText(cliente.getIdFiscal());
             txtNombre.setText(cliente.getNombre());
@@ -56,7 +54,6 @@ public class ClienteDialog {
             dpFechaNacimiento.setValue(LocalDate.now().minusYears(18));
         }
 
-        // Añadir controles al grid
         grid.add(new Label("ID Fiscal:"), 0, 0);
         grid.add(txtIdFiscal, 1, 0);
         grid.add(new Label("Nombre:"), 0, 1);
@@ -89,7 +86,6 @@ public class ClienteDialog {
         stage.show();
     }
 
-    // Getters
     public String getIdFiscal() { return txtIdFiscal.getText(); }
     public String getNombre() { return txtNombre.getText(); }
     public String getApellidos() { return txtApellidos.getText(); }

@@ -25,7 +25,6 @@ public class Sucursal {
 
     }
 
-    // Getters y setters
     public String getCorreo() {
         return correo;
     }
@@ -67,8 +66,6 @@ public class Sucursal {
     }
 
 
-
-    // Getters
     public String getId() {
         return id;
     }

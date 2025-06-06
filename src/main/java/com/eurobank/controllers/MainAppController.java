@@ -5,6 +5,7 @@ import com.eurobank.models.RolEmpleado;
 import com.eurobank.views.CuentasView;
 import com.eurobank.views.LoginView;
 import com.eurobank.views.SucursalesView;
+import com.eurobank.views.TransaccionesConsultaView;
 import javafx.stage.Stage;
 
 public class MainAppController {
@@ -67,7 +68,10 @@ public class MainAppController {
         });
 
         view.getBtnTransacciones().setOnAction(e -> {
-            // Abrir módulo de transacciones
+            TransaccionesConsultaView transaccionesView = new TransaccionesConsultaView();
+            Stage transaccionesStage = new Stage();
+            transaccionesView.mostrarVentana();
+            new TransaccionesConsultaController(transaccionesView);
         });
 
         view.getBtnCerrarSesion().setOnAction(e -> {

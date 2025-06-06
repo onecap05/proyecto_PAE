@@ -11,4 +11,10 @@ public class Validaciones {
     public static boolean validarNumeroTelefono(String telefono) {
         return telefono != null && telefono.matches("^\\d{10}$");
     }
+
+    public static boolean validarMontoPositivo(String monto) {
+        return monto != null && monto.matches("^\\d+(\\.\\d+)?$") && Double.parseDouble(monto) > 0;
+    }
+
+
 }

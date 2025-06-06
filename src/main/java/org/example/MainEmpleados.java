@@ -12,11 +12,6 @@ public class MainEmpleados extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        TransaccionesView transaccionesView = new TransaccionesView();
 
-        primaryStage.setTitle("EuroBank - Gestión de Transacciones");
-        Scene scene = new Scene(transaccionesView, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 }

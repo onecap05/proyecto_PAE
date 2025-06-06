@@ -80,5 +80,11 @@ public class TransaccionDAO {
                 .toList();
     }
 
+    public List<Transaccion> filtrarTransaccionPorFecha(String fecha) throws IOException {
+        return cargarTransacciones().stream()
+                .filter(t -> t.getFecha().toString().equals(fecha))
+                .toList();
+    }
+
 
 }

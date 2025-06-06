@@ -21,6 +21,7 @@ public class CuentasView {
     private final Button btnAgregar = new Button("Agregar");
     private final Button btnEditar = new Button("Editar");
     private final Button btnEliminar = new Button("Eliminar");
+    private final Button btnTransferir = new Button("Transferir");
     private final ObservableList<Cuenta> cuentasData = FXCollections.observableArrayList();
 
     public CuentasView() {
@@ -42,7 +43,7 @@ public class CuentasView {
         barraBusqueda.setPadding(new Insets(10));
 
         // Configurar botonera
-        HBox botonera = new HBox(10, btnAgregar, btnEditar, btnEliminar);
+        HBox botonera = new HBox(10, btnAgregar, btnEditar, btnEliminar, btnTransferir);
         botonera.setPadding(new Insets(10));
 
         VBox vbox = new VBox(10, barraBusqueda, tablaCuentas, botonera);
@@ -59,29 +60,25 @@ public class CuentasView {
     private void configurarTabla() {
         TableColumn<Cuenta, String> colNumero = new TableColumn<>("Número");
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numeroCuenta"));
-        colNumero.setMinWidth(120);
+        colNumero.setMinWidth(150);
 
         TableColumn<Cuenta, TipoCuenta> colTipo = new TableColumn<>("Tipo");
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-        colTipo.setMinWidth(100);
+        colTipo.setMinWidth(150);
 
         TableColumn<Cuenta, Double> colSaldo = new TableColumn<>("Saldo");
         colSaldo.setCellValueFactory(new PropertyValueFactory<>("saldo"));
-        colSaldo.setMinWidth(100);
+        colSaldo.setMinWidth(150);
 
         TableColumn<Cuenta, Double> colLimite = new TableColumn<>("Límite Crédito");
         colLimite.setCellValueFactory(new PropertyValueFactory<>("limiteCredito"));
-        colLimite.setMinWidth(120);
+        colLimite.setMinWidth(150);
 
         TableColumn<Cuenta, String> colCliente = new TableColumn<>("ID Cliente");
         colCliente.setCellValueFactory(new PropertyValueFactory<>("idCliente"));
-        colCliente.setMinWidth(100);
+        colCliente.setMinWidth(150);
 
-        TableColumn<Cuenta, Boolean> colEstado = new TableColumn<>("Estado");
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoActivo"));
-        colEstado.setMinWidth(80);
-
-        tablaCuentas.getColumns().addAll(colNumero, colTipo, colSaldo, colLimite, colCliente, colEstado);
+        tablaCuentas.getColumns().addAll(colNumero, colTipo, colSaldo, colLimite, colCliente);
         tablaCuentas.setItems(cuentasData);
     }
 
@@ -99,5 +96,6 @@ public class CuentasView {
     public Button getBtnAgregar() { return btnAgregar; }
     public Button getBtnEditar() { return btnEditar; }
     public Button getBtnEliminar() { return btnEliminar; }
+    public Button getBtnTransferir() { return btnTransferir; }
     public ObservableList<Cuenta> getCuentasData() { return cuentasData; }
 }

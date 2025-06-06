@@ -17,6 +17,7 @@ public class LoginController implements EventHandler<ActionEvent> {
     private TextField txtUsuario;
     private PasswordField txtPassword;
     VentanasEmergentes ventanasEmergentes = new VentanasEmergentes();
+    public static String idSucursal = null;
 
 
     public LoginController(Stage stage, TextField txtUsuario, PasswordField txtPassword) {
@@ -41,6 +42,8 @@ public class LoginController implements EventHandler<ActionEvent> {
 
            Empleado empleadoEnconstrado = empleadoDAO.buscarEmpleadoPorUsuario(usuario);
               if (empleadoEnconstrado != null && empleadoEnconstrado.getPassword().equals(password)) {
+
+                idSucursal = empleadoEnconstrado.getIdSucursal();
 
                 validarTipoUsuario(empleadoEnconstrado);
                 abrirMenuPrincipal(empleadoEnconstrado);

@@ -18,6 +18,7 @@ public class CuentasController {
     private CuentasView view;
     private CuentaDAO cuentaDAO;
     private Stage primaryStage;
+    public static String idCuentaSeleccionada = null;
 
     public CuentasController(CuentasView view, Stage primaryStage) {
         this.view = view;
@@ -37,6 +38,7 @@ public class CuentasController {
         view.getBtnEditar().setOnAction(e -> mostrarFormularioEditar());
         view.getBtnEliminar().setOnAction(e -> eliminarCuenta());
         view.getBtnBuscar().setOnAction(e -> buscarCuentas());
+        view.getBtnTransferir().setOnAction(e -> abrirVentanaTransferir());
     }
 
     private void cargarDatos() {
@@ -145,5 +147,23 @@ public class CuentasController {
                         "No se pudo eliminar la cuenta: " + e.getMessage());
             }
         }
+    }
+
+    public void abrirVentanaTransferir () {
+
+        Cuenta cuentaSeleccionada = view.getTablaCuentas().getSelectionModel().getSelectedItem();
+
+        if (cuentaSeleccionada == null) {
+            VentanasEmergentes.mostrarAlerta("Advertencia", "Selección requerida",
+                    "Por favor seleccione una cuenta para transferir");
+            return;
+        }
+        idCuentaSeleccionada = cuentaSeleccionada.getNumeroCuenta();
+
+        System.out.println("ID de cuenta seleccionada: " + idCuentaSeleccionada);
+
+        TransaccionesViewController ventanaTransacciones = new TransaccionesViewController(primaryStage);
+        ventanaTransacciones.mostrarTransaccionesView();
+
     }
 }

@@ -77,12 +77,9 @@ public class ClientesView {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colEmail.setMinWidth(150);
 
-        TableColumn<Cliente, Boolean> colEstado = new TableColumn<>("Estado");
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoActivo"));
-        colEstado.setMinWidth(80);
 
         tablaClientes.getColumns().addAll(colIdFiscal, colNombre, colApellidos,
-                colNacionalidad, colTelefono, colEmail, colEstado);
+                colNacionalidad, colTelefono, colEmail);
         tablaClientes.setItems(clientesData);
     }
 

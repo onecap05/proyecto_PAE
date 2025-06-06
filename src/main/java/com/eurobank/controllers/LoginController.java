@@ -44,8 +44,6 @@ public class LoginController implements EventHandler<ActionEvent> {
               if (empleadoEnconstrado != null && empleadoEnconstrado.getPassword().equals(password)) {
 
                 idSucursal = empleadoEnconstrado.getIdSucursal();
-
-                validarTipoUsuario(empleadoEnconstrado);
                 abrirMenuPrincipal(empleadoEnconstrado);
 
               } else {

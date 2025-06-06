@@ -59,11 +59,9 @@ public class SucursalesView {
         TableColumn<Sucursal, String> colGerente = new TableColumn<>("ID Gerente");
         colGerente.setCellValueFactory(new PropertyValueFactory<>("idGerente"));
 
-        TableColumn<Sucursal, Boolean> colEstado = new TableColumn<>("Estado");
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoActivo"));
 
         tablaSucursales.getColumns().addAll(colId, colNombre, colDireccion,
-                colTelefono, colCorreo, colGerente, colEstado);
+                colTelefono, colCorreo, colGerente);
 
         tablaSucursales.setItems(sucursalesData);
     }

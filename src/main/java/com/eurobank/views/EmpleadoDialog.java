@@ -7,13 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
-
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class EmpleadoDialog {
 
     public static Empleado mostrarDialogoAgregar() {
+
         EmpleadoDialogController controller = new EmpleadoDialogController();
 
         Dialog<Empleado> dialog = new Dialog<>();
@@ -89,6 +89,9 @@ public class EmpleadoDialog {
                     tfNivelAcceso.setVisible(true);
                     tfAnosExperiencia.setVisible(true);
                 }
+                case ADMINISTRADOR -> {
+
+                }
             }
         });
 
@@ -120,11 +123,19 @@ public class EmpleadoDialog {
                     tempEmpleado.setNivelAcceso(tfNivelAcceso.getText());
                     tempEmpleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
                 }
+                case ADMINISTRADOR -> {
+
+                }
             }
 
             if (!controller.validarEmpleadosPorRol(tempEmpleado, event)) {
                 return;
             }
+
+            if(!controller.validarSucursal(tfSucursal)) {
+                return;
+            }
+
         });
 
         dialog.setResultConverter(dialogButton -> {
@@ -152,6 +163,9 @@ public class EmpleadoDialog {
                     case GERENTE -> {
                         empleado.setNivelAcceso(tfNivelAcceso.getText());
                         empleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                    }
+                    case ADMINISTRADOR -> {
+
                     }
                 }
 
@@ -242,6 +256,9 @@ public class EmpleadoDialog {
                     tfNivelAcceso.setVisible(true);
                     tfAnosExperiencia.setVisible(true);
                 }
+                case ADMINISTRADOR -> {
+
+                }
             }
         });
 
@@ -275,11 +292,19 @@ public class EmpleadoDialog {
                     tempEmpleado.setNivelAcceso(tfNivelAcceso.getText());
                     tempEmpleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
                 }
+                case ADMINISTRADOR -> {
+
+                }
             }
 
             if (!controller.validarEmpleadosPorRol(tempEmpleado, event)) {
                 return;
             }
+
+            if (!controller.validarSucursal(tfSucursal)) {
+                return;
+            }
+
         });
 
         dialog.setResultConverter(dialogButton -> {
@@ -310,6 +335,9 @@ public class EmpleadoDialog {
                     case GERENTE -> {
                         empleado.setNivelAcceso(tfNivelAcceso.getText());
                         empleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                    }
+                    case ADMINISTRADOR -> {
+
                     }
                 }
 

@@ -1,9 +1,13 @@
 package com.eurobank.controllers;
 
+import com.eurobank.models.DAO.SucursalDAO;
 import com.eurobank.models.Empleado;
 import com.eurobank.models.RolEmpleado;
+import com.eurobank.models.Sucursal;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+
+import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -75,6 +79,27 @@ public class EmpleadoDialogController {
         }
 
         return true;
+    }
+
+    public boolean validarSucursal(TextField tfSucursal) {
+
+        SucursalDAO sucursalDAO = new SucursalDAO();
+
+        try {
+
+            Sucursal sucursalValida = sucursalDAO.buscarSucursalPorId(tfSucursal.getText());
+
+            if (sucursalValida == null) {
+                mostrarAlerta("La sucursal no existe");
+                return false;
+            }
+
+            return true;
+
+        } catch (IOException e) {
+            mostrarAlerta("Error al validar sucursal: " + e.getMessage());
+            return false;
+        }
     }
 
     private void mostrarAlerta(String mensaje) {

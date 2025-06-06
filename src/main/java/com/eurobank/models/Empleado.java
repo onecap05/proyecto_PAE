@@ -176,7 +176,6 @@ public class Empleado {
         return anosExperiencia == null || anosExperiencia < 0;
     }
 
-
     public List<String> validarCamposBasicos() {
         List<String> errores = new ArrayList<>();
 
@@ -237,6 +236,9 @@ public class Empleado {
                 if(esAnosExperienica(anosExperiencia)) {
                     errores.add("Los años de experiencia tienen que ser un numero entero positivo");
                 }
+                break;
+
+            case ADMINISTRADOR:
                 break;
 
             default:

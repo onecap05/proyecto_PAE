@@ -82,4 +82,18 @@
   "limiteCredito" : 0.0,
   "idCliente" : "RFC123",
   "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-13",
+  "tipo" : "CORRIENTE",
+  "saldo" : 0.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "RFC123",
+  "estadoActivo" : true
+}, {
+  "numeroCuenta" : "CUENTA-14",
+  "tipo" : "CORRIENTE",
+  "saldo" : 0.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "RFC123",
+  "estadoActivo" : false
 } ]

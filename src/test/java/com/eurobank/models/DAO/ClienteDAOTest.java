@@ -20,14 +20,11 @@ class ClienteDAOTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        // Respaldar archivo real si existe
         File archivo = new File(ARCHIVO_REAL);
         if (archivo.exists()) {
             Files.copy(archivo.toPath(), Paths.get(ARCHIVO_RESPALDO), StandardCopyOption.REPLACE_EXISTING);
         }
         clienteDAO = new ClienteDAO();
-
-        // Crea clientes de prueba
         cliente1 = new Cliente("RFC1", "Juan", "Pérez", "Mexicana", LocalDate.of(1990, 1, 1), "Calle 1", "5551112222", "juan@mail.com");
         cliente2 = new Cliente("RFC2", "Ana", "López", "Mexicana", LocalDate.of(1985, 5, 5), "Calle 2", "5553334444", "ana@mail.com");
         clienteDAO.guardarClientes(List.of(cliente1, cliente2));
@@ -35,13 +32,11 @@ class ClienteDAOTest {
 
     @AfterEach
     void tearDown() throws IOException {
-        // Restaurar archivo real desde el respaldo
         File respaldo = new File(ARCHIVO_RESPALDO);
         if (respaldo.exists()) {
             Files.copy(respaldo.toPath(), Paths.get(ARCHIVO_REAL), StandardCopyOption.REPLACE_EXISTING);
             respaldo.delete();
         } else {
-            // Si no había respaldo, elimina el archivo de prueba
             File archivo = new File(ARCHIVO_REAL);
             if (archivo.exists()) {
                 archivo.delete();
@@ -65,7 +60,6 @@ class ClienteDAOTest {
 
     @Test
     void cargarClientesArchivoVacio() throws IOException {
-        // Elimina el archivo y prueba cargar
         File archivo = new File(ARCHIVO_REAL);
         if (archivo.exists()) archivo.delete();
         List<Cliente> clientes = clienteDAO.cargarClientes();

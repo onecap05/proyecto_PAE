@@ -48,4 +48,14 @@
   "telefono" : "2293551529",
   "email" : "irene@gmail.com",
   "estadoActivo" : false
+}, {
+  "idFiscal" : "RFC799",
+  "nombre" : "Jose maria ",
+  "apellidos" : "Contreras mota",
+  "nacionalidad" : "mexicana ",
+  "fechaNacimiento" : "2004-06-16",
+  "direccion" : "xalapa",
+  "telefono" : "2281874642",
+  "email" : "josemariacm005@gmail.com",
+  "estadoActivo" : false
 } ]

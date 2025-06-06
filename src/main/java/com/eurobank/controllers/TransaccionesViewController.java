@@ -3,6 +3,8 @@ package com.eurobank.controllers;
 import com.eurobank.models.*;
 import com.eurobank.models.DAO.CuentaDAO;
 import com.eurobank.models.DAO.TransaccionDAO;
+import com.eurobank.models.excepciones.SaldoInsuficienteException;
+import com.eurobank.models.excepciones.TransaccionFallidaException;
 import com.eurobank.utils.Validaciones;
 import com.eurobank.utils.VentanasEmergentes;
 import com.eurobank.views.CuentasView;
@@ -47,7 +49,7 @@ public class TransaccionesViewController {
     }
 
     public void inicializar() {
-        // Verificar si es cuenta empresarial
+
         try {
             Cuenta cuenta = new CuentaDAO().buscarCuentaPorNumero(idCuentaSeleccionada);
             esEmpresarial = cuenta != null && cuenta.getTipo() == TipoCuenta.EMPRESARIAL;
@@ -76,14 +78,14 @@ public class TransaccionesViewController {
 
 
     public void verificarTipoTransaccion() {
-        // Add a listener to the ComboBox to enable/disable the "Cuenta destino" field dynamically
+
         view.getTipoCombo().setOnAction(event -> {
             String tipoSeleccionado = view.getTipoCombo().getValue();
 
             if ("Transferencia".equals(tipoSeleccionado)) {
-                view.getCuentaDestinoField().setDisable(false); // Enable the field
+                view.getCuentaDestinoField().setDisable(false);
             } else {
-                view.getCuentaDestinoField().setDisable(true); // Disable the field
+                view.getCuentaDestinoField().setDisable(true);
             }
         });
 
@@ -159,29 +161,33 @@ public class TransaccionesViewController {
 
         monto = Double.parseDouble(view.getMontoField().getText());
 
+
+        try {
+
         if (usarCredito) {
             if (monto > limiteCredito) {
-                ventanasEmergentes.mostrarAlerta("Error", "Límite de crédito excedido",
-                        "No puede transferir más de lo que tiene disponible en su línea de crédito.");
-                return;
+                throw new SaldoInsuficienteException("No puede transferir más de su límite de crédito.");
             }
         } else {
             if (monto > saldoCuenta) {
-                ventanasEmergentes.mostrarAlerta("Error", "Saldo insuficiente",
-                        "No puede transferir más de lo que tiene en su cuenta.");
-                return;
+                throw new SaldoInsuficienteException("No puede transferir más de lo que tiene en su cuenta.");
             }
         }
 
-        try {
-            if (usarCredito) {
+
+        if (usarCredito) {
                 actualizarLimiteCredito(idCuentaSeleccionada, -monto);
-            } else {
+        } else {
                 actualizarSaldo(saldoCuenta - monto);
-            }
-            actualizarCuentaDestinoField(view.getCuentaDestinoField().getText(), monto);
-            registrarTransferencia();
-        } catch (Exception e) {
+        }
+        actualizarCuentaDestinoField(view.getCuentaDestinoField().getText(), monto);
+        registrarTransferencia();
+
+        } catch (SaldoInsuficienteException e) {
+            ventanasEmergentes.mostrarAlerta("Error", "Saldo insuficiente",
+                    "No puede transferir más de lo que tiene en su cuenta o su límite de crédito: " + e.getMessage());
+            return;
+        }  catch (Exception e) {
             ventanasEmergentes.mostrarAlerta("Error", "Error en transacción",
                     "Ocurrió un error al procesar la transacción: " + e.getMessage());
         }
@@ -296,12 +302,21 @@ public class TransaccionesViewController {
 
         monto = Double.parseDouble(view.getMontoField().getText());
 
-        if (monto > saldoCuenta) {
+        try{
+
+            if (monto > saldoCuenta) {
+                throw new SaldoInsuficienteException("No puede retirar más de lo que tiene en su cuenta.");
+            }
+
+        } catch (SaldoInsuficienteException e) {
             ventanasEmergentes.mostrarAlerta("Error", "Saldo insuficiente",
-                    "No puede retirar más de lo que tiene en su cuenta.");
+                    "No puede retirar más de lo que tiene en su cuenta: " + e.getMessage());
+            return;
+        } catch (Exception e) {
+            ventanasEmergentes.mostrarAlerta("Error", "Error en transacción",
+                    "Ocurrió un error al procesar el retiro: " + e.getMessage());
             return;
         }
-
 
 
         saldoCuenta -= monto;
@@ -389,6 +404,10 @@ public class TransaccionesViewController {
         } catch (IOException e) {
             ventanasEmergentes.mostrarAlerta("Error", "Error al realizar retiro",
                     "No se pudo realizar el retiro: " + e.getMessage());
+
+        } catch (TransaccionFallidaException e) {
+            ventanasEmergentes.mostrarAlerta("Error", "Error en transacción",
+                    "Ocurrió un error al procesar el retiro: " + e.getMessage());
         }
     }
 
@@ -421,6 +440,9 @@ public class TransaccionesViewController {
         } catch (IOException e) {
             ventanasEmergentes.mostrarAlerta("Error", "Error al realizar depósito",
                     "No se pudo realizar el depósito: " + e.getMessage());
+        } catch (TransaccionFallidaException e) {
+            ventanasEmergentes.mostrarAlerta("Error", "Error en transacción",
+                    "Ocurrió un error al procesar el depósito: " + e.getMessage());
         }
     }
 
@@ -451,6 +473,9 @@ public class TransaccionesViewController {
         } catch (IOException e) {
             ventanasEmergentes.mostrarAlerta("Error", "Error al realizar transferencia",
                     "No se pudo realizar la transferencia: " + e.getMessage());
+        } catch (TransaccionFallidaException e) {
+            ventanasEmergentes.mostrarAlerta("Error", "Error en transacción",
+                    "Ocurrió un error al procesar la transferencia: " + e.getMessage());
         }
     }
 

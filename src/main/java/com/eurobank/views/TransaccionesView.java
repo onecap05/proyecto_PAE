@@ -30,38 +30,38 @@ public class TransaccionesView {
     }
 
     private void crearVista() {
-        // Contenedor principal
+
         VBox mainContainer = new VBox(20);
         mainContainer.setAlignment(Pos.TOP_CENTER);
         mainContainer.setPadding(new Insets(30, 40, 30, 40));
         mainContainer.setStyle("-fx-background-color: white; -fx-background-radius: 12;");
         mainContainer.setEffect(new javafx.scene.effect.DropShadow(10, Color.gray(0, 0.2)));
 
-        // Título
+
         Label title = new Label("Realizar Transacción");
         title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 24));
         title.setTextFill(Color.web("#2c3e50"));
 
-        // Icono
+
         ImageView icon = new ImageView(new Image("https://static.vecteezy.com/system/resources/previews/000/495/375/non_2x/vector-transaction-line-black-icon.jpg"));
         icon.setFitWidth(60);
         icon.setFitHeight(60);
 
-        // Campos del formulario
+
         GridPane formGrid = new GridPane();
         formGrid.setVgap(15);
         formGrid.setHgap(10);
         formGrid.setAlignment(Pos.CENTER);
 
-        // Cuenta origen (solo lectura)
+
         Label lbCuentaOrigen = createLabel("Cuenta origen");
         lbCuentaOrigenObtenida = createValueLabel(" ");
 
-        // Sucursal (solo lectura)
+
         Label lbSucursal = createLabel("Sucursal");
         lbSucursalObtenida = createValueLabel(" ");
 
-        // Tipo de transacción
+
         Label typeLabel = createLabel("Tipo de transacción");
         tipoCombo = new ComboBox<>();
         tipoCombo.getItems().addAll("Transferencia", "Depósito", "Retiro");
@@ -69,24 +69,24 @@ public class TransaccionesView {
         tipoCombo.setMinWidth(300);
         tipoCombo.setStyle("-fx-font-size: 14px;");
 
-        // Cuenta destino
+
         Label accountLabel = createLabel("Cuenta destino");
         cuentaDestinoField = new TextField();
         cuentaDestinoField.setPromptText("Ingrese número de cuenta");
         cuentaDestinoField.setMinWidth(300);
 
-        // Monto
+
         Label amountLabel = createLabel("Monto");
         montoField = new TextField();
         montoField.setPromptText("0.00");
         montoField.setMinWidth(300);
         montoField.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-        // Fecha (automática)
+
         Label dateLabel = createLabel("Fecha");
         Label dateValue = createValueLabel(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-        // Agregar elementos al grid
+
         formGrid.addRow(0, lbCuentaOrigen, lbCuentaOrigenObtenida);
         formGrid.addRow(1, lbSucursal, lbSucursalObtenida);
         formGrid.addRow(2, typeLabel, tipoCombo);
@@ -94,10 +94,10 @@ public class TransaccionesView {
         formGrid.addRow(4, amountLabel, montoField);
         formGrid.addRow(5, dateLabel, dateValue);
 
-        // Contenedor para selección de fondo (saldo/crédito)
+
         fondoSelectionBox = new HBox(15);
         fondoSelectionBox.setAlignment(Pos.CENTER);
-        fondoSelectionBox.setVisible(false); // Inicialmente oculto
+        fondoSelectionBox.setVisible(false);
 
         ToggleGroup fondoGroup = new ToggleGroup();
 
@@ -112,7 +112,7 @@ public class TransaccionesView {
 
         fondoSelectionBox.getChildren().addAll(rbSaldo, rbCredito);
 
-        // Botones
+
         HBox buttonBox = new HBox(15);
         buttonBox.setAlignment(Pos.CENTER);
 
@@ -126,11 +126,11 @@ public class TransaccionesView {
 
         buttonBox.getChildren().addAll(cancelarButton, aceptarButton);
 
-        // Agregar todo al contenedor principal
+
         VBox formContainer = new VBox(15, formGrid, fondoSelectionBox);
         mainContainer.getChildren().addAll(icon, title, formContainer, buttonBox);
 
-        // Configurar la vista
+
         view = mainContainer;
     }
 
@@ -152,7 +152,7 @@ public class TransaccionesView {
         return label;
     }
 
-    // Métodos para acceder a los componentes
+
     public VBox getView() {
         return view;
     }

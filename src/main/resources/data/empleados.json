@@ -14,7 +14,7 @@
   "clientesAsignados" : null,
   "especializacion" : null,
   "nivelAcceso" : null,
-  "anosExperiencia" : null,
+  "anosExperiencia" : 3,
   "idSucursal" : "S-001"
 }, {
   "id" : "E-002",
@@ -50,7 +50,7 @@
   "clientesAsignados" : null,
   "especializacion" : null,
   "nivelAcceso" : null,
-  "anosExperiencia" : null,
+  "anosExperiencia" : 2,
   "idSucursal" : "SUC-001"
 }, {
   "id" : "E-004",
@@ -75,7 +75,7 @@
   "nombre" : "Lucía Torres",
   "direccion" : "Boulevard Norte 321",
   "fechaNacimiento" : "1995-04-22",
-  "genero" : "Femenino",
+  "genero" : "FEMENINO",
   "salario" : 32000.0,
   "rol" : "EJECUTIVO_CUENTA",
   "usuario" : "ltorres",
@@ -86,6 +86,42 @@
   "clientesAsignados" : 30,
   "especializacion" : "PYMES",
   "nivelAcceso" : null,
-  "anosExperiencia" : null,
+  "anosExperiencia" : 4,
   "idSucursal" : "SUC-001"
+}, {
+  "id" : "E-6",
+  "nombre" : "claudio trujillo",
+  "direccion" : "av xalapa",
+  "fechaNacimiento" : "2005-06-15",
+  "genero" : "Masculino",
+  "salario" : 50000.0,
+  "rol" : "GERENTE",
+  "usuario" : "claudiotz",
+  "password" : "l9523L990@",
+  "estadoActivo" : true,
+  "horarioTrabajo" : null,
+  "numeroVentanilla" : null,
+  "clientesAsignados" : null,
+  "especializacion" : null,
+  "nivelAcceso" : "regional",
+  "anosExperiencia" : 5,
+  "idSucursal" : "S-001"
+}, {
+  "id" : "E-7",
+  "nombre" : "s s",
+  "direccion" : "s s",
+  "fechaNacimiento" : "2004-06-09",
+  "genero" : "s s",
+  "salario" : 500.0,
+  "rol" : "CAJERO",
+  "usuario" : "s",
+  "password" : "s",
+  "estadoActivo" : true,
+  "horarioTrabajo" : "sdfasdf",
+  "numeroVentanilla" : -1,
+  "clientesAsignados" : null,
+  "especializacion" : null,
+  "nivelAcceso" : null,
+  "anosExperiencia" : null,
+  "idSucursal" : "s"
 } ]

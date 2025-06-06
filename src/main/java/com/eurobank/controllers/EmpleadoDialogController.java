@@ -64,6 +64,19 @@ public class EmpleadoDialogController {
         return true;
     }
 
+
+    public boolean validarEmpleadosPorRol(Empleado empleado, ActionEvent event) {
+        List<String> errores = empleado.validarPorRol();
+
+        if (!errores.isEmpty()) {
+            mostrarAlerta("Corrija los siguientes errores:\n" + String.join("\n", errores));
+            event.consume();
+            return false;
+        }
+
+        return true;
+    }
+
     private void mostrarAlerta(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);

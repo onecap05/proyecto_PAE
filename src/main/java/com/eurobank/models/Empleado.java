@@ -107,6 +107,10 @@ public class Empleado {
         }
     }
 
+    public void setAnosExperiencia(Integer anosExperiencia) {
+        this.anosExperiencia = anosExperiencia;
+    }
+
     public void setEstadoActivo(boolean estadoActivo) {
         this.estadoActivo = estadoActivo;
     }
@@ -153,8 +157,12 @@ public class Empleado {
         return nivelAcceso == null || !NIVELES_ACCESO_VALIDOS.contains(nivelAcceso);
     }
 
-    public boolean esInvalidaExperiencia(Integer anosExperiencia) {
-        return anosExperiencia == null || anosExperiencia < 0;
+    public boolean esGeneroValido(String genero) {
+        if (genero == null || genero.isBlank()) {
+            return false;
+        }
+        String generoNormalizado = genero.trim().toLowerCase();
+        return generoNormalizado.equals("masculino") || generoNormalizado.equals("femenino");
     }
 
     public boolean esInvalidoNumeroVentanilla(Integer numeroVentanilla) {
@@ -164,6 +172,10 @@ public class Empleado {
     public boolean esInvalidoClientesAsignados(Integer clientesAsignados) {
         return clientesAsignados == null || clientesAsignados < 0;
     }
+    public boolean esAnosExperienica(Integer anosExperiencia) {
+        return anosExperiencia == null || anosExperiencia < 0;
+    }
+
 
     public List<String> validarCamposBasicos() {
         List<String> errores = new ArrayList<>();
@@ -176,6 +188,10 @@ public class Empleado {
             errores.add("La dirección debe contener al menos dos palabras.");
         }
 
+        if (!esGeneroValido(this.genero)) {
+            errores.add("El genero debe ser masculino o femenino.");
+        }
+
         errores.addAll(validarFechaNacimiento(this.fechaNacimiento));
 
         if (esInvalidoSalario(this.salario)) {
@@ -184,6 +200,56 @@ public class Empleado {
 
         return errores;
     }
+
+    public List<String> validarPorRol() {
+
+        List<String> errores = new ArrayList<>();
+        errores.addAll(validarCamposBasicos());
+
+        if (rol == null) {
+            errores.add("El rol del empleado no puede estar vacío.");
+            return errores;
+        }
+
+        switch (rol) {
+            case CAJERO:
+                if (esInvalidoHorario(horarioTrabajo)) {
+                    errores.add("El horario de trabajo no es válido. Formato esperado: L-V 8:00-16:00");
+                }
+                if (esInvalidoNumeroVentanilla(numeroVentanilla)) {
+                    errores.add("El número de ventanilla debe ser mayor a 0.");
+                }
+                break;
+
+            case EJECUTIVO_CUENTA:
+                if (esInvalidoClientesAsignados(clientesAsignados)) {
+                    errores.add("El número de clientes asignados debe ser mayor o igual a 0.");
+                }
+                if (esInvalidaEspecializacion(especializacion)) {
+                    errores.add("La especialización debe ser 'PYMES' o 'corporativo'.");
+                }
+                break;
+
+            case GERENTE:
+                if (esInvalidoNivelAcceso(nivelAcceso)) {
+                    errores.add("El nivel de acceso debe ser 'sucursal', 'regional' o 'nacional'.");
+                }
+                if(esAnosExperienica(anosExperiencia)) {
+                    errores.add("Los años de experiencia tienen que ser un numero entero positivo");
+                }
+                break;
+
+            default:
+                errores.add("Rol de empleado no reconocido.");
+        }
+
+        if (idSucursal == null || idSucursal.isBlank()) {
+            errores.add("El ID de la sucursal no puede estar vacío.");
+        }
+
+        return errores;
+    }
+
 
     public String getId() { return id; }
     public String getNombre() { return nombre; }

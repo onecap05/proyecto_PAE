@@ -7,7 +7,9 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
+
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class EmpleadoDialog {
 
@@ -22,6 +24,7 @@ public class EmpleadoDialog {
         dialog.getDialogPane().getButtonTypes().addAll(agregarButtonType, ButtonType.CANCEL);
 
         GridPane grid = crearGrid();
+
         TextField tfNombre = new TextField();
         TextField tfDireccion = new TextField();
         DatePicker dpFechaNacimiento = new DatePicker();
@@ -35,6 +38,13 @@ public class EmpleadoDialog {
         PasswordField pfPassword = new PasswordField();
         TextField tfSucursal = new TextField();
 
+        TextField tfHorarioTrabajo = new TextField();
+        TextField tfNumeroVentanilla = new TextField();
+        TextField tfClientesAsignados = new TextField();
+        TextField tfEspecializacion = new TextField();
+        TextField tfNivelAcceso = new TextField();
+        TextField tfAnosExperiencia = new TextField();
+
         grid.add(new Label("Nombre:"), 0, 0); grid.add(tfNombre, 1, 0);
         grid.add(new Label("Dirección:"), 0, 1); grid.add(tfDireccion, 1, 1);
         grid.add(new Label("Fecha Nacimiento:"), 0, 2); grid.add(dpFechaNacimiento, 1, 2);
@@ -44,15 +54,77 @@ public class EmpleadoDialog {
         grid.add(new Label("Usuario:"), 0, 6); grid.add(tfUsuario, 1, 6);
         grid.add(new Label("Contraseña:"), 0, 7); grid.add(pfPassword, 1, 7);
         grid.add(new Label("ID Sucursal:"), 0, 8); grid.add(tfSucursal, 1, 8);
+        grid.add(new Label("Horario de trabajo:"), 0, 9); grid.add(tfHorarioTrabajo, 1, 9);
+        grid.add(new Label("Número de ventanilla:"), 0, 10); grid.add(tfNumeroVentanilla, 1, 10);
+        grid.add(new Label("Clientes asignados:"), 0, 11); grid.add(tfClientesAsignados, 1, 11);
+        grid.add(new Label("Especialización:"), 0, 12); grid.add(tfEspecializacion, 1, 12);
+        grid.add(new Label("Nivel de acceso:"), 0, 13); grid.add(tfNivelAcceso, 1, 13);
+        grid.add(new Label("Años de experiencia:"), 0, 14); grid.add(tfAnosExperiencia, 1, 14);
+
+        Stream.of(tfHorarioTrabajo, tfNumeroVentanilla,
+                        tfClientesAsignados, tfEspecializacion,
+                        tfNivelAcceso, tfAnosExperiencia)
+                .forEach(n -> n.setVisible(false));
+
+        cbRol.setOnAction(event -> {
+            RolEmpleado rol = cbRol.getValue();
+
+            tfHorarioTrabajo.setVisible(false);
+            tfNumeroVentanilla.setVisible(false);
+            tfClientesAsignados.setVisible(false);
+            tfEspecializacion.setVisible(false);
+            tfNivelAcceso.setVisible(false);
+            tfAnosExperiencia.setVisible(false);
+
+            switch (rol) {
+                case CAJERO -> {
+                    tfHorarioTrabajo.setVisible(true);
+                    tfNumeroVentanilla.setVisible(true);
+                }
+                case EJECUTIVO_CUENTA -> {
+                    tfClientesAsignados.setVisible(true);
+                    tfEspecializacion.setVisible(true);
+                }
+                case GERENTE -> {
+                    tfNivelAcceso.setVisible(true);
+                    tfAnosExperiencia.setVisible(true);
+                }
+            }
+        });
 
         dialog.getDialogPane().setContent(grid);
 
         Node botonAgregar = dialog.getDialogPane().lookupButton(agregarButtonType);
         botonAgregar.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
-            controller.validarEmpleadoDesdeDialogo(
-                    tfNombre, tfDireccion, dpFechaNacimiento, tfGenero, tfSalario,
-                    cbRol, tfUsuario, pfPassword, tfSucursal, event
-            );
+            Empleado tempEmpleado = new Empleado();
+            tempEmpleado.setNombre(tfNombre.getText());
+            tempEmpleado.setDireccion(tfDireccion.getText());
+            tempEmpleado.setFechaNacimiento(dpFechaNacimiento.getValue());
+            tempEmpleado.setGenero(tfGenero.getText());
+            tempEmpleado.setSalario(Double.parseDouble(tfSalario.getText()));
+            tempEmpleado.setRol(cbRol.getValue());
+            tempEmpleado.setUsuario(tfUsuario.getText());
+            tempEmpleado.setPassword(pfPassword.getText());
+            tempEmpleado.setIdSucursal(tfSucursal.getText());
+
+            switch (cbRol.getValue()) {
+                case CAJERO -> {
+                    tempEmpleado.setHorarioTrabajo(tfHorarioTrabajo.getText());
+                    tempEmpleado.setNumeroVentanilla(Integer.parseInt(tfNumeroVentanilla.getText()));
+                }
+                case EJECUTIVO_CUENTA -> {
+                    tempEmpleado.setClientesAsignados(Integer.parseInt(tfClientesAsignados.getText()));
+                    tempEmpleado.setEspecializacion(tfEspecializacion.getText());
+                }
+                case GERENTE -> {
+                    tempEmpleado.setNivelAcceso(tfNivelAcceso.getText());
+                    tempEmpleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                }
+            }
+
+            if (!controller.validarEmpleadosPorRol(tempEmpleado, event)) {
+                return;
+            }
         });
 
         dialog.setResultConverter(dialogButton -> {
@@ -67,6 +139,22 @@ public class EmpleadoDialog {
                 empleado.setUsuario(tfUsuario.getText());
                 empleado.setPassword(pfPassword.getText());
                 empleado.setIdSucursal(tfSucursal.getText());
+
+                switch (cbRol.getValue()) {
+                    case CAJERO -> {
+                        empleado.setHorarioTrabajo(tfHorarioTrabajo.getText());
+                        empleado.setNumeroVentanilla(Integer.parseInt(tfNumeroVentanilla.getText()));
+                    }
+                    case EJECUTIVO_CUENTA -> {
+                        empleado.setClientesAsignados(Integer.parseInt(tfClientesAsignados.getText()));
+                        empleado.setEspecializacion(tfEspecializacion.getText());
+                    }
+                    case GERENTE -> {
+                        empleado.setNivelAcceso(tfNivelAcceso.getText());
+                        empleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                    }
+                }
+
                 return empleado;
             }
             return null;
@@ -87,6 +175,7 @@ public class EmpleadoDialog {
         dialog.getDialogPane().getButtonTypes().addAll(guardarButtonType, ButtonType.CANCEL);
 
         GridPane grid = crearGrid();
+
         TextField tfNombre = new TextField(empleado.getNombre());
         TextField tfDireccion = new TextField(empleado.getDireccion());
         DatePicker dpFechaNacimiento = new DatePicker(empleado.getFechaNacimiento());
@@ -102,6 +191,13 @@ public class EmpleadoDialog {
         pfPassword.setPromptText("Dejar en blanco para no cambiar");
         TextField tfSucursal = new TextField(empleado.getIdSucursal());
 
+        TextField tfHorarioTrabajo = new TextField(empleado.getHorarioTrabajo());
+        TextField tfNumeroVentanilla = new TextField(String.valueOf(empleado.getNumeroVentanilla()));
+        TextField tfClientesAsignados = new TextField(String.valueOf(empleado.getClientesAsignados()));
+        TextField tfEspecializacion = new TextField(empleado.getEspecializacion());
+        TextField tfNivelAcceso = new TextField(empleado.getNivelAcceso());
+        TextField tfAnosExperiencia = new TextField(String.valueOf(empleado.getAnosExperiencia()));
+
         grid.add(new Label("Nombre:"), 0, 0); grid.add(tfNombre, 1, 0);
         grid.add(new Label("Dirección:"), 0, 1); grid.add(tfDireccion, 1, 1);
         grid.add(new Label("Fecha Nacimiento:"), 0, 2); grid.add(dpFechaNacimiento, 1, 2);
@@ -111,15 +207,79 @@ public class EmpleadoDialog {
         grid.add(new Label("Usuario:"), 0, 6); grid.add(tfUsuario, 1, 6);
         grid.add(new Label("Contraseña:"), 0, 7); grid.add(pfPassword, 1, 7);
         grid.add(new Label("ID Sucursal:"), 0, 8); grid.add(tfSucursal, 1, 8);
+        grid.add(new Label("Horario de trabajo:"), 0, 9); grid.add(tfHorarioTrabajo, 1, 9);
+        grid.add(new Label("Número de ventanilla:"), 0, 10); grid.add(tfNumeroVentanilla, 1, 10);
+        grid.add(new Label("Clientes asignados:"), 0, 11); grid.add(tfClientesAsignados, 1, 11);
+        grid.add(new Label("Especialización:"), 0, 12); grid.add(tfEspecializacion, 1, 12);
+        grid.add(new Label("Nivel de acceso:"), 0, 13); grid.add(tfNivelAcceso, 1, 13);
+        grid.add(new Label("Años de experiencia:"), 0, 14); grid.add(tfAnosExperiencia, 1, 14);
+
+        Stream.of(tfHorarioTrabajo, tfNumeroVentanilla,
+                        tfClientesAsignados, tfEspecializacion,
+                        tfNivelAcceso, tfAnosExperiencia)
+                .forEach(n -> n.setVisible(false));
+
+        cbRol.setOnAction(event -> {
+            RolEmpleado rol = cbRol.getValue();
+
+            tfHorarioTrabajo.setVisible(false);
+            tfNumeroVentanilla.setVisible(false);
+            tfClientesAsignados.setVisible(false);
+            tfEspecializacion.setVisible(false);
+            tfNivelAcceso.setVisible(false);
+            tfAnosExperiencia.setVisible(false);
+
+            switch (rol) {
+                case CAJERO -> {
+                    tfHorarioTrabajo.setVisible(true);
+                    tfNumeroVentanilla.setVisible(true);
+                }
+                case EJECUTIVO_CUENTA -> {
+                    tfClientesAsignados.setVisible(true);
+                    tfEspecializacion.setVisible(true);
+                }
+                case GERENTE -> {
+                    tfNivelAcceso.setVisible(true);
+                    tfAnosExperiencia.setVisible(true);
+                }
+            }
+        });
+
+        cbRol.getOnAction().handle(null);
 
         dialog.getDialogPane().setContent(grid);
 
         Node botonGuardar = dialog.getDialogPane().lookupButton(guardarButtonType);
         botonGuardar.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
-            controller.validarEmpleadoDesdeDialogo(
-                    tfNombre, tfDireccion, dpFechaNacimiento, tfGenero, tfSalario,
-                    cbRol, tfUsuario, pfPassword, tfSucursal, event
-            );
+            Empleado tempEmpleado = new Empleado();
+            tempEmpleado.setNombre(tfNombre.getText());
+            tempEmpleado.setDireccion(tfDireccion.getText());
+            tempEmpleado.setFechaNacimiento(dpFechaNacimiento.getValue());
+            tempEmpleado.setGenero(tfGenero.getText());
+            tempEmpleado.setSalario(Double.parseDouble(tfSalario.getText()));
+            tempEmpleado.setRol(cbRol.getValue());
+            tempEmpleado.setUsuario(tfUsuario.getText());
+            tempEmpleado.setPassword(pfPassword.getText());
+            tempEmpleado.setIdSucursal(tfSucursal.getText());
+
+            switch (cbRol.getValue()) {
+                case CAJERO -> {
+                    tempEmpleado.setHorarioTrabajo(tfHorarioTrabajo.getText());
+                    tempEmpleado.setNumeroVentanilla(Integer.parseInt(tfNumeroVentanilla.getText()));
+                }
+                case EJECUTIVO_CUENTA -> {
+                    tempEmpleado.setClientesAsignados(Integer.parseInt(tfClientesAsignados.getText()));
+                    tempEmpleado.setEspecializacion(tfEspecializacion.getText());
+                }
+                case GERENTE -> {
+                    tempEmpleado.setNivelAcceso(tfNivelAcceso.getText());
+                    tempEmpleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                }
+            }
+
+            if (!controller.validarEmpleadosPorRol(tempEmpleado, event)) {
+                return;
+            }
         });
 
         dialog.setResultConverter(dialogButton -> {
@@ -132,11 +292,27 @@ public class EmpleadoDialog {
                 empleado.setRol(cbRol.getValue());
                 empleado.setUsuario(tfUsuario.getText());
 
-                if (!pfPassword.getText().isEmpty()) {
+                if (!pfPassword.getText().isBlank()) {
                     empleado.setPassword(pfPassword.getText());
                 }
 
                 empleado.setIdSucursal(tfSucursal.getText());
+
+                switch (cbRol.getValue()) {
+                    case CAJERO -> {
+                        empleado.setHorarioTrabajo(tfHorarioTrabajo.getText());
+                        empleado.setNumeroVentanilla(Integer.parseInt(tfNumeroVentanilla.getText()));
+                    }
+                    case EJECUTIVO_CUENTA -> {
+                        empleado.setClientesAsignados(Integer.parseInt(tfClientesAsignados.getText()));
+                        empleado.setEspecializacion(tfEspecializacion.getText());
+                    }
+                    case GERENTE -> {
+                        empleado.setNivelAcceso(tfNivelAcceso.getText());
+                        empleado.setAnosExperiencia(Integer.parseInt(tfAnosExperiencia.getText()));
+                    }
+                }
+
                 return empleado;
             }
             return null;

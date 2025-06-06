@@ -35,7 +35,7 @@ public class SucursalesView {
         BorderPane root = new BorderPane();
         root.setCenter(vbox);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 800, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -43,6 +43,7 @@ public class LoginController implements EventHandler<ActionEvent> {
               if (empleadoEnconstrado != null && empleadoEnconstrado.getPassword().equals(password)) {
 
                 validarTipoUsuario(empleadoEnconstrado);
+                abrirMenuPrincipal(empleadoEnconstrado);
 
               } else {
 
@@ -70,5 +71,15 @@ public class LoginController implements EventHandler<ActionEvent> {
         }
     }
 
+    private void abrirMenuPrincipal(Empleado empleado) {
+        stage.close();
+
+        String mensajeBienvenida = "Bienvenido " + empleado.getNombre() +
+                "\nRol: " + empleado.getRol().toString();
+        ventanasEmergentes.mostrarAlerta("Bienvenido", "Inicio de sesión exitoso", mensajeBienvenida);
+
+        Stage menuStage = new Stage();
+        MainAppController menuController = new MainAppController(menuStage, empleado.getRol());
+    }
 
 }

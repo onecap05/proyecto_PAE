@@ -39,7 +39,6 @@ class TransaccionDAOTest {
         if (new File(ARCHIVO_CLIENTES).exists()) {
             Files.copy(Paths.get(ARCHIVO_CLIENTES), Paths.get(ARCHIVO_CLIENTES_BK), StandardCopyOption.REPLACE_EXISTING);
         }
-        // Limpiar archivos
         new File(ARCHIVO_TRANSACCIONES).delete();
         new File(ARCHIVO_CUENTAS).delete();
         new File(ARCHIVO_CLIENTES).delete();
@@ -47,8 +46,6 @@ class TransaccionDAOTest {
         transaccionDAO = new TransaccionDAO();
         cuentaDAO = new CuentaDAO();
         clienteDAO = new ClienteDAO();
-
-        // Crear cliente y cuenta para las pruebas
         clientePrueba = new Cliente("RFC_TEST", "Test", "User", "Mexicana", LocalDate.of(1990, 1, 1), "Calle Test", "5550000000", "test@mail.com");
         clienteDAO.guardarClientes(List.of(clientePrueba));
         cuentaPrueba = cuentaDAO.crearCuenta(TipoCuenta.AHORROS, 1000.0, 0.0, clientePrueba.getIdFiscal());
@@ -56,7 +53,6 @@ class TransaccionDAOTest {
 
     @AfterEach
     void tearDown() throws IOException {
-        // Restaurar archivos
         if (new File(ARCHIVO_TRANSACCIONES_BK).exists()) {
             Files.copy(Paths.get(ARCHIVO_TRANSACCIONES_BK), Paths.get(ARCHIVO_TRANSACCIONES), StandardCopyOption.REPLACE_EXISTING);
             new File(ARCHIVO_TRANSACCIONES_BK).delete();

@@ -52,4 +52,13 @@
   "idGerente" : "123456",
   "contacto" : null,
   "estadoActivo" : false
+}, {
+  "id" : "TEMP",
+  "nombre" : "Eurobank FEI",
+  "direccion" : "Av Xalada S/N Xalapa Veracruz",
+  "telefono" : "9671350565",
+  "correo" : "claudiojtz1402@gmail.com",
+  "idGerente" : "E-002",
+  "contacto" : null,
+  "estadoActivo" : false
 } ]

@@ -1,0 +1,1421 @@
+[1mdiff --git a/.idea/misc.xml b/.idea/misc.xml[m
+[1mindex 63eeab1..487ccf4 100644[m
+[1m--- a/.idea/misc.xml[m
+[1m+++ b/.idea/misc.xml[m
+[36m@@ -8,7 +8,7 @@[m
+       </list>[m
+     </option>[m
+   </component>[m
+[31m-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23 (2)" project-jdk-type="JavaSDK">[m
+[32m+[m[32m  <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="openjdk-23 (2)" project-jdk-type="JavaSDK">[m
+     <output url="file://$PROJECT_DIR$/out" />[m
+   </component>[m
+ </project>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/java/com/eurobank/controllers/EmpleadoDialogController.java b/src/main/java/com/eurobank/controllers/EmpleadoDialogController.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..97aeb4c[m
+[1m--- /dev/null[m
+[1m+++ b/src/main/java/com/eurobank/controllers/EmpleadoDialogController.java[m
+[36m@@ -0,0 +1,75 @@[m
+[32m+[m[32mpackage com.eurobank.controllers;[m
+[32m+[m
+[32m+[m[32mimport com.eurobank.models.Empleado;[m
+[32m+[m[32mimport com.eurobank.models.RolEmpleado;[m
+[32m+[m[32mimport javafx.event.ActionEvent;[m
+[32m+[m[32mimport javafx.scene.control.*;[m
+[32m+[m[32mimport java.time.format.DateTimeParseException;[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32mpublic class EmpleadoDialogController {[m
+[32m+[m
+[32m+[m[32m    public boolean validarEmpleadoDesdeDialogo(TextField tfNombre,[m
+[32m+[m[32m                                               TextField tfDireccion,[m
+[32m+[m[32m                                               DatePicker dpFechaNacimiento,[m
+[32m+[m[32m                                               TextField tfGenero,[m
+[32m+[m[32m                                               TextField tfSalario,[m
+[32m+[m[32m                                               ComboBox<RolEmpleado> cbRol,[m
+[32m+[m[32m                                               TextField tfUsuario,[m
+[32m+[m[32m                                               PasswordField pfPassword,[m
+[32m+[m[32m                                               TextField tfSucursal,[m
+[32m+[m[32m                                               ActionEvent event) {[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m
+[32m+[m[32m            String textoFecha = dpFechaNacimiento.getEditor().getText();[m
+[32m+[m
+[32m+[m[32m            if (textoFecha != null && !textoFecha.isBlank()) {[m
+[32m+[m[32m                dpFechaNacimiento.setValue(dpFechaNacimiento.getConverter().fromString(textoFecha));[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            double salario = Double.parseDouble(tfSalario.getText());[m
+[32m+[m
+[32m+[m[32m            Empleado tempEmpleado = new Empleado();[m
+[32m+[m[32m            tempEmpleado.setNombre(tfNombre.getText());[m
+[32m+[m[32m            tempEmpleado.setDireccion(tfDireccion.getText());[m
+[32m+[m[32m            tempEmpleado.setFechaNacimiento(dpFechaNacimiento.getValue());[m
+[32m+[m[32m            tempEmpleado.setGenero(tfGenero.getText());[m
+[32m+[m[32m            tempEmpleado.setSalario(salario);[m
+[32m+[m[32m            tempEmpleado.setRol(cbRol.getValue());[m
+[32m+[m[32m            tempEmpleado.setUsuario(tfUsuario.getText());[m
+[32m+[m[32m            tempEmpleado.setPassword(pfPassword.getText());[m
+[32m+[m[32m            tempEmpleado.setIdSucursal(tfSucursal.getText());[m
+[32m+[m
+[32m+[m[32m            List<String> errores = tempEmpleado.validarCamposBasicos();[m
+[32m+[m[32m            if (!errores.isEmpty()) {[m
+[32m+[m[32m                mostrarAlerta("Corrija los siguientes errores:\n" + String.join("\n", errores));[m
+[32m+[m[32m                event.consume();[m
+[32m+[m[32m                return false;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m        } catch (DateTimeParseException e) {[m
+[32m+[m
+[32m+[m[32m            mostrarAlerta("Formato de fecha inválido. Use el formato correcto (por ejemplo, yyyy-MM-dd).");[m
+[32m+[m[32m            event.consume();[m
+[32m+[m[32m            return false;[m
+[32m+[m
+[32m+[m[32m        } catch (NumberFormatException e) {[m
+[32m+[m
+[32m+[m[32m            mostrarAlerta("El salario debe ser un número válido.");[m
+[32m+[m[32m            event.consume();[m
+[32m+[m[32m            return false;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        return true;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void mostrarAlerta(String mensaje) {[m
+[32m+[m
+[32m+[m[32m        Alert alerta = new Alert(Alert.AlertType.ERROR);[m
+[32m+[m[32m        alerta.setTitle("Error de Validación");[m
+[32m+[m[32m        alerta.setHeaderText(null);[m
+[32m+[m[32m        alerta.setContentText(mensaje);[m
+[32m+[m[32m        alerta.showAndWait();[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/com/eurobank/controllers/EmpleadosController.java b/src/main/java/com/eurobank/controllers/EmpleadosController.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..af94d29[m
+[1m--- /dev/null[m
+[1m+++ b/src/main/java/com/eurobank/controllers/EmpleadosController.java[m
+[36m@@ -0,0 +1,171 @@[m
+[32m+[m[32mpackage com.eurobank.controllers;[m
+[32m+[m
+[32m+[m[32mimport com.eurobank.models.DAO.EmpleadoDAO;[m
+[32m+[m[32mimport com.eurobank.models.Empleado;[m
+[32m+[m[32mimport com.eurobank.models.RolEmpleado;[m
+[32m+[m[32mimport com.eurobank.views.EmpleadosView;[m
+[32m+[m[32mimport com.eurobank.views.EmpleadoDialog;[m
+[32m+[m[32mimport javafx.collections.FXCollections;[m
+[32m+[m[32mimport javafx.collections.ObservableList;[m
+[32m+[m[32mimport javafx.collections.transformation.FilteredList;[m
+[32m+[m[32mimport javafx.event.ActionEvent;[m
+[32m+[m[32mimport javafx.scene.control.Alert;[m
+[32m+[m[32mimport javafx.scene.control.ButtonType;[m
+[32m+[m
+[32m+[m[32mimport java.io.IOException;[m
+[32m+[m
+[32m+[m[32mpublic class EmpleadosController {[m
+[32m+[m
+[32m+[m[32m    private EmpleadosView view;[m
+[32m+[m[32m    private EmpleadoDAO empleadoDAO;[m
+[32m+[m[32m    private ObservableList<Empleado> empleados;[m
+[32m+[m[32m    private FilteredList<Empleado> empleadosFiltrados;[m
+[32m+[m
+[32m+[m[32m    public EmpleadosController() {[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m
+[32m+[m[32m            this.empleadoDAO = new EmpleadoDAO();[m
+[32m+[m[32m            this.empleados = FXCollections.observableArrayList(empleadoDAO.listarEmpleadosActivos());[m
+[32m+[m[32m            this.empleadosFiltrados = new FilteredList<>(empleados, Empleado::isEstadoActivo);[m
+[32m+[m
+[32m+[m[32m            this.view = new EmpleadosView(this);[m
+[32m+[m[32m            configurarEventos();[m
+[32m+[m[32m            view.setEmpleadosEnTabla(empleadosFiltrados);[m
+[32m+[m
+[32m+[m[32m        } catch (IOException e) {[m
+[32m+[m
+[32m+[m[32m            mostrarError("Error al cargar empleados: " + e.getMessage());[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void configurarEventos() {[m
+[32m+[m
+[32m+[m[32m        view.getCbFiltroRol().setOnAction(this::filtrarPorRol);[m
+[32m+[m[32m        view.getBtnAgregar().setOnAction(this::crearNuevoEmpleado);[m
+[32m+[m[32m        view.getBtnEditar().setOnAction(this::actualizarEmpleado);[m
+[32m+[m[32m        view.getBtnEliminar().setOnAction(this::eliminarEmpleado);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void filtrarPorRol(ActionEvent event) {[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        RolEmpleado rolSeleccionado = view.getCbFiltroRol().getValue();[m
+[32m+[m[32m        empleadosFiltrados.setPredicate(empleado -> rolSeleccionado == null || empleado.getRol() == rolSeleccionado);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void crearNuevoEmpleado(ActionEvent event) {[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m
+[32m+[m[32m            Empleado nuevoEmpleado = EmpleadoDialog.mostrarDialogoAgregar();[m
+[32m+[m
+[32m+[m[32m            if (nuevoEmpleado != null) {[m
+[32m+[m
+[32m+[m[32m                Empleado empleadoCreado = empleadoDAO.crearNuevoEmpleado(nuevoEmpleado);[m
+[32m+[m[32m                empleados.add(empleadoCreado);[m
+[32m+[m[32m                view.getTableView().refresh();[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m        } catch (IllegalArgumentException e) {[m
+[32m+[m[32m            mostrarAlerta("Datos inválidos", e.getMessage());[m
+[32m+[m
+[32m+[m[32m        } catch (IOException e) {[m
+[32m+[m[32m            mostrarError("Error al guardar empleado: " + e.getMessage());[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    private void actualizarEmpleado(ActionEvent event) {[m
+[32m+[m
+[32m+[m[32m        Empleado seleccionado = view.getTableView().getSelectionModel().getSelectedItem();[m
+[32m+[m
+[32m+[m[32m        if (seleccionado != null) {[m
+[32m+[m
+[32m+[m[32m            Empleado empleadoEditado = EmpleadoDialog.mostrarDialogoEditar(seleccionado);[m
+[32m+[m
+[32m+[m[32m            if (empleadoEditado != null) {[m
+[32m+[m
+[32m+[m[32m                var errores = empleadoEditado.validarCamposBasicos();[m
+[32m+[m
+[32m+[m[32m                if (!errores.isEmpty()) {[m
+[32m+[m[32m                    mostrarAlerta("Datos inválidos", String.join("\n", errores));[m
+[32m+[m[32m                    return;[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                try {[m
+[32m+[m
+[32m+[m[32m                    if (empleadoDAO.actualizarEmpleado(seleccionado.getId(), empleadoEditado)) {[m
+[32m+[m
+[32m+[m[32m                        int index = empleados.indexOf(seleccionado);[m
+[32m+[m[32m                        empleados.set(index, empleadoEditado);[m
+[32m+[m[32m                        view.getTableView().refresh();[m
+[32m+[m[32m                    }[m
+[32m+[m
+[32m+[m[32m                } catch (IOException e) {[m
+[32m+[m
+[32m+[m[32m                    mostrarError("Error al actualizar empleado: " + e.getMessage());[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m        } else {[m
+[32m+[m
+[32m+[m[32m            mostrarAlerta("Selección requerida", "Por favor seleccione un empleado para editar");[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void eliminarEmpleado(ActionEvent event) {[m
+[32m+[m
+[32m+[m[32m        Empleado seleccionado = view.getTableView().getSelectionModel().getSelectedItem();[m
+[32m+[m
+[32m+[m[32m        if (seleccionado != null) {[m
+[32m+[m
+[32m+[m[32m            if (confirmarEliminacion()) {[m
+[32m+[m
+[32m+[m[32m                try {[m
+[32m+[m
+[32m+[m[32m                    if (empleadoDAO.eliminarEmpleado(seleccionado.getId())) {[m
+[32m+[m[32m                        empleados.remove(seleccionado);[m
+[32m+[m[32m                    }[m
+[32m+[m
+[32m+[m[32m                } catch (IOException e) {[m
+[32m+[m[32m                    mostrarError("Error al eliminar empleado: " + e.getMessage());[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            mostrarAlerta("Selección requerida", "Por favor seleccione un empleado para eliminar");[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private boolean confirmarEliminacion() {[m
+[32m+[m
+[32m+[m[32m        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);[m
+[32m+[m[32m        alert.setTitle("Confirmar eliminación");[m
+[32m+[m[32m        alert.setHeaderText("¿Está seguro de desactivar este empleado?");[m
+[32m+[m[32m        alert.setContentText("Esta acción marcará al empleado como inactivo.");[m
+[32m+[m[32m        return alert.showAndWait().get() == ButtonType.OK;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void mostrarAlerta(String titulo, String mensaje) {[m
+[32m+[m
+[32m+[m[32m        Alert alert = new Alert(Alert.AlertType.WARNING);[m
+[32m+[m[32m        alert.setTitle(titulo);[m
+[32m+[m[32m        alert.setHeaderText(null);[m
+[32m+[m[32m        alert.setContentText(mensaje);[m
+[32m+[m[32m        alert.showAndWait();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void mostrarError(String mensaje) {[m
+[32m+[m
+[32m+[m[32m        Alert alert = new Alert(Alert.AlertType.ERROR);[m
+[32m+[m[32m        alert.setTitle("Error");[m
+[32m+[m[32m        alert.setHeaderText(null);[m
+[32m+[m[32m        alert.setContentText(mensaje);[m
+[32m+[m[32m        alert.showAndWait();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void mostrarVentana() {[m
+[32m+[m[32m        view.mostrar();[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/com/eurobank/models/DAO/EmpleadoDAO.java b/src/main/java/com/eurobank/models/DAO/EmpleadoDAO.java[m
+[1mindex b97a31a..483707c 100644[m
+[1m--- a/src/main/java/com/eurobank/models/DAO/EmpleadoDAO.java[m
+[1m+++ b/src/main/java/com/eurobank/models/DAO/EmpleadoDAO.java[m
+[36m@@ -17,6 +17,7 @@[m [mpublic class EmpleadoDAO {[m
+     private ObjectMapper objectMapper;[m
+ [m
+     public EmpleadoDAO() {[m
+[32m+[m
+         this.objectMapper = new ObjectMapper();[m
+         objectMapper.registerModule(new JavaTimeModule());[m
+         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);[m
+[36m@@ -25,38 +26,51 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public void guardarEmpleados(List<Empleado> empleados) throws IOException {[m
+[32m+[m
+         validarEmpleados(empleados);[m
+         new File("data").mkdirs();[m
+         objectMapper.writeValue(new File(ARCHIVO_JSON), empleados);[m
+     }[m
+ [m
+     public List<Empleado> cargarEmpleados() throws IOException {[m
+[32m+[m
+         File archivo = new File(ARCHIVO_JSON);[m
+[32m+[m
+         if (!archivo.exists()) {[m
+             return new ArrayList<>();[m
+         }[m
+[32m+[m
+         return new ArrayList<>(Arrays.asList(objectMapper.readValue(archivo, Empleado[].class)));[m
+     }[m
+ [m
+     private void validarEmpleados(List<Empleado> empleados) {[m
+[32m+[m
+         for (Empleado emp : empleados) {[m
+[32m+[m
+             switch (emp.getRol()) {[m
+[32m+[m
+                 case CAJERO:[m
+[32m+[m
+                     if (emp.getHorarioTrabajo() == null || emp.getNumeroVentanilla() == null) {[m
+                         throw new IllegalArgumentException("Campos de cajero incompletos: horarioTrabajo y numeroVentanilla son obligatorios");[m
+                     }[m
+                     break;[m
+[32m+[m
+                 case EJECUTIVO_CUENTA:[m
+[32m+[m
+                     if (emp.getClientesAsignados() == null || emp.getEspecializacion() == null) {[m
+                         throw new IllegalArgumentException("Campos de ejecutivo incompletos: clientesAsignados y especializacion son obligatorios");[m
+                     }[m
+                     break;[m
+[32m+[m
+                 case GERENTE:[m
+[32m+[m
+                     if (emp.getNivelAcceso() == null || emp.getAnosExperiencia() == null) {[m
+                         throw new IllegalArgumentException("Campos de gerente incompletos: nivelAcceso y anosExperiencia son obligatorios");[m
+                     }[m
+                     break;[m
+             }[m
+[32m+[m
+             if (emp.getIdSucursal() == null) {[m
+                 throw new IllegalArgumentException("idSucursal es obligatorio para roles CAJERO, EJECUTIVO_CUENTA y GERENTE");[m
+             }[m
+[36m@@ -64,6 +78,7 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public Empleado buscarEmpleadoPorId(String id) throws IOException {[m
+[32m+[m
+         return cargarEmpleados().stream()[m
+                 .filter(e -> e.getId().equals(id))[m
+                 .findFirst()[m
+[36m@@ -71,6 +86,7 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public Empleado buscarEmpleadoPorUsuario(String usuario) throws IOException {[m
+[32m+[m
+         return cargarEmpleados().stream()[m
+                 .filter(e -> e.getUsuario().equals(usuario) && e.isEstadoActivo())[m
+                 .findFirst()[m
+[36m@@ -78,28 +94,36 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public List<Empleado> filtrarEmpleadosPorRol(RolEmpleado rol) throws IOException {[m
+[32m+[m
+         return cargarEmpleados().stream()[m
+                 .filter(e -> e.getRol() == rol && e.isEstadoActivo())[m
+                 .toList();[m
+     }[m
+ [m
+     public boolean eliminarEmpleado(String id) throws IOException {[m
+[32m+[m
+         boolean empleadoEliminado = false;[m
+         List<Empleado> empleados = cargarEmpleados();[m
+[32m+[m
+         for (Empleado empleado : empleados) {[m
+[32m+[m
+             if (empleado.getId().equals(id)) {[m
+                 empleado.setEstadoActivo(false);[m
+                 guardarEmpleados(empleados);[m
+                 empleadoEliminado = true;[m
+             }[m
+         }[m
+[32m+[m
+         return empleadoEliminado;[m
+     }[m
+ [m
+     public boolean actualizarEmpleado(String id, Empleado empleadoActualizado) throws IOException {[m
+[32m+[m
+         boolean actualizacionRealizada = false;[m
+         List<Empleado> empleados = cargarEmpleados();[m
+[32m+[m
+         for (int i = 0; i < empleados.size(); i++) {[m
+[32m+[m
+             if (empleados.get(i).getId().equals(id)) {[m
+                 empleados.set(i, empleadoActualizado);[m
+                 guardarEmpleados(empleados);[m
+[36m@@ -110,18 +134,21 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public List<Empleado> listarEmpleadosActivos() throws IOException {[m
+[32m+[m
+         return cargarEmpleados().stream()[m
+                 .filter(empleado -> empleado.isEstadoActivo())[m
+                 .toList();[m
+     }[m
+ [m
+     public List<Empleado> listarEmpleadosPorSucursal(String idSucursal) throws IOException {[m
+[32m+[m
+         return cargarEmpleados().stream()[m
+                 .filter(e -> e.getIdSucursal().equals(idSucursal) && e.isEstadoActivo())[m
+                 .toList();[m
+     }[m
+ [m
+     private String generarNuevoId() throws IOException {[m
+[32m+[m
+         List<Empleado> empleados = cargarEmpleados();[m
+         int maxId = empleados.stream()[m
+                 .map(e -> e.getId().replace("E-", ""))[m
+[36m@@ -132,6 +159,7 @@[m [mpublic class EmpleadoDAO {[m
+     }[m
+ [m
+     public Empleado crearNuevoEmpleado(Empleado nuevoEmpleado) throws IOException {[m
+[32m+[m
+         List<Empleado> empleados = cargarEmpleados();[m
+         nuevoEmpleado.setId(generarNuevoId());[m
+         empleados.add(nuevoEmpleado);[m
+[1mdiff --git a/src/main/java/com/eurobank/models/Empleado.java b/src/main/java/com/eurobank/models/Empleado.java[m
+[1mindex 7a9afd7..05877b0 100644[m
+[1m--- a/src/main/java/com/eurobank/models/Empleado.java[m
+[1m+++ b/src/main/java/com/eurobank/models/Empleado.java[m
+[36m@@ -1,158 +1,208 @@[m
+ package com.eurobank.models;[m
+ [m
+ import java.time.LocalDate;[m
+[32m+[m[32mimport java.time.Period;[m
+[32m+[m[32mimport java.util.*;[m
+[32m+[m[32mimport java.util.regex.Pattern;[m
+ [m
+ public class Empleado {[m
+ [m
+     private String id;[m
+     private String nombre;[m
+[31m-    private String direccion; // Nuevo campo[m
+[31m-    private LocalDate fechaNacimiento; // Nuevo campo[m
+[31m-    private String genero; // Nuevo campo (podría ser ENUM)[m
+[31m-    private double salario; // Nuevo campo[m
+[32m+[m[32m    private String direccion;[m
+[32m+[m[32m    private LocalDate fechaNacimiento;[m
+[32m+[m[32m    private String genero;[m
+[32m+[m[32m    private double salario;[m
+     private RolEmpleado rol;[m
+     private String usuario;[m
+     private String password;[m
+[31m-    private boolean estadoActivo;[m
+[32m+[m[32m    private boolean estadoActivo = true;[m
+[32m+[m[32m    private String horarioTrabajo;[m
+[32m+[m[32m    private Integer numeroVentanilla;[m
+[32m+[m[32m    private Integer clientesAsignados;[m
+[32m+[m[32m    private String especializacion;[m
+[32m+[m[32m    private String nivelAcceso;[m
+[32m+[m[32m    private Integer anosExperiencia;[m
+[32m+[m[32m    private String idSucursal;[m
+[32m+[m
+[32m+[m[32m    private static final Pattern HORARIO_PATTERN = Pattern.compile("^([A-Za-z]-[A-Za-z])\\s\\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$");[m
+[32m+[m[32m    private static final List<String> ESPECIALIZACIONES_VALIDAS = Arrays.asList("PYMES", "corporativo");[m
+[32m+[m[32m    private static final List<String> NIVELES_ACCESO_VALIDOS = Arrays.asList("sucursal", "regional", "nacional");[m
+ [m
+[32m+[m[32m    public Empleado() {[m
+[32m+[m[32m    }[m
+ [m
+     public Empleado(String id, String nombre, String direccion, LocalDate fechaNacimiento,[m
+                     String genero, double salario, RolEmpleado rol, String usuario, String password) {[m
+[32m+[m[32m        setId(id);[m
+[32m+[m[32m        setNombre(nombre);[m
+[32m+[m[32m        setDireccion(direccion);[m
+[32m+[m[32m        setFechaNacimiento(fechaNacimiento);[m
+[32m+[m[32m        setGenero(genero);[m
+[32m+[m[32m        setSalario(salario);[m
+[32m+[m[32m        setRol(rol);[m
+[32m+[m[32m        setUsuario(usuario);[m
+[32m+[m[32m        setPassword(password);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setId(String id) {[m
+         this.id = id;[m
+[31m-        this.nombre = nombre;[m
+[31m-        this.direccion = direccion;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setNombre(String nombre) {[m
+[32m+[m[32m        this.nombre = nombre.trim();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setDireccion(String direccion) {[m
+[32m+[m[32m        this.direccion = direccion.trim();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setFechaNacimiento(LocalDate fechaNacimiento) {[m
+         this.fechaNacimiento = fechaNacimiento;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setGenero(String genero) {[m
+         this.genero = genero;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setSalario(double salario) {[m
+         this.salario = salario;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setRol(RolEmpleado rol) {[m
+         this.rol = rol;[m
+[31m-        this.usuario = usuario;[m
+[31m-        this.password = password;[m
+[31m-        this.estadoActivo = true;[m
+     }[m
+ [m
+[31m-    public Empleado() {[m
+[32m+[m[32m    public void setUsuario(String usuario) {[m
+[32m+[m[32m        this.usuario = usuario;[m
+[32m+[m[32m    }[m
+ [m
+[32m+[m[32m    public void setPassword(String password) {[m
+[32m+[m[32m        this.password = password;[m
+     }[m
+ [m
+[31m-    private String horarioTrabajo; // Para cajeros[m
+[31m-    private Integer numeroVentanilla; // Para cajeros[m
+[31m-    private Integer clientesAsignados; // Para ejecutivos[m
+[31m-    private String especializacion; // Para ejecutivos (PYMES, corporativo)[m
+[31m-    private String nivelAcceso; // Para gerentes (sucursal, regional, nacional)[m
+[31m-    private Integer anosExperiencia; // Para gerentes[m
+[31m-    private String idSucursal; // Para gerentes, cajeros y ejecutivo cuenta[m
+[31m-    // Getters y setters básicos[m
+[32m+[m[32m    public void setHorarioTrabajo(String horarioTrabajo) {[m
+[32m+[m[32m        this.horarioTrabajo = horarioTrabajo;[m
+[32m+[m[32m    }[m
+ [m
+[31m-    public String getDireccion() {[m
+[31m-        return direccion;[m
+[32m+[m[32m    public void setEspecializacion(String especializacion) {[m
+[32m+[m[32m        this.especializacion = especializacion;[m
+     }[m
+ [m
+[31m-    public void setDireccion(String direccion) {[m
+[31m-        this.direccion = direccion;[m
+[32m+[m[32m    public void setNivelAcceso(String nivelAcceso) {[m
+[32m+[m[32m        this.nivelAcceso = nivelAcceso;[m
+     }[m
+ [m
+[31m-    public LocalDate getFechaNacimiento() {[m
+[31m-        return fechaNacimiento;[m
+[32m+[m[32m    public void setClientesAsignados(Integer clientesAsignados) {[m
+[32m+[m[32m        this.clientesAsignados = clientesAsignados;[m
+     }[m
+ [m
+[31m-    public void setFechaNacimiento(LocalDate fechaNacimiento) {[m
+[31m-        this.fechaNacimiento = fechaNacimiento;[m
+[32m+[m[32m    public void setNumeroVentanilla(Integer numeroVentanilla) {[m
+[32m+[m[32m        this.numeroVentanilla = numeroVentanilla;[m
+     }[m
+ [m
+[31m-    public String getGenero() {[m
+[31m-        return genero;[m
+[32m+[m[32m    public void setIdSucursal(String idSucursal) {[m
+[32m+[m[32m        if (rol == RolEmpleado.GERENTE || rol == RolEmpleado.CAJERO || rol == RolEmpleado.EJECUTIVO_CUENTA) {[m
+[32m+[m[32m            this.idSucursal = idSucursal;[m
+[32m+[m[32m        }[m
+     }[m
+ [m
+[31m-    public void setGenero(String genero) {[m
+[31m-        this.genero = genero;[m
+[32m+[m[32m    public void setEstadoActivo(boolean estadoActivo) {[m
+[32m+[m[32m        this.estadoActivo = estadoActivo;[m
+     }[m
+ [m
+[31m-    public double getSalario() {[m
+[31m-        return salario;[m
+[32m+[m[32m    public void desactivar() {[m
+[32m+[m[32m        this.estadoActivo = false;[m
+     }[m
+ [m
+[31m-    public void setSalario(double salario) {[m
+[31m-        this.salario = salario;[m
+[32m+[m[32m    public boolean esInvalidoNombre(String nombre) {[m
+[32m+[m[32m        return nombre == null || nombre.trim().split("\\s+").length < 2;[m
+     }[m
+ [m
+[32m+[m[32m    public boolean esInvalidaDireccion(String direccion) {[m
+[32m+[m[32m        return direccion == null || direccion.trim().split("\\s+").length < 2;[m
+[32m+[m[32m    }[m
+ [m
+[31m-    public String getId() { return id; }[m
+[31m-    public void setId(String id) { this.id = id; }[m
+[32m+[m[32m    public List<String> validarFechaNacimiento(LocalDate fecha) {[m
+[32m+[m[32m        List<String> errores = new ArrayList<>();[m
+ [m
+[31m-    public String getNombre() { return nombre; }[m
+[31m-    public void setNombre(String nombre) { this.nombre = nombre; }[m
+[32m+[m[32m        if (fecha == null) {[m
+[32m+[m[32m            errores.add("La fecha de nacimiento no puede ir vacía.");[m
+[32m+[m[32m        } else if (fecha.isAfter(LocalDate.now())) {[m
+[32m+[m[32m            errores.add("La fecha de nacimiento debe ser válida.");[m
+[32m+[m[32m        } else if (Period.between(fecha, LocalDate.now()).getYears() < 18) {[m
+[32m+[m[32m            errores.add("Debe ser mayor de 18 años.");[m
+[32m+[m[32m        }[m
+ [m
+[31m-    public RolEmpleado getRol() { return rol; }[m
+[31m-    public void setRol(RolEmpleado rol) { this.rol = rol; }[m
+[32m+[m[32m        return errores;[m
+[32m+[m[32m    }[m
+ [m
+[31m-    public String getUsuario() { return usuario; }[m
+[31m-    public void setUsuario(String usuario) { this.usuario = usuario; }[m
+[32m+[m[32m    public boolean esInvalidoSalario(double salario) {[m
+[32m+[m[32m        return salario <= 0;[m
+[32m+[m[32m    }[m
+ [m
+[31m-    public String getPassword() { return password; }[m
+[31m-    public void setPassword(String password) { this.password = password; }[m
+[32m+[m[32m    public boolean esInvalidoHorario(String horario) {[m
+[32m+[m[32m        return horario == null || !HORARIO_PATTERN.matcher(horario).matches();[m
+[32m+[m[32m    }[m
+ [m
+[31m-    // Getters y setters específicos por rol[m
+[31m-    public String getHorarioTrabajo() { return horarioTrabajo; }[m
+[31m-    public void setHorarioTrabajo(String horarioTrabajo) {[m
+[31m-        if(this.rol == RolEmpleado.CAJERO) {[m
+[31m-            this.horarioTrabajo = horarioTrabajo;[m
+[31m-        }[m
+[32m+[m[32m    public boolean esInvalidaEspecializacion(String especializacion) {[m
+[32m+[m[32m        return especializacion == null || !ESPECIALIZACIONES_VALIDAS.contains(especializacion);[m
+     }[m
+ [m
+[31m-    public Integer getNumeroVentanilla() { return numeroVentanilla; }[m
+[31m-    public void setNumeroVentanilla(Integer numeroVentanilla) {[m
+[31m-        if(this.rol == RolEmpleado.CAJERO) {[m
+[31m-            this.numeroVentanilla = numeroVentanilla;[m
+[31m-        }[m
+[32m+[m[32m    public boolean esInvalidoNivelAcceso(String nivelAcceso) {[m
+[32m+[m[32m        return nivelAcceso == null || !NIVELES_ACCESO_VALIDOS.contains(nivelAcceso);[m
+     }[m
+ [m
+[31m-    public Integer getClientesAsignados() { return clientesAsignados; }[m
+[31m-    public void setClientesAsignados(Integer clientesAsignados) {[m
+[31m-        if(this.rol == RolEmpleado.EJECUTIVO_CUENTA) {[m
+[31m-            this.clientesAsignados = clientesAsignados;[m
+[31m-        }[m
+[32m+[m[32m    public boolean esInvalidaExperiencia(Integer anosExperiencia) {[m
+[32m+[m[32m        return anosExperiencia == null || anosExperiencia < 0;[m
+     }[m
+ [m
+[31m-    public String getEspecializacion() { return especializacion; }[m
+[31m-    public void setEspecializacion(String especializacion) {[m
+[31m-        if(this.rol == RolEmpleado.EJECUTIVO_CUENTA) {[m
+[31m-            this.especializacion = especializacion;[m
+[31m-        }[m
+[32m+[m[32m    public boolean esInvalidoNumeroVentanilla(Integer numeroVentanilla) {[m
+[32m+[m[32m        return numeroVentanilla == null || numeroVentanilla <= 0;[m
+     }[m
+ [m
+[31m-    public String getNivelAcceso() { return nivelAcceso; }[m
+[31m-    public void setNivelAcceso(String nivelAcceso) {[m
+[31m-        if(this.rol == RolEmpleado.GERENTE) {[m
+[31m-            this.nivelAcceso = nivelAcceso;[m
+[31m-        }[m
+[32m+[m[32m    public boolean esInvalidoClientesAsignados(Integer clientesAsignados) {[m
+[32m+[m[32m        return clientesAsignados == null || clientesAsignados < 0;[m
+     }[m
+ [m
+[31m-    public Integer getAnosExperiencia() { return anosExperiencia; }[m
+[31m-    public void setAnosExperiencia(Integer anosExperiencia) {[m
+[31m-        if(this.rol == RolEmpleado.GERENTE) {[m
+[31m-            this.anosExperiencia = anosExperiencia;[m
+[32m+[m[32m    public List<String> validarCamposBasicos() {[m
+[32m+[m[32m        List<String> errores = new ArrayList<>();[m
+[32m+[m
+[32m+[m[32m        if (esInvalidoNombre(this.nombre)) {[m
+[32m+[m[32m            errores.add("El nombre debe contener al menos dos palabras.");[m
+         }[m
+[31m-    }[m
+ [m
+[31m-    public String getIdSucursal() { return idSucursal; }[m
+[31m-    public void setIdSucursal(String idSucursal) {[m
+[31m-        if(this.rol == RolEmpleado.GERENTE || this.rol == RolEmpleado.CAJERO || this.rol == RolEmpleado.EJECUTIVO_CUENTA) {[m
+[31m-            this.idSucursal = idSucursal;[m
+[32m+[m[32m        if (esInvalidaDireccion(this.direccion)) {[m
+[32m+[m[32m            errores.add("La dirección debe contener al menos dos palabras.");[m
+         }[m
+[31m-    }[m
+ [m
+[31m-    public boolean isEstadoActivo() {[m
+[31m-        return estadoActivo;[m
+[31m-    }[m
+[32m+[m[32m        errores.addAll(validarFechaNacimiento(this.fechaNacimiento));[m
+ [m
+[31m-    public void setEstadoActivo(boolean estadoActivo) {[m
+[31m-        this.estadoActivo = estadoActivo;[m
+[31m-    }[m
+[32m+[m[32m        if (esInvalidoSalario(this.salario)) {[m
+[32m+[m[32m            errores.add("El salario debe ser mayor a 0.");[m
+[32m+[m[32m        }[m
+ [m
+[31m-    public void desactivar() {[m
+[31m-        this.estadoActivo = false;[m
+[32m+[m[32m        return errores;[m
+     }[m
+ [m
+[32m+[m[32m    public String getId() { return id; }[m
+[32m+[m[32m    public String getNombre() { return nombre; }[m
+[32m+[m[32m    public String getDireccion() { return direccion; }[m
+[32m+[m[32m    public LocalDate getFechaNacimiento() { return fechaNacimiento; }[m
+[32m+[m[32m    public String getGenero() { return genero; }[m
+[32m+[m[32m    public double getSalario() { return salario; }[m
+[32m+[m[32m    public RolEmpleado getRol() { return rol; }[m
+[32m+[m[32m    public String getUsuario() { return usuario; }[m
+[32m+[m[32m    public String getPassword() { return password; }[m
+[32m+[m[32m    public boolean isEstadoActivo() { return estadoActivo; }[m
+[32m+[m[32m    public String getHorarioTrabajo() { return horarioTrabajo; }[m
+[32m+[m[32m    public Integer getNumeroVentanilla() { return numeroVentanilla; }[m
+[32m+[m[32m    public Integer getClientesAsignados() { return clientesAsignados; }[m
+[32m+[m[32m    public String getEspecializacion() { return especializacion; }[m
+[32m+[m[32m    public String getNivelAcceso() { return nivelAcceso; }[m
+[32m+[m[32m    public Integer getAnosExperiencia() { return anosExperiencia; }[m
+[32m+[m[32m    public String getIdSucursal() { return idSucursal; }[m
+[32m+[m
+     @Override[m
+     public String toString() {[m
+         return "Empleado{" +[m
+[36m@@ -164,8 +214,7 @@[m [mpublic class Empleado {[m
+                 ", salario=" + salario +[m
+                 ", rol=" + rol +[m
+                 ", usuario='" + usuario + '\'' +[m
+[31m-                ", password='" + password + '\'' +[m
+                 ", estadoActivo=" + estadoActivo +[m
+                 '}';[m
+     }[m
+[31m-}[m
+\ No newline at end of file[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/com/eurobank/views/EmpleadoDialog.java b/src/main/java/com/eurobank/views/EmpleadoDialog.java[m
+[1mindex e69de29..505daaf 100644[m
+[1m--- a/src/main/java/com/eurobank/views/EmpleadoDialog.java[m
+[1m+++ b/src/main/java/com/eurobank/views/EmpleadoDialog.java[m
+[36m@@ -0,0 +1,156 @@[m
+[32m+[m[32mpackage com.eurobank.views;[m
+[32m+[m
+[32m+[m[32mimport com.eurobank.controllers.EmpleadoDialogController;[m
+[32m+[m[32mimport com.eurobank.models.Empleado;[m
+[32m+[m[32mimport com.eurobank.models.RolEmpleado;[m
+[32m+[m[32mimport javafx.scene.Node;[m
+[32m+[m[32mimport javafx.scene.control.*;[m
+[32m+[m[32mimport javafx.scene.layout.GridPane;[m
+[32m+[m[32mimport javafx.geometry.Insets;[m
+[32m+[m[32mimport java.util.Optional;[m
+[32m+[m
+[32m+[m[32mpublic class EmpleadoDialog {[m
+[32m+[m
+[32m+[m[32m    public static Empleado mostrarDialogoAgregar() {[m
+[32m+[m[32m        EmpleadoDialogController controller = new EmpleadoDialogController();[m
+[32m+[m
+[32m+[m[32m        Dialog<Empleado> dialog = new Dialog<>();[m
+[32m+[m[32m        dialog.setTitle("Agregar Nuevo Empleado");[m
+[32m+[m[32m        dialog.setHeaderText("Complete los datos del empleado");[m
+[32m+[m
+[32m+[m[32m        ButtonType agregarButtonType = new ButtonType("Agregar", ButtonBar.ButtonData.OK_DONE);[m
+[32m+[m[32m        dialog.getDialogPane().getButtonTypes().addAll(agregarButtonType, ButtonType.CANCEL);[m
+[32m+[m
+[32m+[m[32m        GridPane grid = crearGrid();[m
+[32m+[m[32m        TextField tfNombre = new TextField();[m
+[32m+[m[32m        TextField tfDireccion = new TextField();[m
+[32m+[m[32m        DatePicker dpFechaNacimiento = new DatePicker();[m
+[32m+[m[32m        dpFechaNacimiento.getEditor().setDisable(true);[m
+[32m+[m[32m        dpFechaNacimiento.getEditor().setOpacity(1);[m
+[32m+[m[32m        TextField tfGenero = new TextField();[m
+[32m+[m[32m        TextField tfSalario = new TextField();[m
+[32m+[m[32m        ComboBox<RolEmpleado> cbRol = new ComboBox<>();[m
+[32m+[m[32m        cbRol.getItems().addAll(RolEmpleado.values());[m
+[32m+[m[32m        TextField tfUsuario = new TextField();[m
+[32m+[m[32m        PasswordField pfPassword = new PasswordField();[m
+[32m+[m[32m        TextField tfSucursal = new TextField();[m
+[32m+[m
+[32m+[m[32m        grid.add(new Label("Nombre:"), 0, 0); grid.add(tfNombre, 1, 0);[m
+[32m+[m[32m        grid.add(new Label("Dirección:"), 0, 1); grid.add(tfDireccion, 1, 1);[m
+[32m+[m[32m        grid.add(new Label("Fecha Nacimiento:"), 0, 2); grid.add(dpFechaNacimiento, 1, 2);[m
+[32m+[m[32m        grid.add(new Label("Género:"), 0, 3); grid.add(tfGenero, 1, 3);[m
+[32m+[m[32m        grid.add(new Label("Salario:"), 0, 4); grid.add(tfSalario, 1, 4);[m
+[32m+[m[32m        grid.add(new Label("Rol:"), 0, 5); grid.add(cbRol, 1, 5);[m
+[32m+[m[32m        grid.add(new Label("Usuario:"), 0, 6); grid.add(tfUsuario, 1, 6);[m
+[32m+[m[32m        grid.add(new Label("Contraseña:"), 0, 7); grid.add(pfPassword, 1, 7);[m
+[32m+[m[32m        grid.add(new Label("ID Sucursal:"), 0, 8); grid.add(tfSucursal, 1, 8);[m
+[32m+[m
+[32m+[m[32m        dialog.getDialogPane().setContent(grid);[m
+[32m+[m
+[32m+[m[32m        Node botonAgregar = dialog.getDialogPane().lookupButton(agregarButtonType);[m
+[32m+[m[32m        botonAgregar.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {[m
+[32m+[m[32m            controller.validarEmpleadoDesdeDialogo([m
+[32m+[m[32m                    tfNombre, tfDireccion, dpFechaNacimiento, tfGenero, tfSalario,[m
+[32m+[m[32m                    cbRol, tfUsuario, pfPassword, tfSucursal, event[m
+[32m+[m[32m            );[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        dialog.setResultConverter(dialogButton -> {[m
+[32m+[m[32m            if (dialogButton == agregarButtonType) {[m
+[32m+[m[32m                Empleado empleado = new Empleado();[m
+[32m+[m[32m                empleado.setNombre(tfNombre.getText());[m
+[32m+[m[32m                empleado.setDireccion(tfDireccion.getText());[m
+[32m+[m[32m                empleado.setFechaNacimiento(dpFechaNacimiento.getValue());[m
+[32m+[m[32m                empleado.setGenero(tfGenero.getText());[m
+[32m+[m[32m                empleado.setSalario(Double.parseDouble(tfSalario.getText()));[m
+[32m+[m[32m                empleado.setRol(cbRol.getValue());[m
+[32m+[m[32m                empleado.setUsuario(tfUsuario.getText());[m
+[32m+[m[32m                empleado.setPassword(pfPassword.getText());[m
+[32m+[m[32m                empleado.setIdSucursal(tfSucursal.getText());[m
+[32m+[m[32m                return empleado;[m
+[32m+[m[32m            }[m
+[32m+[m[32m            return null;[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        Optional<Empleado> resultado = dialog.showAndWait();[m
+[32m+[m[32m        return resultado.orElse(null);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static Empleado mostrarDialogoEditar(Empleado empleado) {[m
+[32m+[m[32m        EmpleadoDialogController controller = new EmpleadoDialogController();[m
+[32m+[m
+[32m+[m[32m        Dialog<Empleado> dialog = new Dialog<>();[m
+[32m+[m[32m        dialog.setTitle("Editar Empleado");[m
+[32m+[m[32m        dialog.setHeaderText("Edite los datos del empleado");[m
+[32m+[m
+[32m+[m[32m        ButtonType guardarButtonType = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);[m
+[32m+[m[32m        dialog.getDialogPane().getButtonTypes().addAll(guardarButtonType, ButtonType.CANCEL);[m
+[32m+[m
+[32m+[m[32m        GridPane grid = crearGrid();[m
+[32m+[m[32m        TextField tfNombre = new TextField(empleado.getNombre());[m
+[32m+[m[32m        TextField tfDireccion = new TextField(empleado.getDireccion());[m
+[32m+[m[32m        DatePicker dpFechaNacimiento = new DatePicker(empleado.getFechaNacimiento());[m
+[32m+[m[32m        dpFechaNacimiento.getEditor().setDisable(true);[m
+[32m+[m[32m        dpFechaNacimiento.getEditor().setOpacity(1);[m
+[32m+[m[32m        TextField tfGenero = new TextField(empleado.getGenero());[m
+[32m+[m[32m        TextField tfSalario = new TextField(String.valueOf(empleado.getSalario()));[m
+[32m+[m[32m        ComboBox<RolEmpleado> cbRol = new ComboBox<>();[m
+[32m+[m[32m        cbRol.getItems().addAll(RolEmpleado.values());[m
+[32m+[m[32m        cbRol.setValue(empleado.getRol());[m
+[32m+[m[32m        TextField tfUsuario = new TextField(empleado.getUsuario());[m
+[32m+[m[32m        PasswordField pfPassword = new PasswordField();[m
+[32m+[m[32m        pfPassword.setPromptText("Dejar en blanco para no cambiar");[m
+[32m+[m[32m        TextField tfSucursal = new TextField(empleado.getIdSucursal());[m
+[32m+[m
+[32m+[m[32m        grid.add(new Label("Nombre:"), 0, 0); grid.add(tfNombre, 1, 0);[m
+[32m+[m[32m        grid.add(new Label("Dirección:"), 0, 1); grid.add(tfDireccion, 1, 1);[m
+[32m+[m[32m        grid.add(new Label("Fecha Nacimiento:"), 0, 2); grid.add(dpFechaNacimiento, 1, 2);[m
+[32m+[m[32m        grid.add(new Label("Género:"), 0, 3); grid.add(tfGenero, 1, 3);[m
+[32m+[m[32m        grid.add(new Label("Salario:"), 0, 4); grid.add(tfSalario, 1, 4);[m
+[32m+[m[32m        grid.add(new Label("Rol:"), 0, 5); grid.add(cbRol, 1, 5);[m
+[32m+[m[32m        grid.add(new Label("Usuario:"), 0, 6); grid.add(tfUsuario, 1, 6);[m
+[32m+[m[32m        grid.add(new Label("Contraseña:"), 0, 7); grid.add(pfPassword, 1, 7);[m
+[32m+[m[32m        grid.add(new Label("ID Sucursal:"), 0, 8); grid.add(tfSucursal, 1, 8);[m
+[32m+[m
+[32m+[m[32m        dialog.getDialogPane().setContent(grid);[m
+[32m+[m
+[32m+[m[32m        Node botonGuardar = dialog.getDialogPane().lookupButton(guardarButtonType);[m
+[32m+[m[32m        botonGuardar.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {[m
+[32m+[m[32m            controller.validarEmpleadoDesdeDialogo([m
+[32m+[m[32m                    tfNombre, tfDireccion, dpFechaNacimiento, tfGenero, tfSalario,[m
+[32m+[m[32m                    cbRol, tfUsuario, pfPassword, tfSucursal, event[m
+[32m+[m[32m            );[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        dialog.setResultConverter(dialogButton -> {[m
+[32m+[m[32m            if (dialogButton == guardarButtonType) {[m
+[32m+[m[32m                empleado.setNombre(tfNombre.getText());[m
+[32m+[m[32m                empleado.setDireccion(tfDireccion.getText());[m
+[32m+[m[32m                empleado.setFechaNacimiento(dpFechaNacimiento.getValue());[m
+[32m+[m[32m                empleado.setGenero(tfGenero.getText());[m
+[32m+[m[32m                empleado.setSalario(Double.parseDouble(tfSalario.getText()));[m
+[32m+[m[32m                empleado.setRol(cbRol.getValue());[m
+[32m+[m[32m                empleado.setUsuario(tfUsuario.getText());[m
+[32m+[m
+[32m+[m[32m                if (!pfPassword.getText().isEmpty()) {[m
+[32m+[m[32m                    empleado.setPassword(pfPassword.getText());[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                empleado.setIdSucursal(tfSucursal.getText());[m
+[32m+[m[32m                return empleado;[m
+[32m+[m[32m            }[m
+[32m+[m[32m            return null;[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        Optional<Empleado> resultado = dialog.showAndWait();[m
+[32m+[m[32m        return resultado.orElse(null);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private static GridPane crearGrid() {[m
+[32m+[m[32m        GridPane grid = new GridPane();[m
+[32m+[m[32m        grid.setHgap(10);[m
+[32m+[m[32m        grid.setVgap(10);[m
+[32m+[m[32m        grid.setPadding(new Insets(20, 150, 10, 10));[m
+[32m+[m[32m        return grid;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/com/eurobank/views/EmpleadosView.java b/src/main/java/com/eurobank/views/EmpleadosView.java[m
+[1mindex db94c68..f33ce36 100644[m
+[1m--- a/src/main/java/com/eurobank/views/EmpleadosView.java[m
+[1m+++ b/src/main/java/com/eurobank/views/EmpleadosView.java[m
+[36m@@ -1,176 +1,129 @@[m
+[31m-//package com.eurobank.views;[m
+[31m-//[m
+[31m-//import javafx.scene.Scene;[m
+[31m-//import javafx.scene.control.*;[m
+[31m-//import javafx.scene.control.cell.PropertyValueFactory;[m
+[31m-//import javafx.scene.layout.BorderPane;[m
+[31m-//import javafx.scene.layout.HBox;[m
+[31m-//import javafx.scene.layout.VBox;[m
+[31m-//import javafx.stage.Stage;[m
+[31m-//import com.eurobank.models.Empleado;[m
+[31m-//import com.eurobank.models.RolEmpleado;[m
+[31m-//import javafx.beans.property.SimpleStringProperty;[m
+[31m-//import javafx.collections.FXCollections;[m
+[31m-//import javafx.collections.ObservableList;[m
+[31m-//import javafx.collections.transformation.FilteredList;[m
+[31m-//import javafx.event.ActionEvent;[m
+[31m-//import javafx.event.EventHandler;[m
+[31m-//import javafx.geometry.Insets;[m
+[31m-//[m
+[31m-//import java.time.LocalDate;[m
+[31m-//import java.util.Optional;[m
+[31m-//[m
+[31m-//public class EmpleadosView {[m
+[31m-//    private static ObservableList<Empleado> empleados = FXCollections.observableArrayList();[m
+[31m-//    private static FilteredList<Empleado> empleadosFiltrados = new FilteredList<>(empleados, emp -> emp.isEstadoActivo());[m
+[31m-//[m
+[31m-//    static {[m
+[31m-//        cargarDatosEjemplo();[m
+[31m-//    }[m
+[31m-//[m
+[31m-//    public static void mostrar() {[m
+[31m-//        Stage stage = new Stage();[m
+[31m-//        stage.setTitle("Gestión de Empleados");[m
+[31m-//[m
+[31m-//        TableView<Empleado> tableView = crearTablaEmpleados();[m
+[31m-//[m
+[31m-//        ComboBox<RolEmpleado> cbFiltroRol = crearComboFiltro();[m
+[31m-//[m
+[31m-//        HBox controlesInferiores = crearControlesCRUD(tableView);[m
+[31m-//[m
+[31m-//        VBox controlesSuperiores = new VBox(10,[m
+[31m-//                new Label("Filtrar empleados por rol:"),[m
+[31m-//                cbFiltroRol);[m
+[31m-//        controlesSuperiores.setPadding(new Insets(10));[m
+[31m-//[m
+[31m-//        BorderPane root = new BorderPane();[m
+[31m-//        root.setTop(controlesSuperiores);[m
+[31m-//        root.setCenter(tableView);[m
+[31m-//        root.setBottom(controlesInferiores);[m
+[31m-//[m
+[31m-//        Scene scene = new Scene(root, 800, 500);[m
+[31m-//        stage.setScene(scene);[m
+[31m-//        stage.show();[m
+[31m-//    }[m
+[31m-//[m
+[31m-//    private static TableView<Empleado> crearTablaEmpleados() {[m
+[31m-//        TableView<Empleado> tableView = new TableView<>();[m
+[31m-//        tableView.setItems(empleadosFiltrados);[m
+[31m-//[m
+[31m-//        TableColumn<Empleado, String> colId = new TableColumn<>("ID");[m
+[31m-//        colId.setCellValueFactory(new PropertyValueFactory<>("id"));[m
+[31m-//[m
+[31m-//        TableColumn<Empleado, String> colNombre = new TableColumn<>("Nombre");[m
+[31m-//        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));[m
+[31m-//[m
+[31m-//        TableColumn<Empleado, String> colUsuario = new TableColumn<>("Usuario");[m
+[31m-//        colUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));[m
+[31m-//[m
+[31m-//        TableColumn<Empleado, String> colRol = new TableColumn<>("Rol");[m
+[31m-//        colRol.setCellValueFactory(new PropertyValueFactory<>("rol"));[m
+[31m-//[m
+[31m-//        TableColumn<Empleado, String> colDetalleRol = new TableColumn<>("Detalle Rol");[m
+[31m-//        colDetalleRol.setCellValueFactory(cellData -> {[m
+[31m-//            Empleado emp = cellData.getValue();[m
+[31m-//            switch(emp.getRol()) {[m
+[31m-//                case CAJERO:[m
+[31m-//                    return new SimpleStringProperty("Ventanilla: " + emp.getNumeroVentanilla() + " | Horario: " + emp.getHorarioTrabajo());[m
+[31m-//                case EJECUTIVO_CUENTA:[m
+[31m-//                    return new SimpleStringProperty("Clientes: " + emp.getClientesAsignados() + " | Especialización: " + emp.getEspecializacion());[m
+[31m-//                case GERENTE:[m
+[31m-//                    return new SimpleStringProperty("Nivel: " + emp.getNivelAcceso() + " | Exp: " + emp.getAnosExperiencia() + " años");[m
+[31m-//                default:[m
+[31m-//                    return new SimpleStringProperty("");[m
+[31m-//            }[m
+[31m-//        });[m
+[31m-//[m
+[31m-//        tableView.getColumns().addAll(colId, colNombre, colUsuario, colRol, colDetalleRol);[m
+[31m-//        return tableView;[m
+[31m-//    }[m
+[31m-//[m
+[31m-//    private static ComboBox<RolEmpleado> crearComboFiltro() {[m
+[31m-//        ComboBox<RolEmpleado> cbFiltroRol = new ComboBox<>();[m
+[31m-//        cbFiltroRol.getItems().addAll(RolEmpleado.values());[m
+[31m-//        cbFiltroRol.getItems().add(0, null);[m
+[31m-//        cbFiltroRol.setPromptText("Seleccione un rol");[m
+[31m-//[m
+[31m-//        cbFiltroRol.setOnAction(new EventHandler<ActionEvent>() {[m
+[31m-//            @Override[m
+[31m-//            public void handle(ActionEvent event) {[m
+[31m-//                RolEmpleado rolSeleccionado = cbFiltroRol.getValue();[m
+[31m-//                empleadosFiltrados.setPredicate(empleado -> {[m
+[31m-//                    boolean activo = empleado.isEstadoActivo();[m
+[31m-//                    if (!activo) return false;[m
+[31m-//                    if (rolSeleccionado == null) return true;[m
+[31m-//                    return empleado.getRol() == rolSeleccionado;[m
+[31m-//                });[m
+[31m-//            }[m
+[31m-//        });[m
+[31m-//        return cbFiltroRol;[m
+[31m-//    }[m
+[31m-//[m
+[31m-//    private static HBox crearControlesCRUD(TableView<Empleado> tableView) {[m
+[31m-//        Button btnAgregar = new Button("Agregar");[m
+[31m-//        Button btnEditar = new Button("Editar");[m
+[31m-//        Button btnEliminar = new Button("Eliminar");[m
+[31m-//[m
+[31m-//        btnAgregar.setOnAction(new EventHandler<ActionEvent>() {[m
+[31m-//            @Override[m
+[31m-//            public void handle(ActionEvent event) {[m
+[31m-//                EmpleadoDialog.mostrarDialogoAgregar(empleados);[m
+[31m-//            }[m
+[31m-//        });[m
+[31m-//[m
+[31m-//        btnEditar.setOnAction(new EventHandler<ActionEvent>() {[m
+[31m-//            @Override[m
+[31m-//            public void handle(ActionEvent event) {[m
+[31m-//                Empleado seleccionado = tableView.getSelectionModel().getSelectedItem();[m
+[31m-//                if (seleccionado != null) {[m
+[31m-//                    EmpleadoDialog.mostrarDialogoEditar(seleccionado);[m
+[31m-//                }[m
+[31m-//            }[m
+[31m-//        });[m
+[31m-//[m
+[31m-//        btnEliminar.setOnAction(new EventHandler<ActionEvent>() {[m
+[31m-//            @Override[m
+[31m-//            public void handle(ActionEvent event) {[m
+[31m-//                Empleado seleccionado = tableView.getSelectionModel().getSelectedItem();[m
+[31m-//                if (seleccionado != null) {[m
+[31m-//                    Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);[m
+[31m-//                    confirmacion.setTitle("Confirmar eliminación");[m
+[31m-//                    confirmacion.setHeaderText("¿Está seguro de desactivar este empleado?");[m
+[31m-//                    confirmacion.setContentText("Esta acción no se puede deshacer.");[m
+[31m-//[m
+[31m-//                    Optional<ButtonType> resultado = confirmacion.showAndWait();[m
+[31m-//                    if (resultado.isPresent() && resultado.get() == ButtonType.OK) {[m
+[31m-//                        seleccionado.desactivar();[m
+[31m-//                        tableView.refresh();[m
+[31m-//                    }[m
+[31m-//                }[m
+[31m-//            }[m
+[31m-//        });[m
+[31m-//[m
+[31m-//        HBox controles = new HBox(10, btnAgregar, btnEditar, btnEliminar);[m
+[31m-//        controles.setPadding(new Insets(10));[m
+[31m-//        return controles;[m
+[31m-//    }[m
+[31m-//[m
+[31m-//    private static void cargarDatosEjemplo() {[m
+[31m-//        empleados.add(new Empleado("E001", "Juan Pérez", "Calle Principal 123", LocalDate.of(1985, 5, 20), "Masculino", 50000.0, RolEmpleado.ADMINISTRADOR, "jperez", "jperez123"));[m
+[31m-//[m
+[31m-//        Empleado gerente = new Empleado("E002", "María García", "Avenida Central 456", LocalDate.of(1978, 3, 15), "Femenino", 75000.0, RolEmpleado.GERENTE, "mgarciag", "mgarciag123");[m
+[31m-//        gerente.setNivelAcceso("regional");[m
+[31m-//        gerente.setAnosExperiencia(5);[m
+[31m-//        empleados.add(gerente);[m
+[31m-//[m
+[31m-//        Empleado ejecutivo = new Empleado("E003", "Carlos López", "Calle Secundaria 789", LocalDate.of(1990, 7, 10), "Masculino", 60000.0, RolEmpleado.EJECUTIVO_CUENTA, "clopez", "clopez123");[m
+[31m-//        ejecutivo.setEspecializacion("PYMES");[m
+[31m-//        ejecutivo.setClientesAsignados(15);[m
+[31m-//        empleados.add(ejecutivo);[m
+[31m-//[m
+[31m-//        Empleado cajero = new Empleado("E004", "Ana Martínez", "Plaza Mayor 321", LocalDate.of(1995, 11, 25), "Femenino", 40000.0, RolEmpleado.CAJERO, "amartinez", "amartinez123");[m
+[31m-//        cajero.setHorarioTrabajo("08:00-16:00");[m
+[31m-//        cajero.setNumeroVentanilla(3);[m
+[31m-//        empleados.add(cajero);[m
+[31m-//    }[m
+[31m-//}[m
+\ No newline at end of file[m
+[32m+[m[32mpackage com.eurobank.views;[m
+[32m+[m
+[32m+[m[32mimport com.eurobank.controllers.EmpleadosController;[m
+[32m+[m[32mimport com.eurobank.models.Empleado;[m
+[32m+[m[32mimport com.eurobank.models.RolEmpleado;[m
+[32m+[m[32mimport javafx.collections.ObservableList;[m
+[32m+[m[32mimport javafx.geometry.Insets;[m
+[32m+[m[32mimport javafx.scene.Scene;[m
+[32m+[m[32mimport javafx.scene.control.*;[m
+[32m+[m[32mimport javafx.scene.control.cell.PropertyValueFactory;[m
+[32m+[m[32mimport javafx.scene.layout.BorderPane;[m
+[32m+[m[32mimport javafx.scene.layout.HBox;[m
+[32m+[m[32mimport javafx.scene.layout.VBox;[m
+[32m+[m[32mimport javafx.stage.Stage;[m
+[32m+[m
+[32m+[m[32mpublic class EmpleadosView {[m
+[32m+[m
+[32m+[m[32m    private Stage stage;[m
+[32m+[m[32m    private TableView<Empleado> tableView;[m
+[32m+[m[32m    private ComboBox<RolEmpleado> cbFiltroRol;[m
+[32m+[m[32m    private Button btnAgregar;[m
+[32m+[m[32m    private Button btnEditar;[m
+[32m+[m[32m    private Button btnEliminar;[m
+[32m+[m[32m    private EmpleadosController controller;[m
+[32m+[m
+[32m+[m[32m    public EmpleadosView(EmpleadosController controller) {[m
+[32m+[m[32m        this.controller = controller;[m
+[32m+[m[32m        initializeUI();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void initializeUI() {[m
+[32m+[m[32m        stage = new Stage();[m
+[32m+[m[32m        stage.setTitle("Gestión de Empleados");[m
+[32m+[m
+[32m+[m[32m        tableView = new TableView<>();[m
+[32m+[m[32m        crearColumnasTabla();[m
+[32m+[m
+[32m+[m[32m        // Hacer que las columnas usen todo el ancho disponible[m
+[32m+[m[32m        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);[m
+[32m+[m
+[32m+[m[32m        // Aumentar altura de las filas[m
+[32m+[m[32m        tableView.setFixedCellSize(40);[m
+[32m+[m[32m        tableView.setRowFactory(tv -> {[m
+[32m+[m[32m            TableRow<Empleado> row = new TableRow<>();[m
+[32m+[m[32m            row.setStyle("-fx-cell-size: 40px;");[m
+[32m+[m[32m            return row;[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        cbFiltroRol = new ComboBox<>();[m
+[32m+[m[32m        cbFiltroRol.getItems().addAll(RolEmpleado.values());[m
+[32m+[m[32m        cbFiltroRol.getItems().add(0, null);[m
+[32m+[m[32m        cbFiltroRol.setPromptText("Todos los roles");[m
+[32m+[m
+[32m+[m[32m        btnAgregar = new Button("Agregar");[m
+[32m+[m[32m        btnEditar = new Button("Editar");[m
+[32m+[m[32m        btnEliminar = new Button("Eliminar");[m
+[32m+[m
+[32m+[m[32m        VBox controlesSuperiores = new VBox(10,[m
+[32m+[m[32m                new Label("Filtrar por rol:"),[m
+[32m+[m[32m                cbFiltroRol);[m
+[32m+[m[32m        controlesSuperiores.setPadding(new Insets(10));[m
+[32m+[m
+[32m+[m[32m        HBox controlesInferiores = new HBox(10, btnAgregar, btnEditar, btnEliminar);[m
+[32m+[m[32m        controlesInferiores.setPadding(new Insets(10));[m
+[32m+[m
+[32m+[m[32m        BorderPane root = new BorderPane();[m
+[32m+[m[32m        root.setTop(controlesSuperiores);[m
+[32m+[m[32m        root.setCenter(tableView);[m
+[32m+[m[32m        root.setBottom(controlesInferiores);[m
+[32m+[m
+[32m+[m[32m        Scene scene = new Scene(root, 900, 600);[m
+[32m+[m[32m        stage.setScene(scene);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void crearColumnasTabla() {[m
+[32m+[m[32m        TableColumn<Empleado, String> colId = new TableColumn<>("ID");[m
+[32m+[m[32m        colId.setCellValueFactory(new PropertyValueFactory<>("id"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, String> colNombre = new TableColumn<>("Nombre");[m
+[32m+[m[32m        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, String> colDireccion = new TableColumn<>("Dirección");[m
+[32m+[m[32m        colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, String> colRol = new TableColumn<>("Rol");[m
+[32m+[m[32m        colRol.setCellValueFactory(new PropertyValueFactory<>("rol"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, String> colUsuario = new TableColumn<>("Usuario");[m
+[32m+[m[32m        colUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, Double> colSalario = new TableColumn<>("Salario");[m
+[32m+[m[32m        colSalario.setCellValueFactory(new PropertyValueFactory<>("salario"));[m
+[32m+[m
+[32m+[m[32m        TableColumn<Empleado, String> colSucursal = new TableColumn<>("Sucursal");[m
+[32m+[m[32m        colSucursal.setCellValueFactory(new PropertyValueFactory<>("idSucursal"));[m
+[32m+[m
+[32m+[m[32m        tableView.getColumns().addAll([m
+[32m+[m[32m                colId, colNombre, colDireccion, colRol, colUsuario, colSalario, colSucursal[m
+[32m+[m[32m        );[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void mostrar() {[m
+[32m+[m[32m        stage.show();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public TableView<Empleado> getTableView() {[m
+[32m+[m[32m        return tableView;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public ComboBox<RolEmpleado> getCbFiltroRol() {[m
+[32m+[m[32m        return cbFiltroRol;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public Button getBtnAgregar() {[m
+[32m+[m[32m        return btnAgregar;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public Button getBtnEditar() {[m
+[32m+[m[32m        return btnEditar;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public Button getBtnEliminar() {[m
+[32m+[m[32m        return btnEliminar;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setEmpleadosEnTabla(ObservableList<Empleado> empleados) {[m
+[32m+[m[32m        tableView.setItems(empleados);[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/main/java/org/example/MainEmpleados.java b/src/main/java/org/example/MainEmpleados.java[m
+[1mindex a459bfa..c9daef4 100644[m
+[1m--- a/src/main/java/org/example/MainEmpleados.java[m
+[1m+++ b/src/main/java/org/example/MainEmpleados.java[m
+[36m@@ -1,66 +1,42 @@[m
+ package org.example;[m
+ [m
+[32m+[m[32mimport com.eurobank.controllers.EmpleadosController;[m
+ import com.eurobank.models.DAO.EmpleadoDAO;[m
+ import com.eurobank.models.Empleado;[m
+ import com.eurobank.models.RolEmpleado;[m
+[32m+[m[32mimport javafx.application.Application;[m
+[32m+[m[32mimport javafx.scene.Scene;[m
+[32m+[m[32mimport javafx.scene.control.Button;[m
+[32m+[m[32mimport javafx.scene.layout.VBox;[m
+[32m+[m[32mimport javafx.stage.Stage;[m
+ [m
+ import java.io.IOException;[m
+ import java.util.List;[m
+ [m
+[31m-public class MainEmpleados {[m
+[32m+[m[32mpublic class MainEmpleados extends Application {[m
+     public static void main(String[] args) {[m
+[31m-        try {[m
+[31m-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();[m
+[31m-[m
+[31m-            // Test crearNuevoEmpleado[m
+[31m-            Empleado nuevoEmpleado = new Empleado();[m
+[31m-            nuevoEmpleado.setRol(RolEmpleado.CAJERO);[m
+[31m-            nuevoEmpleado.setNombre("Juan Gomez");[m
+[31m-            nuevoEmpleado.setDireccion("123 Calle Falsa");[m
+[31m-[m
+[31m-            nuevoEmpleado.setIdSucursal("SUC-001");[m
+[31m-            nuevoEmpleado.setHorarioTrabajo("9:00 AM - 5:00 PM");[m
+[31m-            nuevoEmpleado.setNumeroVentanilla(1);[m
+[31m-            Empleado empleadoCreado = empleadoDAO.crearNuevoEmpleado(nuevoEmpleado);[m
+[31m-            System.out.println("Empleado creado: " + empleadoCreado);[m
+[31m-[m
+[31m-            // Test listarEmpleadosActivos[m
+[31m-            List<Empleado> empleadosActivos = empleadoDAO.listarEmpleadosActivos();[m
+[31m-            System.out.println("Empleados activos:");[m
+[31m-            for (Empleado empleado : empleadosActivos) {[m
+[31m-                System.out.println(empleado);[m
+[31m-            }[m
+[31m-[m
+[31m-            // Test buscarEmpleadoPorId[m
+[31m-            String idEmpleado = empleadoCreado.getId();[m
+[31m-            Empleado empleadoEncontrado = empleadoDAO.buscarEmpleadoPorId(idEmpleado);[m
+[31m-            System.out.println("Empleado encontrado con ID " + idEmpleado + ": " + empleadoEncontrado);[m
+[31m-[m
+[31m-            // Test filtrarEmpleadosPorRol[m
+[31m-            List<Empleado> empleadosPorRol = empleadoDAO.filtrarEmpleadosPorRol(RolEmpleado.CAJERO);[m
+[31m-            System.out.println("Empleados con rol CAJERO:");[m
+[31m-            for (Empleado empleado : empleadosPorRol) {[m
+[31m-                System.out.println(empleado);[m
+[31m-            }[m
+[31m-[m
+[31m-            // Test listarEmpleadosPorSucursal[m
+[31m-            List<Empleado> empleadosPorSucursal = empleadoDAO.listarEmpleadosPorSucursal("SUC-001");[m
+[31m-            System.out.println("Empleados en la sucursal SUC-001:");[m
+[31m-            for (Empleado empleado : empleadosPorSucursal) {[m
+[31m-                System.out.println(empleado);[m
+[31m-            }[m
+[31m-[m
+[31m-            // Test actualizarEmpleado[m
+[31m-            nuevoEmpleado.setHorarioTrabajo("10:00 AM - 6:00 PM");[m
+[31m-            boolean actualizado = empleadoDAO.actualizarEmpleado(idEmpleado, nuevoEmpleado);[m
+[31m-            System.out.println("Empleado actualizado: " + actualizado);[m
+[31m-[m
+[31m-            // Test eliminarEmpleado[m
+[31m-            boolean eliminado = empleadoDAO.eliminarEmpleado(idEmpleado);[m
+[31m-            System.out.println("Empleado eliminado: " + eliminado);[m
+[32m+[m[32m        launch(args);[m
+[32m+[m[32m    }[m
+ [m
+[31m-        } catch (IOException e) {[m
+[31m-            System.err.println("Error: " + e.getMessage());[m
+[31m-        }[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public void start(Stage primaryStage) {[m
+[32m+[m[32m        // Configuración de la ventana principal[m
+[32m+[m[32m        primaryStage.setTitle("EuroBank - Sistema de Gestión");[m
+[32m+[m
+[32m+[m[32m        // Botón para abrir la gestión de empleados[m
+[32m+[m[32m        Button btnGestionEmpleados = new Button("Abrir Gestión de Empleados");[m
+[32m+[m[32m        btnGestionEmpleados.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");[m
+[32m+[m[32m        btnGestionEmpleados.setOnAction(e -> {[m
+[32m+[m[32m            EmpleadosController empleadosController = new EmpleadosController();[m
+[32m+[m[32m            empleadosController.mostrarVentana();[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        // Layout simple[m
+[32m+[m[32m        VBox root = new VBox(20, btnGestionEmpleados);[m
+[32m+[m[32m        root.setStyle("-fx-padding: 30; -fx-alignment: center;");[m
+[32m+[m
+[32m+[m[32m        Scene scene = new Scene(root, 400, 200);[m
+[32m+[m[32m        primaryStage.setScene(scene);[m
+[32m+[m[32m        primaryStage.show();[m
+     }[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/data/empleados.json b/src/main/resources/data/empleados.json[m
+[1mindex f200902..e76432c 100644[m
+[1m--- a/src/main/resources/data/empleados.json[m
+[1m+++ b/src/main/resources/data/empleados.json[m
+[36m@@ -18,14 +18,14 @@[m
+   "idSucursal" : "S-001"[m
+ }, {[m
+   "id" : "E-002",[m
+[31m-  "nombre" : "Carlos Ruiz",[m
+[31m-  "direccion" : "Avenida Real 456",[m
+[32m+[m[32m  "nombre" : "Alberto Villalva",[m
+[32m+[m[32m  "direccion" : "Avenida Real 255",[m
+   "fechaNacimiento" : "1985-10-20",[m
+   "genero" : "Masculino",[m
+   "salario" : 50000.0,[m
+   "rol" : "GERENTE",[m
+   "usuario" : "cruiz",[m
+[31m-  "password" : "admin456",[m
+[32m+[m[32m  "password" : "sdfasdfasdf",[m
+   "estadoActivo" : true,[m
+   "horarioTrabajo" : null,[m
+   "numeroVentanilla" : null,[m
+[36m@@ -35,17 +35,17 @@[m
+   "anosExperiencia" : 8,[m
+   "idSucursal" : "S-001"[m
+ }, {[m
+[31m-  "id" : "E-3",[m
+[31m-  "nombre" : null,[m
+[31m-  "direccion" : null,[m
+[31m-  "fechaNacimiento" : null,[m
+[31m-  "genero" : null,[m
+[31m-  "salario" : 0.0,[m
+[32m+[m[32m  "id" : "E-003",[m
+[32m+[m[32m  "nombre" : "Luis Herrera",[m
+[32m+[m[32m  "direccion" : "Calle Reforma 456",[m
+[32m+[m[32m  "fechaNacimiento" : "1992-03-12",[m
+[32m+[m[32m  "genero" : "Masculino",[m
+[32m+[m[32m  "salario" : 20000.0,[m
+   "rol" : "CAJERO",[m
+[31m-  "usuario" : null,[m
+[31m-  "password" : null,[m
+[31m-  "estadoActivo" : false,[m
+[31m-  "horarioTrabajo" : "10:00 AM - 6:00 PM",[m
+[32m+[m[32m  "usuario" : "lherrera",[m
+[32m+[m[32m  "password" : "secure123",[m
+[32m+[m[32m  "estadoActivo" : true,[m
+[32m+[m[32m  "horarioTrabajo" : "L-V 9:00-17:00",[m
+   "numeroVentanilla" : 1,[m
+   "clientesAsignados" : null,[m
+   "especializacion" : null,[m
+[36m@@ -53,38 +53,38 @@[m
+   "anosExperiencia" : null,[m
+   "idSucursal" : "SUC-001"[m
+ }, {[m
+[31m-  "id" : "E-4",[m
+[31m-  "nombre" : "Juan Gomez",[m
+[31m-  "direccion" : "123 Calle Falsa",[m
+[31m-  "fechaNacimiento" : null,[m
+[31m-  "genero" : null,[m
+[31m-  "salario" : 0.0,[m
+[31m-  "rol" : "CAJERO",[m
+[31m-  "usuario" : null,[m
+[31m-  "password" : null,[m
+[32m+[m[32m  "id" : "E-004",[m
+[32m+[m[32m  "nombre" : "María González",[m
+[32m+[m[32m  "direccion" : "Avenida Central 789",[m
+[32m+[m[32m  "fechaNacimiento" : "1980-07-10",[m
+[32m+[m[32m  "genero" : "Femenino",[m
+[32m+[m[32m  "salario" : 48000.0,[m
+[32m+[m[32m  "rol" : "GERENTE",[m
+[32m+[m[32m  "usuario" : "mgonzalez",[m
+[32m+[m[32m  "password" : "admin789",[m
+   "estadoActivo" : true,[m
+[31m-  "horarioTrabajo" : "10:00 AM - 6:00 PM",[m
+[31m-  "numeroVentanilla" : 1,[m
+[32m+[m[32m  "horarioTrabajo" : null,[m
+[32m+[m[32m  "numeroVentanilla" : null,[m
+   "clientesAsignados" : null,[m
+   "especializacion" : null,[m
+[31m-  "nivelAcceso" : null,[m
+[31m-  "anosExperiencia" : null,[m
+[32m+[m[32m  "nivelAcceso" : "nacional",[m
+[32m+[m[32m  "anosExperiencia" : 12,[m
+   "idSucursal" : "SUC-001"[m
+ }, {[m
+[31m-  "id" : "E-5",[m
+[31m-  "nombre" : "Juan Gomez",[m
+[31m-  "direccion" : "123 Calle Falsa",[m
+[31m-  "fechaNacimiento" : null,[m
+[31m-  "genero" : null,[m
+[31m-  "salario" : 0.0,[m
+[31m-  "rol" : "CAJERO",[m
+[31m-  "usuario" : null,[m
+[31m-  "password" : null,[m
+[31m-  "estadoActivo" : false,[m
+[31m-  "horarioTrabajo" : "10:00 AM - 6:00 PM",[m
+[31m-  "numeroVentanilla" : 1,[m
+[31m-  "clientesAsignados" : null,[m
+[31m-  "especializacion" : null,[m
+[32m+[m[32m  "id" : "E-005",[m
+[32m+[m[32m  "nombre" : "Lucía Torres",[m
+[32m+[m[32m  "direccion" : "Boulevard Norte 321",[m
+[32m+[m[32m  "fechaNacimiento" : "1995-04-22",[m
+[32m+[m[32m  "genero" : "Femenino",[m
+[32m+[m[32m  "salario" : 32000.0,[m
+[32m+[m[32m  "rol" : "EJECUTIVO_CUENTA",[m
+[32m+[m[32m  "usuario" : "ltorres",[m
+[32m+[m[32m  "password" : "ejecutivo456",[m
+[32m+[m[32m  "estadoActivo" : true,[m
+[32m+[m[32m  "horarioTrabajo" : null,[m
+[32m+[m[32m  "numeroVentanilla" : null,[m
+[32m+[m[32m  "clientesAsignados" : 30,[m
+[32m+[m[32m  "especializacion" : "PYMES",[m
+   "nivelAcceso" : null,[m
+   "anosExperiencia" : null,[m
+   "idSucursal" : "SUC-001"[m

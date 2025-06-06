@@ -1,66 +1,42 @@
 package org.example;
 
+import com.eurobank.controllers.EmpleadosController;
 import com.eurobank.models.DAO.EmpleadoDAO;
 import com.eurobank.models.Empleado;
 import com.eurobank.models.RolEmpleado;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 
-public class MainEmpleados {
+public class MainEmpleados extends Application {
     public static void main(String[] args) {
-        try {
-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        launch(args);
+    }
 
-            // Test crearNuevoEmpleado
-            Empleado nuevoEmpleado = new Empleado();
-            nuevoEmpleado.setRol(RolEmpleado.CAJERO);
-            nuevoEmpleado.setNombre("Juan Gomez");
-            nuevoEmpleado.setDireccion("123 Calle Falsa");
+    @Override
+    public void start(Stage primaryStage) {
+        // Configuración de la ventana principal
+        primaryStage.setTitle("EuroBank - Sistema de Gestión");
 
-            nuevoEmpleado.setIdSucursal("SUC-001");
-            nuevoEmpleado.setHorarioTrabajo("9:00 AM - 5:00 PM");
-            nuevoEmpleado.setNumeroVentanilla(1);
-            Empleado empleadoCreado = empleadoDAO.crearNuevoEmpleado(nuevoEmpleado);
-            System.out.println("Empleado creado: " + empleadoCreado);
+        // Botón para abrir la gestión de empleados
+        Button btnGestionEmpleados = new Button("Abrir Gestión de Empleados");
+        btnGestionEmpleados.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
+        btnGestionEmpleados.setOnAction(e -> {
+            EmpleadosController empleadosController = new EmpleadosController();
+            empleadosController.mostrarVentana();
+        });
 
-            // Test listarEmpleadosActivos
-            List<Empleado> empleadosActivos = empleadoDAO.listarEmpleadosActivos();
-            System.out.println("Empleados activos:");
-            for (Empleado empleado : empleadosActivos) {
-                System.out.println(empleado);
-            }
+        // Layout simple
+        VBox root = new VBox(20, btnGestionEmpleados);
+        root.setStyle("-fx-padding: 30; -fx-alignment: center;");
 
-            // Test buscarEmpleadoPorId
-            String idEmpleado = empleadoCreado.getId();
-            Empleado empleadoEncontrado = empleadoDAO.buscarEmpleadoPorId(idEmpleado);
-            System.out.println("Empleado encontrado con ID " + idEmpleado + ": " + empleadoEncontrado);
-
-            // Test filtrarEmpleadosPorRol
-            List<Empleado> empleadosPorRol = empleadoDAO.filtrarEmpleadosPorRol(RolEmpleado.CAJERO);
-            System.out.println("Empleados con rol CAJERO:");
-            for (Empleado empleado : empleadosPorRol) {
-                System.out.println(empleado);
-            }
-
-            // Test listarEmpleadosPorSucursal
-            List<Empleado> empleadosPorSucursal = empleadoDAO.listarEmpleadosPorSucursal("SUC-001");
-            System.out.println("Empleados en la sucursal SUC-001:");
-            for (Empleado empleado : empleadosPorSucursal) {
-                System.out.println(empleado);
-            }
-
-            // Test actualizarEmpleado
-            nuevoEmpleado.setHorarioTrabajo("10:00 AM - 6:00 PM");
-            boolean actualizado = empleadoDAO.actualizarEmpleado(idEmpleado, nuevoEmpleado);
-            System.out.println("Empleado actualizado: " + actualizado);
-
-            // Test eliminarEmpleado
-            boolean eliminado = empleadoDAO.eliminarEmpleado(idEmpleado);
-            System.out.println("Empleado eliminado: " + eliminado);
-
-        } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
+        Scene scene = new Scene(root, 400, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

@@ -1,148 +1,110 @@
 package com.eurobank.models;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class Empleado {
 
     private String id;
     private String nombre;
-    private String direccion; // Nuevo campo
-    private LocalDate fechaNacimiento; // Nuevo campo
-    private String genero; // Nuevo campo (podría ser ENUM)
-    private double salario; // Nuevo campo
+    private String direccion;
+    private LocalDate fechaNacimiento;
+    private String genero;
+    private double salario;
     private RolEmpleado rol;
     private String usuario;
     private String password;
-    private boolean estadoActivo;
+    private boolean estadoActivo = true;
+    private String horarioTrabajo;
+    private Integer numeroVentanilla;
+    private Integer clientesAsignados;
+    private String especializacion;
+    private String nivelAcceso;
+    private Integer anosExperiencia;
+    private String idSucursal;
 
+    private static final Pattern HORARIO_PATTERN = Pattern.compile("^([A-Za-z]-[A-Za-z])\\s\\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$");
+    private static final List<String> ESPECIALIZACIONES_VALIDAS = Arrays.asList("PYMES", "corporativo");
+    private static final List<String> NIVELES_ACCESO_VALIDOS = Arrays.asList("sucursal", "regional", "nacional");
+
+    public Empleado() {
+    }
 
     public Empleado(String id, String nombre, String direccion, LocalDate fechaNacimiento,
                     String genero, double salario, RolEmpleado rol, String usuario, String password) {
+        setId(id);
+        setNombre(nombre);
+        setDireccion(direccion);
+        setFechaNacimiento(fechaNacimiento);
+        setGenero(genero);
+        setSalario(salario);
+        setRol(rol);
+        setUsuario(usuario);
+        setPassword(password);
+    }
+
+    public void setId(String id) {
         this.id = id;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.genero = genero;
-        this.salario = salario;
-        this.rol = rol;
-        this.usuario = usuario;
-        this.password = password;
-        this.estadoActivo = true;
     }
 
-    public Empleado() {
-
-    }
-
-    private String horarioTrabajo; // Para cajeros
-    private Integer numeroVentanilla; // Para cajeros
-    private Integer clientesAsignados; // Para ejecutivos
-    private String especializacion; // Para ejecutivos (PYMES, corporativo)
-    private String nivelAcceso; // Para gerentes (sucursal, regional, nacional)
-    private Integer anosExperiencia; // Para gerentes
-    private String idSucursal; // Para gerentes, cajeros y ejecutivo cuenta
-    // Getters y setters básicos
-
-    public String getDireccion() {
-        return direccion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre.trim();
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
+        this.direccion = direccion.trim();
     }
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getGenero() {
-        return genero;
-    }
-
     public void setGenero(String genero) {
         this.genero = genero;
-    }
-
-    public double getSalario() {
-        return salario;
     }
 
     public void setSalario(double salario) {
         this.salario = salario;
     }
 
+    public void setRol(RolEmpleado rol) {
+        this.rol = rol;
+    }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public RolEmpleado getRol() { return rol; }
-    public void setRol(RolEmpleado rol) { this.rol = rol; }
-
-    public String getUsuario() { return usuario; }
-    public void setUsuario(String usuario) { this.usuario = usuario; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    // Getters y setters específicos por rol
-    public String getHorarioTrabajo() { return horarioTrabajo; }
     public void setHorarioTrabajo(String horarioTrabajo) {
-        if(this.rol == RolEmpleado.CAJERO) {
-            this.horarioTrabajo = horarioTrabajo;
-        }
+        this.horarioTrabajo = horarioTrabajo;
     }
 
-    public Integer getNumeroVentanilla() { return numeroVentanilla; }
-    public void setNumeroVentanilla(Integer numeroVentanilla) {
-        if(this.rol == RolEmpleado.CAJERO) {
-            this.numeroVentanilla = numeroVentanilla;
-        }
-    }
-
-    public Integer getClientesAsignados() { return clientesAsignados; }
-    public void setClientesAsignados(Integer clientesAsignados) {
-        if(this.rol == RolEmpleado.EJECUTIVO_CUENTA) {
-            this.clientesAsignados = clientesAsignados;
-        }
-    }
-
-    public String getEspecializacion() { return especializacion; }
     public void setEspecializacion(String especializacion) {
-        if(this.rol == RolEmpleado.EJECUTIVO_CUENTA) {
-            this.especializacion = especializacion;
-        }
+        this.especializacion = especializacion;
     }
 
-    public String getNivelAcceso() { return nivelAcceso; }
     public void setNivelAcceso(String nivelAcceso) {
-        if(this.rol == RolEmpleado.GERENTE) {
-            this.nivelAcceso = nivelAcceso;
-        }
+        this.nivelAcceso = nivelAcceso;
     }
 
-    public Integer getAnosExperiencia() { return anosExperiencia; }
-    public void setAnosExperiencia(Integer anosExperiencia) {
-        if(this.rol == RolEmpleado.GERENTE) {
-            this.anosExperiencia = anosExperiencia;
-        }
+    public void setClientesAsignados(Integer clientesAsignados) {
+        this.clientesAsignados = clientesAsignados;
     }
 
-    public String getIdSucursal() { return idSucursal; }
+    public void setNumeroVentanilla(Integer numeroVentanilla) {
+        this.numeroVentanilla = numeroVentanilla;
+    }
+
     public void setIdSucursal(String idSucursal) {
-        if(this.rol == RolEmpleado.GERENTE || this.rol == RolEmpleado.CAJERO || this.rol == RolEmpleado.EJECUTIVO_CUENTA) {
+        if (rol == RolEmpleado.GERENTE || rol == RolEmpleado.CAJERO || rol == RolEmpleado.EJECUTIVO_CUENTA) {
             this.idSucursal = idSucursal;
         }
-    }
-
-    public boolean isEstadoActivo() {
-        return estadoActivo;
     }
 
     public void setEstadoActivo(boolean estadoActivo) {
@@ -152,6 +114,94 @@ public class Empleado {
     public void desactivar() {
         this.estadoActivo = false;
     }
+
+    public boolean esInvalidoNombre(String nombre) {
+        return nombre == null || nombre.trim().split("\\s+").length < 2;
+    }
+
+    public boolean esInvalidaDireccion(String direccion) {
+        return direccion == null || direccion.trim().split("\\s+").length < 2;
+    }
+
+    public List<String> validarFechaNacimiento(LocalDate fecha) {
+        List<String> errores = new ArrayList<>();
+
+        if (fecha == null) {
+            errores.add("La fecha de nacimiento no puede ir vacía.");
+        } else if (fecha.isAfter(LocalDate.now())) {
+            errores.add("La fecha de nacimiento debe ser válida.");
+        } else if (Period.between(fecha, LocalDate.now()).getYears() < 18) {
+            errores.add("Debe ser mayor de 18 años.");
+        }
+
+        return errores;
+    }
+
+    public boolean esInvalidoSalario(double salario) {
+        return salario <= 0;
+    }
+
+    public boolean esInvalidoHorario(String horario) {
+        return horario == null || !HORARIO_PATTERN.matcher(horario).matches();
+    }
+
+    public boolean esInvalidaEspecializacion(String especializacion) {
+        return especializacion == null || !ESPECIALIZACIONES_VALIDAS.contains(especializacion);
+    }
+
+    public boolean esInvalidoNivelAcceso(String nivelAcceso) {
+        return nivelAcceso == null || !NIVELES_ACCESO_VALIDOS.contains(nivelAcceso);
+    }
+
+    public boolean esInvalidaExperiencia(Integer anosExperiencia) {
+        return anosExperiencia == null || anosExperiencia < 0;
+    }
+
+    public boolean esInvalidoNumeroVentanilla(Integer numeroVentanilla) {
+        return numeroVentanilla == null || numeroVentanilla <= 0;
+    }
+
+    public boolean esInvalidoClientesAsignados(Integer clientesAsignados) {
+        return clientesAsignados == null || clientesAsignados < 0;
+    }
+
+    public List<String> validarCamposBasicos() {
+        List<String> errores = new ArrayList<>();
+
+        if (esInvalidoNombre(this.nombre)) {
+            errores.add("El nombre debe contener al menos dos palabras.");
+        }
+
+        if (esInvalidaDireccion(this.direccion)) {
+            errores.add("La dirección debe contener al menos dos palabras.");
+        }
+
+        errores.addAll(validarFechaNacimiento(this.fechaNacimiento));
+
+        if (esInvalidoSalario(this.salario)) {
+            errores.add("El salario debe ser mayor a 0.");
+        }
+
+        return errores;
+    }
+
+    public String getId() { return id; }
+    public String getNombre() { return nombre; }
+    public String getDireccion() { return direccion; }
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public String getGenero() { return genero; }
+    public double getSalario() { return salario; }
+    public RolEmpleado getRol() { return rol; }
+    public String getUsuario() { return usuario; }
+    public String getPassword() { return password; }
+    public boolean isEstadoActivo() { return estadoActivo; }
+    public String getHorarioTrabajo() { return horarioTrabajo; }
+    public Integer getNumeroVentanilla() { return numeroVentanilla; }
+    public Integer getClientesAsignados() { return clientesAsignados; }
+    public String getEspecializacion() { return especializacion; }
+    public String getNivelAcceso() { return nivelAcceso; }
+    public Integer getAnosExperiencia() { return anosExperiencia; }
+    public String getIdSucursal() { return idSucursal; }
 
     @Override
     public String toString() {
@@ -164,7 +214,6 @@ public class Empleado {
                 ", salario=" + salario +
                 ", rol=" + rol +
                 ", usuario='" + usuario + '\'' +
-                ", password='" + password + '\'' +
                 ", estadoActivo=" + estadoActivo +
                 '}';
     }

@@ -1,161 +1,104 @@
-//package com.eurobank.views;
-//
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.layout.GridPane;
-//import javafx.stage.Stage;
-//import javafx.collections.ObservableList;
-//import javafx.geometry.Insets;
-//
-//public class ClienteDialog {
-//    public static void mostrarDialogoAgregar(ObservableList<com.eurobank.models.String> listaClientes) {
-//        Stage stage = new Stage();
-//        stage.setTitle("Registrar Nuevo String");
-//
-//        GridPane grid = new GridPane();
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        grid.setPadding(new Insets(20));
-//
-//        // Campos del formulario según documento
-//        TextField tfRfcCurp = new TextField();
-//        TextField tfNombre = new TextField();
-//        TextField tfApellidos = new TextField();
-//        TextField tfNacionalidad = new TextField();
-//        DatePicker dpFechaNac = new DatePicker();
-//        TextField tfDireccion = new TextField();
-//        TextField tfTelefono = new TextField();
-//        TextField tfEmail = new TextField();
-//
-//        // Organización en grid
-//        grid.add(new Label("RFC/CURP:"), 0, 0);
-//        grid.add(tfRfcCurp, 1, 0);
-//        grid.add(new Label("Nombre:"), 0, 1);
-//        grid.add(tfNombre, 1, 1);
-//        grid.add(new Label("Apellidos:"), 0, 2);
-//        grid.add(tfApellidos, 1, 2);
-//        grid.add(new Label("Nacionalidad:"), 0, 3);
-//        grid.add(tfNacionalidad, 1, 3);
-//        grid.add(new Label("Fecha Nacimiento:"), 0, 4);
-//        grid.add(dpFechaNac, 1, 4);
-//        grid.add(new Label("Dirección:"), 0, 5);
-//        grid.add(tfDireccion, 1, 5);
-//        grid.add(new Label("Teléfono:"), 0, 6);
-//        grid.add(tfTelefono, 1, 6);
-//        grid.add(new Label("Email:"), 0, 7);
-//        grid.add(tfEmail, 1, 7);
-//
-//        Button btnGuardar = new Button("Guardar");
-//        Button btnCancelar = new Button("Cancelar");
-//
-//        grid.add(btnGuardar, 0, 8);
-//        grid.add(btnCancelar, 1, 8);
-//
-//        btnCancelar.setOnAction(e -> stage.close());
-//
-//        btnGuardar.setOnAction(e -> {
-//            try {
-//                String nuevo = new String(
-//                        tfRfcCurp.getText(),
-//                        tfNombre.getText(),
-//                        tfApellidos.getText(),
-//                        tfNacionalidad.getText(),
-//                        dpFechaNac.getValue(),
-//                        tfDireccion.getText(),
-//                        tfTelefono.getText(),
-//                        tfEmail.getText()
-//                );
-//
-//                listaClientes.add(nuevo);
-//                stage.close();
-//            } catch (Exception ex) {
-//                mostrarError("Error al guardar: " + ex.getMessage());
-//            }
-//        });
-//
-//        Scene scene = new Scene(grid);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    public static void mostrarDialogoEditar(String cliente) {
-//        Stage stage = new Stage();
-//        stage.setTitle("Editar String");
-//
-//        GridPane grid = new GridPane();
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        grid.setPadding(new Insets(20));
-//
-//        // Campos precargados
-//        TextField tfRfcCurp = new TextField(cliente.getIdFiscal());
-//        tfRfcCurp.setDisable(true);
-//        TextField tfNombre = new TextField(cliente.getNombre());
-//        TextField tfApellidos = new TextField(cliente.getApellidos());
-//        TextField tfNacionalidad = new TextField(cliente.getNacionalidad());
-//        DatePicker dpFechaNac = new DatePicker(cliente.getFechaNacimiento());
-//        TextField tfDireccion = new TextField(cliente.getDireccion());
-//        TextField tfTelefono = new TextField(cliente.getTelefono());
-//        TextField tfEmail = new TextField(cliente.getEmail());
-//
-//        // CheckBox para estado activo
-//        CheckBox cbActivo = new CheckBox("String activo");
-//        cbActivo.setSelected(cliente.isEstadoActivo());
-//
-//        // Organización en grid
-//        grid.add(new Label("RFC/CURP:"), 0, 0);
-//        grid.add(tfRfcCurp, 1, 0);
-//        grid.add(new Label("Nombre:"), 0, 1);
-//        grid.add(tfNombre, 1, 1);
-//        grid.add(new Label("Apellidos:"), 0, 2);
-//        grid.add(tfApellidos, 1, 2);
-//        grid.add(new Label("Nacionalidad:"), 0, 3);
-//        grid.add(tfNacionalidad, 1, 3);
-//        grid.add(new Label("Fecha Nacimiento:"), 0, 4);
-//        grid.add(dpFechaNac, 1, 4);
-//        grid.add(new Label("Dirección:"), 0, 5);
-//        grid.add(tfDireccion, 1, 5);
-//        grid.add(new Label("Teléfono:"), 0, 6);
-//        grid.add(tfTelefono, 1, 6);
-//        grid.add(new Label("Email:"), 0, 7);
-//        grid.add(tfEmail, 1, 7);
-//        grid.add(cbActivo, 0, 9); // Agrega el CheckBox
-//
-//        Button btnGuardar = new Button("Guardar Cambios");
-//        Button btnCancelar = new Button("Cancelar");
-//
-//        grid.add(btnGuardar, 0, 10);
-//        grid.add(btnCancelar, 1, 10);
-//
-//        btnCancelar.setOnAction(e -> stage.close());
-//
-//        btnGuardar.setOnAction(e -> {
-//            try {
-//                cliente.setNombre(tfNombre.getText());
-//                cliente.setApellidos(tfApellidos.getText());
-//                cliente.setNacionalidad(tfNacionalidad.getText());
-//                cliente.setFechaNacimiento(dpFechaNac.getValue());
-//                cliente.setDireccion(tfDireccion.getText());
-//                cliente.setTelefono(tfTelefono.getText());
-//                cliente.setEmail(tfEmail.getText());
-//                cliente.setEstadoActivo(cbActivo.isSelected()); // Actualiza el estado activo
-//
-//                stage.close();
-//            } catch (Exception ex) {
-//                mostrarError("Error al guardar: " + ex.getMessage());
-//            }
-//        });
-//
-//        Scene scene = new Scene(grid);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    private static void mostrarError(java.lang.String mensaje) {
-//        Alert alert = new Alert(Alert.AlertType.ERROR);
-//        alert.setTitle("Error");
-//        alert.setHeaderText(null);
-//        alert.setContentText(mensaje);
-//        alert.showAndWait();
-//    }
-//}
+package com.eurobank.views;
+
+import com.eurobank.models.Cliente;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.time.LocalDate;
+
+public class ClienteDialog {
+    private TextField txtIdFiscal;
+    private TextField txtNombre;
+    private TextField txtApellidos;
+    private TextField txtNacionalidad;
+    private DatePicker dpFechaNacimiento;
+    private TextField txtDireccion;
+    private TextField txtTelefono;
+    private TextField txtEmail;
+    private Button btnGuardar;
+    private Button btnCancelar;
+    private Stage stage;
+
+    public void mostrarFormulario(Stage owner, Cliente cliente, String titulo) {
+        stage = new Stage();
+        stage.setTitle(titulo);
+        stage.initOwner(owner);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+
+        // Configurar controles
+        txtIdFiscal = new TextField();
+        txtNombre = new TextField();
+        txtApellidos = new TextField();
+        txtNacionalidad = new TextField();
+        dpFechaNacimiento = new DatePicker();
+        txtDireccion = new TextField();
+        txtTelefono = new TextField();
+        txtEmail = new TextField();
+
+        // Si estamos editando, cargar los datos
+        if (cliente != null) {
+            txtIdFiscal.setText(cliente.getIdFiscal());
+            txtNombre.setText(cliente.getNombre());
+            txtApellidos.setText(cliente.getApellidos());
+            txtNacionalidad.setText(cliente.getNacionalidad());
+            dpFechaNacimiento.setValue(cliente.getFechaNacimiento());
+            txtDireccion.setText(cliente.getDireccion());
+            txtTelefono.setText(cliente.getTelefono());
+            txtEmail.setText(cliente.getEmail());
+        } else {
+            dpFechaNacimiento.setValue(LocalDate.now().minusYears(18));
+        }
+
+        // Añadir controles al grid
+        grid.add(new Label("ID Fiscal:"), 0, 0);
+        grid.add(txtIdFiscal, 1, 0);
+        grid.add(new Label("Nombre:"), 0, 1);
+        grid.add(txtNombre, 1, 1);
+        grid.add(new Label("Apellidos:"), 0, 2);
+        grid.add(txtApellidos, 1, 2);
+        grid.add(new Label("Nacionalidad:"), 0, 3);
+        grid.add(txtNacionalidad, 1, 3);
+        grid.add(new Label("Fecha Nacimiento:"), 0, 4);
+        grid.add(dpFechaNacimiento, 1, 4);
+        grid.add(new Label("Dirección:"), 0, 5);
+        grid.add(txtDireccion, 1, 5);
+        grid.add(new Label("Teléfono:"), 0, 6);
+        grid.add(txtTelefono, 1, 6);
+        grid.add(new Label("Email:"), 0, 7);
+        grid.add(txtEmail, 1, 7);
+
+        btnGuardar = new Button("Guardar");
+        btnCancelar = new Button("Cancelar");
+
+        GridPane botones = new GridPane();
+        botones.setHgap(10);
+        botones.add(btnCancelar, 0, 0);
+        botones.add(btnGuardar, 1, 0);
+
+        grid.add(botones, 1, 8);
+
+        Scene scene = new Scene(grid);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    // Getters
+    public String getIdFiscal() { return txtIdFiscal.getText(); }
+    public String getNombre() { return txtNombre.getText(); }
+    public String getApellidos() { return txtApellidos.getText(); }
+    public String getNacionalidad() { return txtNacionalidad.getText(); }
+    public LocalDate getFechaNacimiento() { return dpFechaNacimiento.getValue(); }
+    public String getDireccion() { return txtDireccion.getText(); }
+    public String getTelefono() { return txtTelefono.getText(); }
+    public String getEmail() { return txtEmail.getText(); }
+    public Button getBtnGuardar() { return btnGuardar; }
+    public Button getBtnCancelar() { return btnCancelar; }
+    public void cerrar() { stage.close(); }
+}

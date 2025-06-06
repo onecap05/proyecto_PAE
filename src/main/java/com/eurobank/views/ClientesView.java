@@ -1,95 +1,100 @@
-//package com.eurobank.views;
-//
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.control.cell.PropertyValueFactory;
-//import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.HBox;
-//import javafx.stage.Stage;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//import javafx.collections.transformation.FilteredList;
-//import javafx.beans.property.SimpleStringProperty;
-//import java.time.LocalDate;
-//import java.util.Optional;
-//
-//public class ClientesView {
-//    private static ObservableList<com.eurobank.models.String> clientes = FXCollections.observableArrayList();
-//
-//    public static void mostrar() {
-//        Stage stage = new Stage();
-//        stage.setTitle("Gestión de Clientes");
-//
-//        // Filtrar solo clientes activos
-//        FilteredList<com.eurobank.models.String> clientesFiltrados = new FilteredList<>(clientes, c -> c.isEstadoActivo());
-//
-//        // Crear tabla
-//        TableView<com.eurobank.models.String> tabla = new TableView<>();
-//        tabla.setItems(clientesFiltrados);
-//
-//        // Columnas
-//        TableColumn<com.eurobank.models.String, java.lang.String> colIdFiscal = new TableColumn<>("RFC/CURP");
-//        colIdFiscal.setCellValueFactory(new PropertyValueFactory<>("idFiscal"));
-//
-//        TableColumn<com.eurobank.models.String, java.lang.String> colNombre = new TableColumn<>("Nombre");
-//        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
-//
-//        TableColumn<String, java.lang.String> colNacionalidad = new TableColumn<>("Nacionalidad");
-//        colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
-//
-//        TableColumn<com.eurobank.models.String, LocalDate> colFechaNac = new TableColumn<>("Fecha Nacimiento");
-//        colFechaNac.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
-//
-//        TableColumn<com.eurobank.models.String, java.lang.String> colContacto = new TableColumn<>("Contacto");
-//        colContacto.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(
-//                        "Tel: " + cellData.getValue().getTelefono() + "\n" +
-//                                "Email: " + cellData.getValue().getEmail()
-//                )
-//        );
-//
-//        TableColumn<com.eurobank.models.String, java.lang.String> colDireccion = new TableColumn<>("Dirección");
-//        colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-//
-//        tabla.getColumns().addAll(colIdFiscal, colNombre, colNacionalidad, colFechaNac, colContacto, colDireccion);
-//
-//        // Botones CRUD
-//        Button btnAgregar = new Button("Agregar String");
-//        Button btnEditar = new Button("Editar");
-//        Button btnEliminar = new Button("Eliminar");
-//
-//        btnAgregar.setOnAction(e -> ClienteDialog.mostrarDialogoAgregar(clientes));
-//        btnEditar.setOnAction(e -> {
-//            String seleccionado = tabla.getSelectionModel().getSelectedItem();
-//            if (seleccionado != null) {
-//                ClienteDialog.mostrarDialogoEditar(seleccionado);
-//            }
-//        });
-//        // Confirmación y desactivación
-//        btnEliminar.setOnAction(e -> {
-//            com.eurobank.models.String seleccionado = tabla.getSelectionModel().getSelectedItem();
-//            if (seleccionado != null) {
-//                Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-//                confirmacion.setTitle("Confirmar eliminación");
-//                confirmacion.setHeaderText("¿Está seguro de desactivar este cliente?");
-//                confirmacion.setContentText("El cliente ya no será visible pero sus cuentas permanecerán.");
-//
-//                Optional<ButtonType> resultado = confirmacion.showAndWait();
-//                if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-//                    seleccionado.desactivar();
-//                    tabla.refresh();
-//                }
-//            }
-//        });
-//
-//        HBox botones = new HBox(10, btnAgregar, btnEditar, btnEliminar);
-//
-//        BorderPane root = new BorderPane();
-//        root.setCenter(tabla);
-//        root.setBottom(botones);
-//
-//        Scene scene = new Scene(root, 900, 500);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//}
+package com.eurobank.views;
+
+import com.eurobank.models.Cliente;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class ClientesView {
+    private final TableView<Cliente> tablaClientes = new TableView<>();
+    private final TextField txtBusqueda = new TextField();
+    private final Button btnBuscar = new Button("Buscar");
+    private final Button btnAgregar = new Button("Agregar");
+    private final Button btnEditar = new Button("Editar");
+    private final Button btnEliminar = new Button("Eliminar");
+    private final Button btnConsultarSaldos = new Button("Consultar Saldos");
+    private final ObservableList<Cliente> clientesData = FXCollections.observableArrayList();
+
+    public ClientesView() {
+        configurarTabla();
+    }
+
+    public void mostrar(Stage primaryStage) {
+        primaryStage.setTitle("Gestión de Clientes - EuroBank");
+
+        // Configurar barra de búsqueda
+        HBox barraBusqueda = new HBox(10,
+                new Label("Buscar:"),
+                txtBusqueda,
+                btnBuscar
+        );
+        barraBusqueda.setPadding(new Insets(10));
+
+        // Configurar botonera
+        HBox botoneraSuperior = new HBox(10, btnAgregar, btnEditar, btnEliminar);
+        HBox botoneraInferior = new HBox(10, btnConsultarSaldos);
+        botoneraSuperior.setPadding(new Insets(10));
+        botoneraInferior.setPadding(new Insets(10));
+
+        VBox vbox = new VBox(10, barraBusqueda, tablaClientes, botoneraSuperior, botoneraInferior);
+        vbox.setPadding(new Insets(10));
+
+        BorderPane root = new BorderPane();
+        root.setCenter(vbox);
+
+        Scene scene = new Scene(root, 1000, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void configurarTabla() {
+        TableColumn<Cliente, String> colIdFiscal = new TableColumn<>("ID Fiscal");
+        colIdFiscal.setCellValueFactory(new PropertyValueFactory<>("idFiscal"));
+        colIdFiscal.setMinWidth(120);
+
+        TableColumn<Cliente, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colNombre.setMinWidth(120);
+
+        TableColumn<Cliente, String> colApellidos = new TableColumn<>("Apellidos");
+        colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        colApellidos.setMinWidth(120);
+
+        TableColumn<Cliente, String> colNacionalidad = new TableColumn<>("Nacionalidad");
+        colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
+        colNacionalidad.setMinWidth(100);
+
+        TableColumn<Cliente, String> colTelefono = new TableColumn<>("Teléfono");
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colTelefono.setMinWidth(100);
+
+        TableColumn<Cliente, String> colEmail = new TableColumn<>("Email");
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEmail.setMinWidth(150);
+
+        TableColumn<Cliente, Boolean> colEstado = new TableColumn<>("Estado");
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoActivo"));
+        colEstado.setMinWidth(80);
+
+        tablaClientes.getColumns().addAll(colIdFiscal, colNombre, colApellidos,
+                colNacionalidad, colTelefono, colEmail, colEstado);
+        tablaClientes.setItems(clientesData);
+    }
+
+    // Getters
+    public TableView<Cliente> getTablaClientes() { return tablaClientes; }
+    public TextField getTxtBusqueda() { return txtBusqueda; }
+    public Button getBtnBuscar() { return btnBuscar; }
+    public Button getBtnAgregar() { return btnAgregar; }
+    public Button getBtnEditar() { return btnEditar; }
+    public Button getBtnEliminar() { return btnEliminar; }
+    public Button getBtnConsultarSaldos() { return btnConsultarSaldos; }
+    public ObservableList<Cliente> getClientesData() { return clientesData; }
+}

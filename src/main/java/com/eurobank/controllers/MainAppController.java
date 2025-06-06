@@ -53,7 +53,10 @@ public class MainAppController {
         });
 
         view.getBtnClientes().setOnAction(e -> {
-            // Abrir módulo de clientes
+            com.eurobank.views.ClientesView clientesView = new com.eurobank.views.ClientesView();
+            Stage clientesStage = new Stage();
+            clientesView.mostrar(clientesStage);
+            new com.eurobank.controllers.ClientesController(clientesView, clientesStage);
         });
 
         view.getBtnCuentas().setOnAction(e -> {

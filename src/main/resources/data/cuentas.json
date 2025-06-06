@@ -10,7 +10,7 @@
   "tipo" : "AHORROS",
   "saldo" : 3000.0,
   "limiteCredito" : 0.0,
-  "idCliente" : "CLIENTE-123",
+  "idCliente" : "RFC788",
   "estadoActivo" : true
 }, {
   "numeroCuenta" : "CUENTA-3",
@@ -47,4 +47,11 @@
   "limiteCredito" : 0.0,
   "idCliente" : "123",
   "estadoActivo" : false
+}, {
+  "numeroCuenta" : "CUENTA-8",
+  "tipo" : "AHORROS",
+  "saldo" : 10000.0,
+  "limiteCredito" : 0.0,
+  "idCliente" : "RFC456",
+  "estadoActivo" : true
 } ]

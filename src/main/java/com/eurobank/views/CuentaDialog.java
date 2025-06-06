@@ -28,18 +28,16 @@ public class CuentaDialog {
         grid.setVgap(10);
         grid.setPadding(new Insets(20));
 
-        // Configurar controles
         cbTipo = new ComboBox<>();
         cbTipo.getItems().setAll(TipoCuenta.values());
 
         txtNumeroCuenta = new TextField();
-        txtNumeroCuenta.setDisable(true); // No editable, se genera automáticamente
+        txtNumeroCuenta.setDisable(true);
 
         txtSaldo = new TextField();
         txtLimiteCredito = new TextField();
         txtIdCliente = new TextField();
 
-        // Si estamos editando, cargar los datos
         if (cuenta != null) {
             txtNumeroCuenta.setText(cuenta.getNumeroCuenta());
             cbTipo.setValue(cuenta.getTipo());
@@ -52,7 +50,6 @@ public class CuentaDialog {
             txtLimiteCredito.setText("0.0");
         }
 
-        // Configurar validación para campos numéricos
         txtSaldo.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
                 txtSaldo.setText(oldValue);
@@ -65,7 +62,6 @@ public class CuentaDialog {
             }
         });
 
-        // Añadir controles al grid
         grid.add(new Label("Número de Cuenta:"), 0, 0);
         grid.add(txtNumeroCuenta, 1, 0);
         grid.add(new Label("Tipo de Cuenta:"), 0, 1);
@@ -92,7 +88,6 @@ public class CuentaDialog {
         stage.show();
     }
 
-    // Getters
     public String getNumeroCuenta() { return txtNumeroCuenta.getText(); }
     public TipoCuenta getTipo() { return cbTipo.getValue(); }
     public double getSaldo() { return Double.parseDouble(txtSaldo.getText()); }

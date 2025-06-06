@@ -30,7 +30,6 @@ public class Cliente {
 
     }
 
-    // Getters y setters
     public String getIdFiscal() { return idFiscal; }
     public void setIdFiscal(String idFiscal) { this.idFiscal = idFiscal; }
 
@@ -55,8 +54,6 @@ public class Cliente {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-
-    // En Cliente.java
     public boolean isEstadoActivo() {
         return estadoActivo;
     }

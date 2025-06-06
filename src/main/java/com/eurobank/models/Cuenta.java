@@ -29,7 +29,6 @@ public class Cuenta {
 
     }
 
-    // Getters y setters
     public String getNumeroCuenta() {
         return numeroCuenta;
     }

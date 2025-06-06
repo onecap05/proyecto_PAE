@@ -3,6 +3,7 @@ package com.eurobank.controllers;
 import com.eurobank.models.Cliente;
 import com.eurobank.models.DAO.ClienteDAO;
 import com.eurobank.models.DAO.CuentaDAO;
+import com.eurobank.models.excepciones.ClienteNoEncontradoException;
 import com.eurobank.utils.VentanasEmergentes;
 import com.eurobank.views.ClientesView;
 import com.eurobank.views.SaldosClienteView;
@@ -54,7 +55,9 @@ public class ClientesController {
     }
 
     private void buscarClientes() {
+
         try {
+
             String textoBusqueda = view.getTxtBusqueda().getText().toLowerCase();
 
             ObservableList<Cliente> clientesFiltrados = FXCollections.observableArrayList(
@@ -67,7 +70,15 @@ public class ClientesController {
                             .toList()
             );
 
+            if (clientesFiltrados.isEmpty()) {
+                throw new ClienteNoEncontradoException(textoBusqueda);
+            }
+
             view.getClientesData().setAll(clientesFiltrados);
+
+        } catch (ClienteNoEncontradoException e) {
+            VentanasEmergentes.mostrarAlerta("Cliente no encontrado", "Búsqueda fallida", e.getMessage());
+
         } catch (IOException e) {
             VentanasEmergentes.mostrarAlerta("Error", "Error al buscar",
                     "No se pudo realizar la búsqueda: " + e.getMessage());

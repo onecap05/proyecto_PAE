@@ -35,10 +35,8 @@ public class EmpleadosView {
         tableView = new TableView<>();
         crearColumnasTabla();
 
-        // Hacer que las columnas usen todo el ancho disponible
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Aumentar altura de las filas
         tableView.setFixedCellSize(40);
         tableView.setRowFactory(tv -> {
             TableRow<Empleado> row = new TableRow<>();

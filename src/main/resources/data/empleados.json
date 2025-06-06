@@ -232,4 +232,22 @@
   "nivelAcceso" : null,
   "anosExperiencia" : null,
   "idSucursal" : "S004"
+}, {
+  "id" : "E-14",
+  "nombre" : "Manuel alessandro",
+  "direccion" : "fdfjhghfd gfdsgdfsg",
+  "fechaNacimiento" : "2003-04-02",
+  "genero" : "masculino",
+  "salario" : 10.0,
+  "rol" : "CAJERO",
+  "usuario" : "manumanito",
+  "password" : "",
+  "estadoActivo" : true,
+  "horarioTrabajo" : "L-V 10:00-11:00",
+  "numeroVentanilla" : 2,
+  "clientesAsignados" : null,
+  "especializacion" : null,
+  "nivelAcceso" : null,
+  "anosExperiencia" : null,
+  "idSucursal" : "S003"
 } ]

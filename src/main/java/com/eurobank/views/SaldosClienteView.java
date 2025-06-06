@@ -26,16 +26,13 @@ public class SaldosClienteView {
         stage.setTitle("Saldos del Cliente: " + cliente.getNombre() + " " + cliente.getApellidos());
         stage.initOwner(owner);
 
-        // Configurar tabla
         configurarTabla();
 
-        // Cargar datos
         ObservableList<Cuenta> cuentas = FXCollections.observableArrayList(
                 cuentaDAO.listarCuentasPorCliente(cliente.getIdFiscal())
         );
         tablaCuentas.setItems(cuentas);
 
-        // Calcular saldo total
         double saldoTotal = cuentas.stream().mapToDouble(Cuenta::getSaldo).sum();
         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "ES"));
         Label lblSaldoTotal = new Label("Saldo Total: " + formatoMoneda.format(saldoTotal));

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EmpleadoDAO {
+public class    EmpleadoDAO {
     private static final String ARCHIVO_JSON = "src/main/resources/data/empleados.json";
     private ObjectMapper objectMapper;
 

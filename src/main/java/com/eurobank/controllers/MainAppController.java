@@ -2,7 +2,7 @@ package com.eurobank.controllers;
 
 import com.eurobank.MainApp;
 import com.eurobank.models.RolEmpleado;
-import com.eurobank.views.EmpleadosView;
+import com.eurobank.views.CuentasView;
 import com.eurobank.views.LoginView;
 import com.eurobank.views.SucursalesView;
 import javafx.stage.Stage;
@@ -47,8 +47,7 @@ public class MainAppController {
 
         });
         view.getBtnEmpleados().setOnAction(e -> {
-            EmpleadosController empleadosController = new EmpleadosController();
-            empleadosController.mostrarVentana();
+            // Abrir módulo de empleados
         });
 
         view.getBtnClientes().setOnAction(e -> {
@@ -56,7 +55,10 @@ public class MainAppController {
         });
 
         view.getBtnCuentas().setOnAction(e -> {
-            // Abrir módulo de cuentas
+            CuentasView cuentasView = new CuentasView();
+            Stage cuentasStage = new Stage();
+            cuentasView.mostrar(cuentasStage);
+            new CuentasController(cuentasView, cuentasStage);
         });
 
         view.getBtnTransacciones().setOnAction(e -> {

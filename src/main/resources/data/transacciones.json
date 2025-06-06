@@ -258,10 +258,16 @@
   "tipo" : "TRANSFERENCIA"
 }, {
   "id" : "T-36",
-  "monto" : 500.0,
-  "fecha" : "2025-06-06T15:29:15.4637592",
-  "idSucursal" : "S-001",
-  "numeroCuentaOrigen" : "CUENTA-8",
-  "numeroCuentaDestino" : "CUENTA-001",
-  "tipo" : "TRANSFERENCIA"
+  "monto" : 100.0,
+  "fecha" : "2025-06-06T15:13:48.9730633",
+  "idSucursal" : "SUC-001",
+  "numeroCuenta" : "CUENTA-12",
+  "tipo" : "DEPOSITO"
+}, {
+  "id" : "T-37",
+  "monto" : 1000.0,
+  "fecha" : "2025-06-06T15:14:12.4915742",
+  "idSucursal" : "SUC-001",
+  "numeroCuenta" : "CUENTA-12",
+  "tipo" : "RETIRO"
 } ]

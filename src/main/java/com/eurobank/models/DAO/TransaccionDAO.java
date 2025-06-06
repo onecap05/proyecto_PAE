@@ -4,6 +4,7 @@ import com.eurobank.models.Transaccion;
 import com.eurobank.models.TransaccionDeposito;
 import com.eurobank.models.TransaccionRetiro;
 import com.eurobank.models.TransaccionTransferencia;
+import com.eurobank.models.excepciones.TransaccionFallidaException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -58,12 +59,19 @@ public class TransaccionDAO {
     }
 
 
-    public Transaccion crearNuevaTransaccion(Transaccion nuevaTransaccion) throws IOException {
+    public Transaccion crearNuevaTransaccion(Transaccion nuevaTransaccion) throws IOException, TransaccionFallidaException {
+
+        if (nuevaTransaccion.equals(null)) {
+            throw new TransaccionFallidaException("La transacción no puede ser nula");
+        }
+
         List<Transaccion> transacciones = cargarTransacciones();
         nuevaTransaccion.setId(generarNuevoId());
         transacciones.add(nuevaTransaccion);
         guardarTransacciones(transacciones);
         return nuevaTransaccion;
+
+
     }
 
 

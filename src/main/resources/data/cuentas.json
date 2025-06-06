@@ -78,7 +78,7 @@
 }, {
   "numeroCuenta" : "CUENTA-12",
   "tipo" : "CORRIENTE",
-  "saldo" : 948.0,
+  "saldo" : 48.0,
   "limiteCredito" : 0.0,
   "idCliente" : "RFC123",
   "estadoActivo" : true

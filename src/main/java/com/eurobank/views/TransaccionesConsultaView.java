@@ -79,7 +79,7 @@ public class TransaccionesConsultaView {
         return table;
     }
 
-    // Getters para que el controlador pueda acceder
+
     public TableView<Transaccion> getTabla() {
         return tabla;
     }

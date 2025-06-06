@@ -70,6 +70,13 @@ public class EmpleadoDAO {
                 .orElse(null);
     }
 
+    public Empleado buscarEmpleadoPorUsuario(String usuario) throws IOException {
+        return cargarEmpleados().stream()
+                .filter(e -> e.getUsuario().equals(usuario) && e.isEstadoActivo())
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Empleado> filtrarEmpleadosPorRol(RolEmpleado rol) throws IOException {
         return cargarEmpleados().stream()
                 .filter(e -> e.getRol() == rol && e.isEstadoActivo())

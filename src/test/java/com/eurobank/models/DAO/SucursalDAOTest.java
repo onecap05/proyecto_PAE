@@ -41,13 +41,14 @@ class SucursalDAOTest {
     void guardarSucursalesYCargarSucursales() throws IOException {
         Sucursal s1 = new Sucursal(null, "Sucursal Centro", "CDMX", "5551234567", "centro@mail.com", "G001");
         Sucursal s2 = new Sucursal(null, "Sucursal Norte", "Monterrey", "8181234567", "norte@mail.com", "G002");
-        sucursalDAO.guardarSucursales(List.of(s1, s2));
+        Sucursal creada1 = sucursalDAO.crearNuevaSucursal(s1);
+        Sucursal creada2 = sucursalDAO.crearNuevaSucursal(s2);
         List<Sucursal> sucursales = sucursalDAO.cargarSucursales();
         assertEquals(2, sucursales.size());
         assertTrue(sucursales.stream().anyMatch(s -> s.getNombre().equals("Sucursal Centro")));
-        assertEquals("5551234567", sucursales.get(0).getTelefono());
-        assertEquals("centro@mail.com", sucursales.get(0).getCorreo());
-        assertEquals("G001", sucursales.get(0).getIdGerente());
+        assertEquals("5551234567", creada1.getTelefono());
+        assertEquals("centro@mail.com", creada1.getCorreo());
+        assertEquals("G001", creada1.getIdGerente());
     }
 
     @Test
@@ -88,8 +89,10 @@ class SucursalDAOTest {
     void listarSucursalesActivas() throws IOException {
         Sucursal s1 = new Sucursal(null, "Sucursal Activa", "CDMX", "5550000000", "activa@mail.com", "G005");
         Sucursal s2 = new Sucursal(null, "Sucursal Inactiva", "Puebla", "2220000000", "inactiva@mail.com", "G006");
-        s2.setEstadoActivo(false);
-        sucursalDAO.guardarSucursales(List.of(s1, s2));
+        Sucursal creada1 = sucursalDAO.crearNuevaSucursal(s1);
+        Sucursal creada2 = sucursalDAO.crearNuevaSucursal(s2);
+        creada2.setEstadoActivo(false);
+        sucursalDAO.actualizarSucursal(creada2.getId(), creada2);
         List<Sucursal> activas = sucursalDAO.listarSucursalesActivas();
         assertEquals(1, activas.size());
         assertEquals("Sucursal Activa", activas.get(0).getNombre());
@@ -99,8 +102,10 @@ class SucursalDAOTest {
     void listarSucursalesInactivas() throws IOException {
         Sucursal s1 = new Sucursal(null, "Sucursal Activa", "CDMX", "5550000000", "activa@mail.com", "G005");
         Sucursal s2 = new Sucursal(null, "Sucursal Inactiva", "Puebla", "2220000000", "inactiva@mail.com", "G006");
-        s2.setEstadoActivo(false);
-        sucursalDAO.guardarSucursales(List.of(s1, s2));
+        Sucursal creada1 = sucursalDAO.crearNuevaSucursal(s1);
+        Sucursal creada2 = sucursalDAO.crearNuevaSucursal(s2);
+        creada2.setEstadoActivo(false);
+        sucursalDAO.actualizarSucursal(creada2.getId(), creada2);
         List<Sucursal> inactivas = sucursalDAO.cargarSucursales().stream()
                 .filter(s -> !s.isEstadoActivo())
                 .collect(Collectors.toList());
@@ -153,7 +158,8 @@ class SucursalDAOTest {
     void listarSucursales() throws IOException {
         Sucursal s1 = new Sucursal(null, "Sucursal 1", "CDMX", "5554444444", "s1@mail.com", "G010");
         Sucursal s2 = new Sucursal(null, "Sucursal 2", "Monterrey", "8185555555", "s2@mail.com", "G011");
-        sucursalDAO.guardarSucursales(List.of(s1, s2));
+        sucursalDAO.crearNuevaSucursal(s1);
+        sucursalDAO.crearNuevaSucursal(s2);
         List<Sucursal> todas = sucursalDAO.listarSucursales();
         assertEquals(2, todas.size());
     }

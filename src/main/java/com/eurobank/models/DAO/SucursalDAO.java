@@ -30,7 +30,12 @@ public class SucursalDAO {
         if (!archivo.exists()) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(Arrays.asList(objectMapper.readValue(archivo, Sucursal[].class)));
+        List<Sucursal> sucursales = Arrays.asList(objectMapper.readValue(archivo, Sucursal[].class));
+        sucursales.stream()
+                .filter(s -> s.getId() == null)
+                .forEach(s -> System.err.println("WARNING: Sucursal with null ID found: " + s.getNombre()));
+
+        return new ArrayList<>(sucursales);
     }
 
 
@@ -76,6 +81,7 @@ public class SucursalDAO {
     private String generarNuevoId() throws IOException {
         List<Sucursal> sucursales = cargarSucursales();
         int maxId = sucursales.stream()
+                .filter(s -> s.getId() != null)
                 .map(s -> s.getId().replace("S", ""))
                 .mapToInt(Integer::parseInt)
                 .max()

@@ -5,8 +5,8 @@ public class Sucursal {
     private String nombre;
     private String direccion;
     private String telefono;
-    private String correo; // Nuevo campo
-    private String idGerente; // Cambiado de 'gerente' a 'idGerente'
+    private String correo;
+    private String idGerente;
     private String contacto;
     private boolean estadoActivo;
 

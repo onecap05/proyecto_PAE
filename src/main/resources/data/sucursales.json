@@ -11,7 +11,7 @@
   "id" : "S002",
   "nombre" : "EuroBank Barcelona",
   "direccion" : "Avenida Diagonal 200",
-  "telefono" : "+34 933334445",
+  "telefono" : "+34 933334446",
   "correo" : "barcelona@eurobank.com",
   "idGerente" : "G002",
   "contacto" : null,
@@ -32,6 +32,15 @@
   "telefono" : "5559876543",
   "correo" : null,
   "idGerente" : null,
+  "contacto" : null,
+  "estadoActivo" : false
+}, {
+  "id" : "S005",
+  "nombre" : "Sucursal 2",
+  "direccion" : "Calle rara",
+  "telefono" : "+34 9123456789",
+  "correo" : "correo@prueba.com",
+  "idGerente" : "1",
   "contacto" : null,
   "estadoActivo" : false
 } ]
